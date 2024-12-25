@@ -56,7 +56,6 @@ class Salaire(models.Model):
         return f"Salaire de {self.montant} pour {self.employe.nom}"
 
 class OffreEmploi(models.Model):
-    Recrutement= models.ForeignKey(Recrutement, on_delete=models.CASCADE)
     titre_offre = models.CharField(max_length=100)
     description = models.TextField()
     date_publication = models.DateField()
@@ -66,7 +65,8 @@ class OffreEmploi(models.Model):
         return self.titre_offre
 
 class Recrutement(models.Model):
-    employe = models.ManyToManyField(Employe, on_delete=models.CASCADE)
+    offre = models.ForeignKey(OffreEmploi, on_delete=models.CASCADE)
+    employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
     date_recrutement = models.DateField()
     statut = models.CharField(max_length=50)
 
@@ -74,7 +74,7 @@ class Recrutement(models.Model):
         unique_together = ('offre', 'employe')
 
     def __str__(self):
-        return f"Recrutement pour {self.offre.titre_offre}"
+        return f"Recrutement pour {self.offre.titre_offre} et {self.employe.nom}"
 
 class Evaluation(models.Model):
     employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
