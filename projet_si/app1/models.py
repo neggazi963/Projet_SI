@@ -32,20 +32,27 @@ class Conge(models.Model):
     date_debut = models.DateField()
     date_fin = models.DateField()
     type_conge = models.CharField(max_length=50)
+    solde = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True) 
 
     def __str__(self):
         return f"Congé {self.id} ({self.type_conge})"
 
 class Contrat(models.Model):
     employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
-    type_contrat = models.CharField(max_length=50)
+    type_conge = models.CharField(max_length=50)
     date_debut = models.DateField()
-    date_fin = models.DateField(null=True, blank=True)
-    salaire_mensuel = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    salaire_quotidien = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    date_fin = models.DateField()
+    jours_utilises = models.PositiveIntegerField()
+    solde_initial = models.PositiveIntegerField()
+    solde_restant = models.PositiveIntegerField()
+
+    def save(self, *args, **kwargs):
+        self.jours_utilises = (self.date_fin - self.date_debut).days + 1
+        self.solde_restant = self.solde_initial - self.jours_utilises
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Contrat {self.type_contrat} pour {self.employe.nom}"
+        return f"{self.employe.nom} - {self.type_conge.nom}"
 
 class Salaire(models.Model):
     employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
