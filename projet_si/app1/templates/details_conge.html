@@ -1,8 +1,12 @@
 <h1>Détails du Congé</h1>
-<p>Employé : {{ conge.employe.nom }}</p>
-<p>Type : {{ conge.type_conge.nom }}</p>
-<p>Date début : {{ conge.date_debut }}</p>
-<p>Date fin : {{ conge.date_fin }}</p>
-<p>Solde initial : {{ conge.solde_initial }}</p>
-<p>Jours utilisés : {{ conge.jours_utilises }}</p>
-<p>Solde restant : {{ conge.solde_restant }}</p>
+
+<p><strong>Employé :</strong> {{ conge.employe.nom }} {{ conge.employe.prenom }}</p>
+<p><strong>Type de Congé :</strong> {{ conge.type_conge }}</p>
+<p><strong>Date de début :</strong> {{ conge.date_debut|date:"d M Y" }}</p>
+<p><strong>Date de fin :</strong> {{ conge.date_fin|date:"d M Y" }}</p>
+<p><strong>Solde initial :</strong> {{ conge.solde_initial }} jours</p>
+<p><strong>Jours utilisés :</strong> {{ conge.jours_utilises }} jours</p>
+<p><strong>Solde restant :</strong> {{ conge.solde_restant }} jours</p>
+
+<!-- Lien pour revenir à la liste des congés -->
+<p><a href="{% url 'liste_conges' %}">Retour à la liste des congés</a></p>

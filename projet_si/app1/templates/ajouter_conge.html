@@ -1,6 +1,23 @@
 <h1>Ajouter un Congé</h1>
+
+<!-- Afficher les erreurs de formulaire -->
+{% if form.errors %}
+    <div class="error">
+        <p>Il y a des erreurs dans le formulaire. Veuillez les corriger.</p>
+        <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ field.label }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Enregistrer</button>
+    {{ form.as_p }}  <!-- Affiche le formulaire sous forme de paragraphes -->
+
+    <!-- Bouton de soumission -->
+    <button type="submit" class="btn-submit">Enregistrer</button>
 </form>

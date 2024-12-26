@@ -1,13 +1,10 @@
 from django.shortcuts import get_object_or_404, redirect, render
-
 from .forms import CongeForm
-from .models import Employe,Conge
+from .models import Employe, Conge
+
 def afficher_employes(request):
    employes = Employe.objects.all()
-   return render(request,"list_employes.html",{"Employes":employes})
-
-
-
+   return render(request, "list_employes.html", {"employes": employes})  # Remplacé 'Employes' par 'employes'
 
 def liste_conges(request):
     conges = Conge.objects.all()
@@ -17,8 +14,7 @@ def ajouter_conge(request):
     if request.method == 'POST':
         form = CongeForm(request.POST)
         if form.is_valid():
-            conge = form.save(commit=False)
-            conge.save()
+            form.save()
             return redirect('liste_conges')
     else:
         form = CongeForm()
