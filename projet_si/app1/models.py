@@ -1,10 +1,12 @@
 from django.db import models
 
 class Service(models.Model):
+    nom_service =models.CharField(max_length=50)
     description = models.TextField()
 
     def __str__(self):
-        return f"Service {self.id}: {self.description}"
+        return f"Service {self.id}: {self.nom_service}"
+
 
 class Employe(models.Model):
     nom = models.CharField(max_length=100)
@@ -19,6 +21,7 @@ class Employe(models.Model):
     def __str__(self):
         return f"Employé {self.nom} {self.prenom}"
 
+
 class Formation(models.Model):
     nom = models.CharField(max_length=100)
     description = models.TextField()
@@ -27,32 +30,37 @@ class Formation(models.Model):
     def __str__(self):
         return self.nom
 
+
 class Conge(models.Model):
     employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
+    type_conge = models.CharField(max_length=100)
     date_debut = models.DateField()
     date_fin = models.DateField()
-    type_conge = models.CharField(max_length=50)
-    solde = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True) 
-
-    def __str__(self):
-        return f"Congé {self.id} ({self.type_conge})"
-
-class Contrat(models.Model):
-    employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
-    type_conge = models.CharField(max_length=50)
-    date_debut = models.DateField()
-    date_fin = models.DateField()
-    jours_utilises = models.PositiveIntegerField()
+    jours_utilises = models.PositiveIntegerField(default=0)
     solde_initial = models.PositiveIntegerField()
-    solde_restant = models.PositiveIntegerField()
+    solde_restant = models.PositiveIntegerField(default=15)
 
     def save(self, *args, **kwargs):
-        self.jours_utilises = (self.date_fin - self.date_debut).days + 1
-        self.solde_restant = self.solde_initial - self.jours_utilises
+        if self.date_debut and self.date_fin:
+            self.jours_utilises = (self.date_fin - self.date_debut).days + 1
+            self.solde_restant = self.solde_initial - self.jours_utilises
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.employe.nom} - {self.type_conge.nom}"
+        return f"{self.employe.nom} - {self.type_conge}"
+
+
+class Contrat(models.Model):
+    employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
+    type_contrat = models.CharField(max_length=50)
+    date_debut = models.DateField()
+    date_fin = models.DateField(null=True, blank=True)
+    salaire_mensuel = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    salaire_quotidien = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
+    def __str__(self):
+        return f"Contrat {self.type_contrat} pour {self.employe.nom}"
+
 
 class Salaire(models.Model):
     employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
@@ -61,6 +69,7 @@ class Salaire(models.Model):
 
     def __str__(self):
         return f"Salaire de {self.montant} pour {self.employe.nom}"
+
 
 class OffreEmploi(models.Model):
     titre_offre = models.CharField(max_length=100)
@@ -71,6 +80,7 @@ class OffreEmploi(models.Model):
     def __str__(self):
         return self.titre_offre
 
+
 class Recrutement(models.Model):
     offre = models.ForeignKey(OffreEmploi, on_delete=models.CASCADE)
     employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
@@ -78,10 +88,13 @@ class Recrutement(models.Model):
     statut = models.CharField(max_length=50)
 
     class Meta:
-        unique_together = ('offre', 'employe')
+        constraints = [
+            models.UniqueConstraint(fields=['offre', 'employe'], name='unique_recrutement')
+        ]
 
     def __str__(self):
         return f"Recrutement pour {self.offre.titre_offre} et {self.employe.nom}"
+
 
 class Evaluation(models.Model):
     employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
@@ -92,9 +105,10 @@ class Evaluation(models.Model):
     def __str__(self):
         return f"Évaluation de {self.employe.nom}"
 
+
 class Candidature(models.Model):
     offre = models.ForeignKey(OffreEmploi, on_delete=models.CASCADE)
-    candidat = models.ForeignKey(Employe, on_delete=models.CASCADE)
+    candidat = models.ForeignKey(Employe, on_delete=models.CASCADE)  # Envisagez un modèle distinct pour Candidat
     statut_candidature = models.CharField(max_length=50)
 
     def __str__(self):

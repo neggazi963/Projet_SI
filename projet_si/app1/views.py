@@ -4,7 +4,7 @@ from .forms import CongeForm
 from .models import Employe,Conge
 def afficher_employes(request):
    employes = Employe.objects.all()
-   return render(request,"index.html",{"Employes":employes})
+   return render(request,"list_employes.html",{"Employes":employes})
 
 
 
