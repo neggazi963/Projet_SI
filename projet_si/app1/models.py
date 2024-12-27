@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 class Service(models.Model):
     nom_service = models.CharField(max_length=50)
@@ -29,8 +30,14 @@ class Formation(models.Model):
         return self.nom
 
 class Conge(models.Model):
+    TYPE_CONGE_CHOICES = [
+        ('Annuel', 'Congé Annuel'),
+        ('Maladie', 'Congé Maladie'),
+        ('Maternité', 'Congé Maternité/Paternité'),
+        ('Sans Solde', 'Congé Sans Solde'),
+    ]
     employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
-    type_conge = models.CharField(max_length=100)
+    type_conge = models.CharField(max_length=20, choices=TYPE_CONGE_CHOICES)
     date_debut = models.DateField()
     date_fin = models.DateField()
     jours_utilises = models.PositiveIntegerField(default=0)
@@ -49,16 +56,27 @@ class Conge(models.Model):
         return f"{self.employe.nom} - {self.type_conge}"
 
 class Contrat(models.Model):
-    employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
-    type_contrat = models.CharField(max_length=50)
+    employe = models.ForeignKey('Employe', on_delete=models.CASCADE)  # 'Employe' doit être défini dans le projet.
+    type_contrat = models.CharField(max_length=50)  # Exemple : "CDI", "CDD", "Stage"
     date_debut = models.DateField()
     date_fin = models.DateField(null=True, blank=True)
+    periode_essai = models.BooleanField(default=False)
+    renouvellement = models.BooleanField(default=False)
     salaire_mensuel = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     salaire_quotidien = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-
+    archived = models.BooleanField(default=False)
+    TYPE_CHOICES = [
+    ('CDI', 'Contrat à Durée Indéterminée'),
+    ('CDD', 'Contrat à Durée Déterminée'),
+    ('Stage', 'Stage'),
+    ('Autre', 'Autre'),
+]
+    type_contrat = models.CharField(max_length=50, choices=TYPE_CHOICES)
     def __str__(self):
-        return f"Contrat {self.type_contrat} pour {self.employe.nom}"
+        return f"Contrat {self.type_contrat} pour {self.employe.nom}"  # Assure que `Employe` a un champ `nom`.
 
+    def get_absolute_url(self):
+        return reverse('details_contrat', args=[self.id])  # URL dynamique pour accéder aux détails d'un contrat.
 class Salaire(models.Model):
     employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
     montant = models.DecimalField(max_digits=10, decimal_places=2)
@@ -131,3 +149,28 @@ class Prime(models.Model):
     def __str__(self):
         return f"Prime de {self.montant} pour {self.employe.nom}"   
          
+
+class Candidate(models.Model):
+    STATUS_CHOICES = [
+        ('received', 'Reçue'),
+        ('processing', 'En cours de traitement'),
+        ('rejected', 'Rejetée'),
+        ('accepted', 'Acceptée'),
+    ]
+
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    offre  = models.ForeignKey(OffreEmploi, on_delete=models.CASCADE)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='received')
+    resume = models.FileField(upload_to='resumes/', null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+class Interview(models.Model):
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+    date = models.DateTimeField()
+    notes = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Interview avec {self.candidate.name} le {self.date}"

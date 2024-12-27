@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import AbsenceForm, CongeForm, PrimeForm, SalaireForm
+from .forms import AbsenceForm, CongeForm, ContratForm, PrimeForm, SalaireForm
 from .models import Absence, Contrat, Employe, Conge, Prime
 
 from django.http import JsonResponse
@@ -176,3 +176,75 @@ def afficher_salaire_tous_employes(request):
     # Renvoyer les données au template
     return render(request, 'afficher_salaire_tous_employes.html', {'salaires': salaires})
 
+
+
+def liste_contrats(request):
+    contrats = Contrat.objects.filter(archived=False)
+    return render(request, 'contrats/liste_contrats.html', {'contrats': contrats})
+
+
+def ajouter_contrat(request):
+    if request.method == 'POST':
+        form = ContratForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('liste_contrats')
+    else:
+        form = ContratForm()
+    return render(request, 'contrats/ajouter_contrat.html', {'form': form})
+
+
+def details_contrat(request, contrat_id):
+    contrat = get_object_or_404(Contrat, id=contrat_id)
+    return render(request, 'contrats/details_contrat.html', {'contrat': contrat})
+
+
+def modifier_contrat(request, contrat_id):
+    contrat = get_object_or_404(Contrat, id=contrat_id)
+    if request.method == 'POST':
+        form = ContratForm(request.POST, instance=contrat)
+        if form.is_valid():
+            form.save()
+            return redirect('liste_contrats')
+    else:
+        form = ContratForm(instance=contrat)
+    return render(request, 'contrats/modifier_contrat.html', {'form': form})
+
+
+def supprimer_contrat(request, contrat_id):
+    contrat = get_object_or_404(Contrat, id=contrat_id)
+    contrat.archived = True
+    contrat.save()
+    return redirect('liste_contrats')
+
+
+def job_offer_list(request):
+    offers = JobOffer.objects.all()
+    return render(request, 'recruitment/job_offer_list.html', {'offers': offers})
+
+def job_offer_create(request):
+    if request.method == 'POST':
+        form = JobOfferForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('job_offer_list')
+    else:
+        form = JobOfferForm()
+    return render(request, 'recruitment/job_offer_create.html', {'form': form})
+
+def candidate_list(request):
+    candidates = Candidate.objects.all()
+    return render(request, 'recruitment/candidate_list.html', {'candidates': candidates})
+
+def interview_schedule(request, candidate_id):
+    candidate = get_object_or_404(Candidate, pk=candidate_id)
+    if request.method == 'POST':
+        form = InterviewForm(request.POST)
+        if form.is_valid():
+            interview = form.save(commit=False)
+            interview.candidate = candidate
+            interview.save()
+            return redirect('candidate_list')
+    else:
+        form = InterviewForm()
+    return render(request, 'recruitment/interview_schedule.html', {'form': form, 'candidate': candidate})
