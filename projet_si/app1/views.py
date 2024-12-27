@@ -8,7 +8,7 @@ def afficher_employes(request):
 
 def liste_conges(request):
     conges = Conge.objects.all()
-    return render(request, 'conges/liste_conges.html', {'conges': conges})
+    return render(request, 'liste_conges.html', {'conges': conges})
 
 def ajouter_conge(request):
     if request.method == 'POST':
@@ -18,8 +18,8 @@ def ajouter_conge(request):
             return redirect('liste_conges')
     else:
         form = CongeForm()
-    return render(request, 'conges/ajouter_conge.html', {'form': form})
+    return render(request, 'ajouter_conge.html', {'form': form})
 
 def details_conge(request, conge_id):
     conge = get_object_or_404(Conge, id=conge_id)
-    return render(request, 'conges/details_conge.html', {'conge': conge})
+    return render(request, 'details_conge.html', {'conge': conge})

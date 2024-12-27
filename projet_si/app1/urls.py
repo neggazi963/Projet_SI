@@ -11,5 +11,5 @@ urlpatterns = [
     # Routes pour gérer les congés
     path('conges/', views.liste_conges, name='liste_conges'),  # Liste des congés
     path('conges/ajouter/', views.ajouter_conge, name='ajouter_conge'),  # Ajouter un congé
-    path('conges/<int:conge_id>/', views.details_conge, name='details_conge'),  # Détails d'un congé
+    path('conges/<int:conge_id>', views.details_conge, name='details_conge'),  # Détails d'un congé
 ]

@@ -1,5 +1,6 @@
 <h1>Liste des Congés</h1>
 <a href="{% url 'ajouter_conge' %}">Ajouter un Congé</a>
+
 <ul>
     {% for conge in conges %}
         <li>{{ conge.employe.nom }} - {{ conge.type_conge }} : {{ conge.solde_restant }} jours restants</li>
