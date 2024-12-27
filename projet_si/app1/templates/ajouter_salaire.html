@@ -1,0 +1,21 @@
+<!-- templates/ajouter_salaire.html -->
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ajouter un Salaire</title>
+  </head>
+  <body>
+    <h1>Ajouter un Salaire pour un Employé</h1>
+
+    <form method="POST">
+      {% csrf_token %} {{ form.as_p }}
+      <!-- Affiche le formulaire avec chaque champ en paragraphe -->
+      <button type="submit">Ajouter le Salaire</button>
+    </form>
+
+    <a href="{% url 'afficher_salaire_tous_employes' %}"
+      >Retourner à la liste des salaires</a
+    >
+  </body>
+</html>

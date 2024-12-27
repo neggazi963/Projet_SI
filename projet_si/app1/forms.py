@@ -1,5 +1,5 @@
 from django import forms
-from .models import Conge
+from .models import Absence, Conge, Prime, Salaire
 
 class CongeForm(forms.ModelForm):
     class Meta:
@@ -17,3 +17,21 @@ class CongeForm(forms.ModelForm):
                 raise forms.ValidationError("La date de début ne peut pas être après la date de fin.")
 
         return cleaned_data
+    
+
+class SalaireForm(forms.ModelForm):
+    class Meta:
+        model = Salaire
+        fields = ['employe', 'montant', 'date_paiement']
+
+
+class PrimeForm(forms.ModelForm):
+    class Meta:
+        model = Prime
+        fields = ['employe', 'montant', 'date_prime']
+
+
+class AbsenceForm(forms.ModelForm):
+    class Meta:
+        model = Absence
+        fields = "__all__"

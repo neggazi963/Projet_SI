@@ -1,0 +1,27 @@
+<!-- templates/afficher_absences.html -->
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Absences de {{ employe.nom }}</title>
+  </head>
+  <body>
+    <h1>Absences de {{ employe.nom }} - {{ annee }}/{{ mois }}</h1>
+
+    <h2>Liste des absences</h2>
+    <ul>
+      {% if absences %} {% for absence in absences %}
+      <li>
+        {{ absence.date_absence }} - {{ absence.raison }} (Impact :
+        {{absence.impact_salaire }} DA)
+      </li>
+      {% endfor %} {% else %}
+      <li>Aucune absence enregistrée pour ce mois.</li>
+      {% endif %}
+    </ul>
+
+    <a href="{% url 'afficher_salaire' employe.id annee mois %}"
+      >Retour à la fiche de paie</a
+    >
+  </body>
+</html>

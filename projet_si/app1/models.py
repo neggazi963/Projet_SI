@@ -105,3 +105,29 @@ class Candidature(models.Model):
 
     def __str__(self):
         return f"Candidature {self.id} ({self.statut_candidature})"
+    
+
+
+class Absence(models.Model):
+    employe = models.ForeignKey('Employe', on_delete=models.CASCADE)
+    date_absence = models.DateField()
+    raison = models.CharField(max_length=200, null=True, blank=True)
+    impact_salaire = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # Impact en DA
+
+    def save(self, *args, **kwargs):
+        salaire_journalier = 30000 / 30  # Salaire journalier par défaut
+        self.impact_salaire = salaire_journalier  # Impact calculé automatiquement
+        super().save(*args, **kwargs)
+
+
+# Modèle Prime
+class Prime(models.Model):
+    employe = models.ForeignKey('Employe', on_delete=models.CASCADE)
+    date_prime = models.DateField()
+    montant = models.DecimalField(max_digits=10, decimal_places=2)
+    type_prime = models.CharField(max_length=50, choices=[('fixe', 'Fixe'), ('pourcentage', 'Pourcentage')])
+    base_calcul = models.DecimalField(max_digits=10, decimal_places=2, default=30000)  # Salaire base utilisé
+
+    def __str__(self):
+        return f"Prime de {self.montant} pour {self.employe.nom}"   
+         
