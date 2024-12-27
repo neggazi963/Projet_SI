@@ -1,6 +1,8 @@
 <h1>Détails du Congé</h1>
 
-<p><strong>Employé :</strong> {{ conge.employe.nom }} {{ conge.employe.prenom }}</p>
+<p>
+  <strong>Employé :</strong> {{ conge.employe.nom }} {{ conge.employe.prenom }}
+</p>
 <p><strong>Type de Congé :</strong> {{ conge.type_conge }}</p>
 <p><strong>Date de début :</strong> {{ conge.date_debut|date:"d M Y" }}</p>
 <p><strong>Date de fin :</strong> {{ conge.date_fin|date:"d M Y" }}</p>
