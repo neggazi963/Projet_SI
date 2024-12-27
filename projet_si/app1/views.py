@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import AbsenceForm, CongeForm, ContratForm, PrimeForm, SalaireForm
-from .models import Absence, Contrat, Employe, Conge, Prime
+from .forms import AbsenceForm, CongeForm, ContratForm, InterviewForm, JobOfferForm, PrimeForm, SalaireForm
+from .models import Absence, Candidate, Contrat, Employe, Conge, OffreEmploi, Prime
 
 from django.http import JsonResponse
 from django.db.models import Sum
@@ -219,12 +219,12 @@ def supprimer_contrat(request, contrat_id):
 
 
 def job_offer_list(request):
-    offers = JobOffer.objects.all()
+    offers = OffreEmploi.objects.all()
     return render(request, 'recruitment/job_offer_list.html', {'offers': offers})
 
 def job_offer_create(request):
     if request.method == 'POST':
-        form = JobOfferForm(request.POST)
+        form = OffreEmploi(request.POST)
         if form.is_valid():
             form.save()
             return redirect('job_offer_list')
