@@ -1,6 +1,7 @@
+from pyexpat.errors import messages
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import AbsenceForm, CongeForm, PrimeForm, SalaireForm
-from .models import Absence, Contrat, Employe, Conge, Prime
+from .forms import AbsenceForm, CongeForm, ContratForm, InterviewForm, JobOfferForm, PrimeForm, SalaireForm
+from .models import Absence, Candidate, Contrat, Employe, Conge, OffreEmploi, Prime
 
 from django.http import JsonResponse
 from django.db.models import Sum
@@ -9,27 +10,46 @@ def afficher_employes(request):
    employes = Employe.objects.all()
    return render(request, "list_employes.html", {"employes": employes})  # Remplacé 'Employes' par 'employes'
 
+
 def liste_conges(request):
-    conges = Conge.objects.all()
+    """
+    Affiche la liste de tous les congés.
+    Seuls les utilisateurs connectés peuvent accéder à cette vue.
+    """
+    conges = Conge.objects.all().select_related('employe', 'employe__service')
     return render(request, 'liste_conges.html', {'conges': conges})
 
+
 def ajouter_conge(request):
+    """
+    Permet d'ajouter un nouveau congé.
+    Accessible uniquement aux utilisateurs connectés.
+    """
     if request.method == 'POST':
         form = CongeForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('liste_conges')
+            conge = form.save(commit=False)
+            # Ajout d'une validation personnalisée ou autres traitements si nécessaires
+            if conge.date_debut > conge.date_fin:
+                messages.error(request, "La date de début ne peut pas être après la date de fin.")
+            else:
+                conge.save()
+                
+                return redirect('liste_conges')
     else:
         form = CongeForm()
     return render(request, 'ajouter_conge.html', {'form': form})
 
-def details_conge(request, conge_id):
-    conge = get_object_or_404(Conge, id=conge_id)
+
+def details_conge(request):
+    """
+    Affiche les détails d'un congé spécifique.
+    """
+    conge = get_object_or_404(Conge)
     return render(request, 'details_conge.html', {'conge': conge})
 
 
 
-# Calcul du salaire net dans la vue
 def calculer_salaire_total(employe, annee, mois):
     salaire_base = 30000  # Salaire de base par défaut
     salaire_journalier = Contrat.salaire_quotidien 
@@ -169,3 +189,75 @@ def afficher_salaire_tous_employes(request):
 
     # Renvoyer les données au template
     return render(request, 'afficher_salaire_tous_employes.html', {'salaires': salaires})
+
+
+def liste_contrats(request):
+    contrats = Contrat.objects.filter(archived=False)
+    return render(request, 'contrats/liste_contrats.html', {'contrats': contrats})
+
+
+def ajouter_contrat(request):
+    if request.method == 'POST':
+        form = ContratForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('liste_contrats')
+    else:
+        form = ContratForm()
+    return render(request, 'contrats/ajouter_contrat.html', {'form': form})
+
+
+def details_contrat(request, contrat_id):
+    contrat = get_object_or_404(Contrat, id=contrat_id)
+    return render(request, 'contrats/details_contrat.html', {'contrat': contrat})
+
+
+def modifier_contrat(request, contrat_id):
+    contrat = get_object_or_404(Contrat, id=contrat_id)
+    if request.method == 'POST':
+        form = ContratForm(request.POST, instance=contrat)
+        if form.is_valid():
+            form.save()
+            return redirect('liste_contrats')
+    else:
+        form = ContratForm(instance=contrat)
+    return render(request, 'contrats/modifier_contrat.html', {'form': form})
+
+
+def supprimer_contrat(request, contrat_id):
+    contrat = get_object_or_404(Contrat, id=contrat_id)
+    contrat.archived = True
+    contrat.save()
+    return redirect('liste_contrats')
+
+
+def job_offer_list(request):
+    offers = OffreEmploi.objects.all()
+    return render(request, 'recruitment/job_offer_list.html', {'offers': offers})
+
+def job_offer_create(request):
+    if request.method == 'POST':
+        form = OffreEmploi(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('job_offer_list')
+    else:
+        form = JobOfferForm()
+    return render(request, 'recruitment/job_offer_create.html', {'form': form})
+
+def candidate_list(request):
+    candidates = Candidate.objects.all()
+    return render(request, 'recruitment/candidate_list.html', {'candidates': candidates})
+
+def interview_schedule(request, candidate_id):
+    candidate = get_object_or_404(Candidate, pk=candidate_id)
+    if request.method == 'POST':
+        form = InterviewForm(request.POST)
+        if form.is_valid():
+            interview = form.save(commit=False)
+            interview.candidate = candidate
+            interview.save()
+            return redirect('candidate_list')
+    else:
+        form = InterviewForm()
+    return render(request, 'recruitment/interview_schedule.html', {'form': form, 'candidate': candidate})
