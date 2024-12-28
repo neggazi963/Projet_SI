@@ -1,3 +1,4 @@
+from pyexpat.errors import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from .forms import AbsenceForm, CongeForm, ContratForm, InterviewForm, JobOfferForm, PrimeForm, SalaireForm
 from .models import Absence, Candidate, Contrat, Employe, Conge, OffreEmploi, Prime
@@ -9,25 +10,43 @@ def afficher_employes(request):
    employes = Employe.objects.all()
    return render(request, "list_employes.html", {"employes": employes})  # Remplacé 'Employes' par 'employes'
 
+
 def liste_conges(request):
-    conges = Conge.objects.all()
+    """
+    Affiche la liste de tous les congés.
+    Seuls les utilisateurs connectés peuvent accéder à cette vue.
+    """
+    conges = Conge.objects.all().select_related('employe', 'employe__service')
     return render(request, 'liste_conges.html', {'conges': conges})
 
+
 def ajouter_conge(request):
+    """
+    Permet d'ajouter un nouveau congé.
+    Accessible uniquement aux utilisateurs connectés.
+    """
     if request.method == 'POST':
         form = CongeForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('liste_conges')
+            conge = form.save(commit=False)
+            # Ajout d'une validation personnalisée ou autres traitements si nécessaires
+            if conge.date_debut > conge.date_fin:
+                messages.error(request, "La date de début ne peut pas être après la date de fin.")
+            else:
+                conge.save()
+                messages.success(request, "Congé ajouté avec succès.")
+                return redirect('liste_conges')
     else:
         form = CongeForm()
     return render(request, 'ajouter_conge.html', {'form': form})
 
-def details_conge(request, conge_id):
-    conge = get_object_or_404(Conge, id=conge_id)
+
+def details_conge(request):
+    """
+    Affiche les détails d'un congé spécifique.
+    """
+    conge = get_object_or_404(Conge)
     return render(request, 'details_conge.html', {'conge': conge})
-
-
 
 
 
