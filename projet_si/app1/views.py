@@ -50,7 +50,6 @@ def details_conge(request):
 
 
 
-# Calcul du salaire net dans la vue
 def calculer_salaire_total(employe, annee, mois):
     salaire_base = 30000  # Salaire de base par défaut
     salaire_journalier = Contrat.salaire_quotidien 
@@ -110,11 +109,9 @@ def ajouter_absence(request):
     return render(request, 'ajouter_absence.html', {'form': form})
 
 # Vue pour afficher les absences d'un employé
-def afficher_absences(request, employe_id, annee, mois):
-    employe = get_object_or_404(Employe, id=employe_id)
-    absences = Absence.objects.filter(employe=employe, date_absence__year=annee, date_absence__month=mois)
-    
-    return render(request, 'afficher_absences.html', {'employe': employe, 'absences': absences, 'annee': annee, 'mois': mois})
+def afficher_absences(request):
+    absences = Conge.objects.all()  # Récupère toutes les absences
+    return render(request, 'afficher_absences.html', {'absences': absences})
 
 def ajouter_prime(request):
     if request.method == 'POST':
@@ -128,11 +125,9 @@ def ajouter_prime(request):
     return render(request, 'ajouter_prime.html', {'form': form})
 
 # Vue pour afficher les primes d'un employé
-def afficher_primes(request, employe_id, annee, mois):
-    employe = get_object_or_404(Employe, id=employe_id)
-    primes = Prime.objects.filter(employe=employe, date_prime__year=annee, date_prime__month=mois)
-    
-    return render(request, 'afficher_primes.html', {'employe': employe, 'primes': primes, 'annee': annee, 'mois': mois})
+def afficher_primes(request):
+    primes = Prime.objects.all()  # Récupère toutes les primes
+    return render(request, 'afficher_primes.html', {'primes': primes})
 
 # Vue pour générer une fiche de paie numérique (au format JSON)
 def generer_fiche_de_paie(request, employe_id, annee, mois):
@@ -194,7 +189,6 @@ def afficher_salaire_tous_employes(request):
 
     # Renvoyer les données au template
     return render(request, 'afficher_salaire_tous_employes.html', {'salaires': salaires})
-
 
 
 def liste_contrats(request):
