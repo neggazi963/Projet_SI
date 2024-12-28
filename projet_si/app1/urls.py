@@ -16,9 +16,8 @@ urlpatterns = [
     path('fiche_de_paie/<int:employe_id>/<int:annee>/<int:mois>/', views.generer_fiche_de_paie, name='generer_fiche_de_paie'),
     path('afficher_salaire_tous_employes/tous/', views.afficher_salaire_tous_employes, name='afficher_salaire_tous_employes'),
     path('ajouter_salaire/', views.ajouter_salaire, name='ajouter_salaire'),
-
-    path('prime/ajouter/', views.ajouter_prime, name='ajouter_prime'),
-    path('absence/ajouter/', views.ajouter_absence, name='ajouter_absence'),
+    path('ajouter_prime/', views.ajouter_prime, name='ajouter_prime'),
+    path('ajouter_absence/', views.ajouter_absence, name='ajouter_absence'),
     path('afficher_primes/', views.afficher_primes, name='afficher_primes'),
     path('afficher_absences/', views.afficher_absences, name='afficher_absences'),
 ]

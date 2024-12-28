@@ -1,27 +1,31 @@
-<!-- templates/afficher_primes.html -->
 <!DOCTYPE html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <title>Primes de {{ employe.nom }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liste des Primes</title>
   </head>
   <body>
-    <h1>Primes de {{ employe.nom }} - {{ annee }}/{{ mois }}</h1>
-
-    <h2>Liste des primes</h2>
-    <ul>
-      {% if primes %} {% for prime in primes %}
-      <li>
-        {{ prime.date_prime }} - {{ prime.montant }} DA (Type :
-        {{prime.type_prime }})
-      </li>
-      {% endfor %} {% else %}
-      <li>Aucune prime enregistrée pour ce mois.</li>
-      {% endif %}
-    </ul>
-
-    <a href="{% url 'afficher_salaire' employe.id annee mois %}"
-      >Retour à la fiche de paie</a
-    >
+    <h1>Liste des Primes</h1>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Employé</th>
+          <th>Type de Prime</th>
+          <th>Montant</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for prime in primes %}
+        <tr>
+          <td>{{ prime.employe.nom }} {{ prime.employe.prenom }}</td>
+          <td>{{ prime.type_prime }}</td>
+          <td>{{ prime.montant }}</td>
+          <td>{{ prime.date_prime }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </body>
 </html>
