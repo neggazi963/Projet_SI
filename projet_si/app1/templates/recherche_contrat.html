@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Gestion des Contrats</h2>
+
+<!-- Formulaire de recherche -->
+<form method="GET">
+    <input type="text" name="q" placeholder="Rechercher un contrat par employé" value="{{ query }}">
+    <button type="submit">Rechercher</button>
+</form>
+
+<h3>Ajouter un Nouveau Contrat</h3>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Ajouter le Contrat</button>
+</form>
+
+<h3>Liste des Contrats</h3>
+<ul>
+    {% for contrat in contrats %}
+        <li>
+            {{ contrat.employe.nom }} {{ contrat.employe.prenom }} - {{ contrat.type_contrat }}
+            <a href="{% url 'consult_contrat' contrat.id %}">Consulter</a>
+            <a href="{% url 'modifie_contrat' contrat.id %}">Modifier</a>
+            <a href="{% url 'supprime_contrat' contrat.id %}">Supprimer</a>
+        </li>
+    {% empty %}
+        <li>Aucun contrat trouvé.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

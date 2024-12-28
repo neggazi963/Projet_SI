@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Gestion des Salaires</h2>
+
+
+<form method="GET">
+    <input type="text" name="q" placeholder="Rechercher un salaire par employé" value="{{ query }}">
+    <button type="submit">Rechercher</button>
+</form>
+
+<h3>Ajouter un Nouveau Salaire</h3>
+<a href="{% url 'insert_salaire' %}">Ajouter un Salaire</a>
+
+<h3>Liste des Salaires</h3>
+<ul>
+    {% for salaire in salaries %}
+        <li>
+            {{ salaire.employe.nom }} - {{ salaire.montant }} - {{ salaire.date_paiement }}
+            <a href="{% url 'consult_salaire' salaire.id %}">Consulter</a>
+            <a href="{% url 'modifie_salaire' salaire.id %}">Modifier</a>
+            <a href="{% url 'supprime_salaire' salaire.id %}">Supprimer</a>
+        </li>
+    {% empty %}
+        <li>Aucun salaire trouvé.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

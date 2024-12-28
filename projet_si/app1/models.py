@@ -80,9 +80,9 @@ class Conge(models.Model):
         from django.core.exceptions import ValidationError
         if self.date_debut > self.date_fin:
             raise ValidationError("La date de début ne peut pas être après la date de fin.")
-        if self.solde_initial < self.jours_utilises:
+        if self.solde_initial is not None and self.jours_utilises is not None:
+           if self.solde_initial < self.jours_utilises:
             raise ValidationError("Le nombre de jours utilisés dépasse le solde initial.")
-
     def __str__(self):
         return f"{self.employe.nom} {self.employe.prenom} - {self.type_conge}"
 

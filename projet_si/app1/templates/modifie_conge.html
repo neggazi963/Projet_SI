@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Modifier le Congé de {{ conge.employe.nom }}</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enregistrer les Modifications</button>
+</form>
+
+<a href="{% url 'recherche_conge' %}">Retour à la liste des congés</a>
+{% endblock %}
