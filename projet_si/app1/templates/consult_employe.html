@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Détails de l'Employé</h2>
+
+<p><strong>Nom :</strong> {{ employe.nom }}</p>
+<p><strong>Prénom :</strong> {{ employe.prenom }}</p>
+<p><strong>Date de Naissance :</strong> {{ employe.date_naissance }}</p>
+<p><strong>Date d'Embauche :</strong> {{ employe.date_embauche }}</p>
+<p><strong>Adresse :</strong> {{ employe.adresse }}</p>
+<p><strong>Service :</strong> {{ employe.service.description if employe.service else 'Aucun' }}</p>
+<p><strong>Compétences :</strong> {{ employe.competences }}</p>
+<p><strong>Historique Professionnel :</strong> {{ employe.historique_professionnel }}</p>
+
+<a href="{% url 'manage_employees' %}">Retour à la liste des employés</a>
+{% endblock %}

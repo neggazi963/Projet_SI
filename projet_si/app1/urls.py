@@ -6,14 +6,25 @@ urlpatterns = [
     
     
     # Route pour afficher la liste des employés
-    path('list_employes/', views.afficher_employes, name='list_employes'),
+    path('employe/recherche/', views.rechercher_employe, name='manage_employe'),
+    path('employe/insert/',views.insert_employe, name='insert_employe'),
+    path('employees/edit/<int:employe_id>/', views.modifie_employe, name='edit_employe'),
+    path('employees/delete/<int:employe_id>/', views.supprime_employe, name='delete_employe'),
+    path('employees/consult/<int:employe_id>/', views.consult_employe, name='consult_employe'),
     
     # Routes pour gérer les congés
     path('liste_conges', views.liste_conges, name='liste_conges'),  # Liste des congés
     path('conges/ajouter/', views.ajouter_conge, name='ajouter_conge'),  # Ajouter un congé
-
+    path('conges/', views.recherche_conge, name='manage_conges'),
     path('conges/details', views.details_conge, name='details_conge'),  # Détails d'un congé
+    path('conges/edit/<int:conge_id>/', views.modifie_conge, name='edit_conge'),
+    path('conges/delete/<int:conge_id>/', views.supprime_conge, name='delete_conge'),
+    path('conges/consult/<int:conge_id>/', views.consult_conge, name='consult_conge'),
 
+    path('salarie/modifie/<int:salaire_id>/', views.modifie_salaire, name='edit_salaire'), 
+    path('salarie/supprime/<int:salaire_id>/', views.supprime_salaire, name='delete_salaire'),  
+    path('salarie/consult/<int:salaire_id>/', views.consult_salaire, name='consult_salaire'),
+    path('salarie/', views.recherche_salaries, name='manage_salaries'),  
     path('afficher_salaire/<int:employe_id>/<int:annee>/<int:mois>/', views.afficher_salaire, name='afficher_salaire'),
     path('fiche_de_paie/<int:employe_id>/<int:annee>/<int:mois>/', views.generer_fiche_de_paie, name='generer_fiche_de_paie'),
     path('afficher_salaire_tous_employes/tous/', views.afficher_salaire_tous_employes, name='afficher_salaire_tous_employes'),
@@ -25,11 +36,19 @@ urlpatterns = [
     path('contrats/', views.liste_contrats, name='liste_contrats'),
     path('contrats/ajouter/', views.ajouter_contrat, name='ajouter_contrat'),
     path('contrats/<int:contrat_id>/', views.details_contrat, name='details_contrat'),
+    path('contrat/edit/<int:contrat_id>/', views.modifie_contrat, name='edit_contrat'),
+    path('contrat/delete/<int:contrat_id>/', views.supprime_contrat, name='delete_contrat'),
     path('contrats/<int:contrat_id>/modifier/', views.modifier_contrat, name='modifier_contrat'),
     path('contrats/<int:contrat_id>/supprimer/', views.supprimer_contrat, name='supprimer_contrat'),
     path('jobs/', views.job_offer_list, name='job_offer_list'),
     path('jobs/new/', views.job_offer_create, name='job_offer_create'),
     path('candidates/', views.candidate_list, name='candidate_list'),
     path('candidates/<int:candidate_id>/schedule/', views.interview_schedule, name='interview_schedule'),
+    path('service/', views.gerer_service, name='gerer_services'),
+    path('service/insert/', views.insert_service, name='insert_service'),
+    path('service/edit/<int:service_id>/', views.modifie_service, name='edit_service'),
+    path('service/delete/<int:service_id>/', views.supprime_service, name='delete_service'),
+    path('service/consult/<int:service_id>/', views.consult_service, name='consult_service'),
+    
 
 ]

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Modifier l'Employé: {{ employe.nom }} {{ employe.prenom }}</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enregistrer les Modifications</button>
+</form>
+
+<a href="{% url 'rechercher_employe' %}">Retour à la liste des employés</a>
+{% endblock %}

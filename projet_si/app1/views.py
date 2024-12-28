@@ -1,11 +1,91 @@
 from pyexpat.errors import messages
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import AbsenceForm, CongeForm, ContratForm, InterviewForm, JobOfferForm, PrimeForm, SalaireForm
-from .models import Absence, Candidate, Contrat, Employe, Conge, OffreEmploi, Prime
+from .forms import AbsenceForm, CongeForm, ContratForm, EmployeForm, InterviewForm, JobOfferForm, PrimeForm, SalaireForm, ServiceForm
+from .models import Absence, Candidate, Contrat, Employe, Conge, OffreEmploi, Prime, Salaire, Service
 
 from django.http import JsonResponse
 from django.db.models import Sum
+def rechercher_employe(request):
+    query = request.GET.get('q', '')
+    if query:
+        employees = Employe.objects.filter(nom__icontains=query)  # Filtrer par nom
+    else:
+        employees = Employe.objects.all()  # Récupérer tous les employés
 
+    if request.method == 'POST':
+        form = EmployeForm(request.POST)
+        if form.is_valid():
+            form.save()  # Enregistrer un nouvel employé
+            return redirect('rechercher_employe')  # Rediriger vers la même page
+    else:
+        form = EmployeForm()
+
+    context = {
+        'employees': employees,
+        'form': form,
+        'query': query,
+    }
+    return render(request, 'rechercher_employe.html', context)
+
+
+def insert_employe(request):
+    if request.method == 'POST':
+        form = EmployeForm(request.POST) 
+        if form.is_valid():
+            form.save()  # Enregistrer le nouvel employé
+            return redirect('rechercher_employe')  # Rediriger vers la liste des employés
+    else:
+        form = EmployeForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'insert_employe.html', context)
+
+
+
+
+
+def modifier_employe(request, employe_id):
+    employe = get_object_or_404(Employe, id=employe_id)
+
+    if request.method == 'POST':
+        form = EmployeForm(request.POST, instance=employe)
+        if form.is_valid():
+            form.save()  # Enregistrer les modifications
+            return redirect('rechercher_employe')  
+    else:
+        form = EmployeForm(instance=employe)
+
+    context = {
+        'form': form,
+        'employe': employe,
+    }
+    return render(request, 'modifie_employe.html', context)
+
+
+
+def supprimer_employe(request, employe_id):
+    employe = get_object_or_404(Employe, id=employe_id)
+
+    if request.method == 'POST':
+        employe.delete()  
+        return redirect('rechercher_employe')  # Rediriger vers la liste des employés
+
+    context = {
+        'employe': employe,
+    }
+    return render(request, 'supprime_employe.html', context)
+
+
+
+def consult_employe(request, employe_id):
+    employe = get_object_or_404(Employe, id=employe_id)  
+
+    context = {
+        'employe': employe,
+    }
+    return render(request, 'consult_employe.html', context)
 def afficher_employes(request):
    employes = Employe.objects.all()
    return render(request, "list_employes.html", {"employes": employes})  # Remplacé 'Employes' par 'employes'
@@ -40,6 +120,53 @@ def ajouter_conge(request):
         form = CongeForm()
     return render(request, 'ajouter_conge.html', {'form': form})
 
+def modifie_conge(request, conge_id):
+    conge = get_object_or_404(Conge, id=conge_id)
+
+    if request.method == 'POST':
+        form = CongeForm(request.POST, instance=conge)
+        if form.is_valid():
+            form.save()  # Enregistrer les modifications
+            return redirect('recherche_conge')  # Rediriger vers la liste des congés
+    else:
+        form = CongeForm(instance=conge)
+
+    context = {
+        'form': form,
+        'conge': conge,
+    }
+    return render(request, 'modifie_conge.html', context)
+def supprime_conge(request, conge_id):
+    conge = get_object_or_404(Conge, id=conge_id)
+
+    if request.method == 'POST':
+        conge.delete()  # Supprimer le congé
+        return redirect('recherche_conge')  # Rediriger vers la liste des congés
+
+    context = {
+        'conge': conge,
+    }
+    return render(request, 'supprime_conge.html', context)
+def consult_conge(request, conge_id):
+    conge = get_object_or_404(Conge, id=conge_id)
+
+    context = {
+        'conge': conge,
+    }
+    return render(request, 'consult_conge.html', context)
+def recherche_conge(request):
+    query = request.GET.get('q', '')
+    
+    if query:
+        conges = Conge.objects.filter(employe__nom__icontains=query)  # Filtrer par nom de l'employé
+    else:
+        conges = Conge.objects.all()  # Récupérer tous les congés
+
+    context = {
+        'conges': conges,
+        'query': query,
+    }
+    return render(request, 'recherche_conge.html', context)
 
 def details_conge(request):
     """
@@ -95,7 +222,62 @@ def afficher_salaire(request, employe_id, annee, mois):
     absences = Absence.objects.filter(employe=employe, date_absence__year=annee, date_absence__month=mois)
     
     return render(request, 'afficher_salaire.html', {'employe': employe, 'salaire_net': salaire_net, 'annee': annee, 'mois': mois, 'primes': primes, 'absences': absences})
+def modifie_salaire(request, salaire_id):
+    salaire = get_object_or_404(Salaire, id=salaire_id)
 
+    if request.method == 'POST':
+        form = SalaireForm(request.POST, instance=salaire)
+        if form.is_valid():
+            form.save()  # Enregistrer les modifications
+            return redirect('recherche_salarie')  # Rediriger vers la liste des salaires
+    else:
+        form = SalaireForm(instance=salaire)
+
+    context = {
+        'form': form,
+        'salaire': salaire,
+    }
+    return render(request, 'modifie_salaire.html', context)
+
+
+
+
+
+def supprime_salaire(request, salaire_id):
+    salaire = get_object_or_404(Salaire, id=salaire_id)
+
+    if request.method == 'POST':
+        salaire.delete()  # Supprimer le salaire
+        return redirect('rcherche_salarie')  # Rediriger vers la liste des salaires
+
+    context = {
+        'salaire': salaire,
+    }
+    return render(request, 'supprime_salaire.html', context)
+
+
+def consult_salaire(request, salaire_id):
+    salaire = get_object_or_404(Salaire, id=salaire_id)
+
+    context = {
+        'salaire': salaire,
+    }
+    return render(request, 'consult_salaire.html', context)
+
+
+def recherche_salarie(request):
+    query = request.GET.get('q', '')
+    
+    if query:
+        salaries = Salaire.objects.filter(employe__nom__icontains=query)  # Filtrer par nom de l'employé
+    else:
+        salaries = Salaire.objects.all()  # Récupérer tous les salaires
+
+    context = {
+        'salaries': salaries,
+        'query': query,
+    }
+    return render(request, 'recherche_salarie.html', context)
 
 def ajouter_absence(request):
     if request.method == 'POST':
@@ -229,6 +411,114 @@ def supprimer_contrat(request, contrat_id):
     contrat.archived = True
     contrat.save()
     return redirect('liste_contrats')
+def consult_contrat(request, contrat_id):
+    contrat = get_object_or_404(Contrat, id=contrat_id)
+
+    context = {
+        'contrat': contrat,
+    }
+    return render(request, 'consult_contrat.html', context)
+
+def gerer_contrats(request):
+    
+    query = request.GET.get('q', '')
+    
+   
+    if query:
+        contrats = Contrat.objects.filter(employe__nom__icontains=query)  # Filtrer par nom de l'employé
+    else:
+        contrats = Contrat.objects.all()  # Récupérer tous les contrats
+
+    # Gérer l'ajout d'un nouveau contrat
+    if request.method == 'POST':
+        form = ContratForm(request.POST)
+        if form.is_valid():
+            form.save()  # Enregistrer le nouveau contrat
+            return redirect('recherche_contrat')  # Rediriger vers la même page
+    else:
+        form = ContratForm()
+
+    context = {
+        'contrats': contrats,
+        'form': form,
+        'query': query,
+    }
+    return render(request, 'gerer_contrat.html', context)
+
+
+def insert_service(request):
+    if request.method == 'POST':
+        form = ServiceForm(request.POST)
+        if form.is_valid():
+            form.save()  # Enregistrer le nouveau service
+            return redirect('recherche_service')  # Rediriger vers la liste des services
+    else:
+        form = ServiceForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'insert_service.html', context)
+
+
+
+
+
+def modifie_service(request, service_id):
+    service = get_object_or_404(Service, id=service_id)
+
+    if request.method == 'POST':
+        form = ServiceForm(request.POST, instance=service)
+        if form.is_valid():
+            form.save()  # Enregistrer les modifications
+            return redirect('recherche_service.html')  # Rediriger vers la liste des services
+    else:
+        form = ServiceForm(instance=service)
+
+    context = {
+        'form': form,
+        'service': service,
+    }
+    return render(request, 'modifie_service.html', context)
+
+
+
+def supprime_service(request, service_id):
+    service = get_object_or_404(Service, id=service_id)
+
+    if request.method == 'POST':
+        service.delete()  # Supprimer le service
+        return redirect('recherche_service.html')  # Rediriger vers la liste des services
+
+    context = {
+        'service': service,
+    }
+    return render(request, 'supprime_service.html', context)
+
+
+def rechercher_service(request):
+    query = request.GET.get('q', '')
+    
+    if query:
+        services = Service.objects.filter(nom_service__icontains=query)  # Filtrer par nom de service
+    else:
+        services = Service.objects.all()  # Récupérer tous les services
+
+    context = {
+        'services': services,
+        'query': query,
+    }
+    return render(request, 'recherche_service.html', context)
+
+
+
+def consult_service(request, service_id):
+    service = get_object_or_404(Service, id=service_id)
+
+    context = {
+        'service': service,
+    }
+    return render(request, 'consult_service.html', context)
 
 
 def job_offer_list(request):

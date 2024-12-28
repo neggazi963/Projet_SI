@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Gestion des Congés</h2>
+
+<!-- Formulaire de recherche -->
+<form method="GET">
+    <input type="text" name="q" placeholder="Rechercher un congé par employé" value="{{ query }}">
+    <button type="submit">Rechercher</button>
+</form>
+
+<h3>Ajouter un Nouveau Congé</h3>
+<a href="{% url 'insert_conge' %}">Ajouter un Congé</a>
+
+<h3>Liste des Congés</h3>
+<ul>
+    {% for conge in conges %}
+        <li>
+            {{ conge.employe.nom }} - {{ conge.type_conge }} 
+            <a href="{% url 'consult_conge' conge.id %}">Consulter</a>
+            <a href="{% url 'edit_conge' conge.id %}">Modifier</a>
+            <a href="{% url 'delete_conge' conge.id %}">Supprimer</a>
+        </li>
+    {% empty %}
+        <li>Aucun congé trouvé.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

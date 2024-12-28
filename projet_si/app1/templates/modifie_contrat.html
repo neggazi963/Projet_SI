@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Modifier le Contrat de {{ contrat.employe.nom }}</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enregistrer les Modifications</button>
+</form>
+
+<a href="{% url 'manage_contrats' %}">Retour à la liste des contrats</a>
+{% endblock %}
