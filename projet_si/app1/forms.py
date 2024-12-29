@@ -1,5 +1,5 @@
 from django import forms
-from .models import Absence, Candidate, Conge, Contrat, Employe, Interview, OffreEmploi, Prime, Salaire, Service
+from .models import Absence, Candidate, Conge, Contrat, Employe, Evaluation, Interview, OffreEmploi, Prime, Salaire, Service
 
 
 class EmployeForm(forms.ModelForm):
@@ -71,3 +71,12 @@ class InterviewForm(forms.ModelForm):
     class Meta:
         model = Interview
         fields = "__all__"
+
+
+class EvaluationForm(forms.ModelForm):
+    class Meta:
+        model = Evaluation
+        fields = "__all__"
+        widgets = {
+            'date_evaluation': forms.DateInput(attrs={'type': 'date'}),
+        }      

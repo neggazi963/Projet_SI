@@ -1,0 +1,30 @@
+<h2>Liste de toutes les évaluations</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Nom de l'employé</th>
+      <th>Date de l'évaluation</th>
+      <th>Score</th>
+      <th>Commentaires</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for evaluation in evaluations %}
+    <tr>
+      <td>{{ evaluation.employe.nom }} {{ evaluation.employe.prenom }}</td>
+      <td>{{ evaluation.date_evaluation }}</td>
+      <td>{{ evaluation.score }}</td>
+      <td>{{ evaluation.commentaires }}</td>
+      <td>
+        <a href="{% url 'edit_evaluation' evaluation.id %}">Modifier</a> |
+        <a href="{% url 'delete_evaluation' evaluation.id %}">Supprimer</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="5">Aucune évaluation disponible.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

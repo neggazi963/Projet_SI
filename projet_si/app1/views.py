@@ -1,7 +1,7 @@
 from pyexpat.errors import messages
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import AbsenceForm, CongeForm, ContratForm, EmployeForm, InterviewForm, JobOfferForm, PrimeForm, SalaireForm, ServiceForm
-from .models import Absence, Candidate, Contrat, Employe, Conge, OffreEmploi, Prime, Salaire, Service
+from .forms import AbsenceForm, CongeForm, ContratForm, EmployeForm, EvaluationForm,  InterviewForm, JobOfferForm, PrimeForm, SalaireForm, ServiceForm
+from .models import Absence, Candidate, Contrat, Employe, Conge, Evaluation,  OffreEmploi, Prime, Salaire, Service
 
 from django.http import JsonResponse
 from django.db.models import Sum
@@ -551,3 +551,43 @@ def interview_schedule(request, candidate_id):
     else:
         form = InterviewForm()
     return render(request, 'recruitment/interview_schedule.html', {'form': form, 'candidate': candidate})
+
+
+# Ajouter une évaluation
+def add_evaluation(request):
+    if request.method == "POST":
+        form = EvaluationForm(request.POST)
+        if form.is_valid():
+            form.save()  # Sauvegarde l'évaluation
+            return redirect('evaluation_list')  # Redirection vers la liste des évaluations
+    else:
+        form = EvaluationForm()
+    employes = Employe.objects.all()  # Récupère tous les employés
+    return render(request, 'add_evaluation.html', {'form': form, 'employes': employes})
+
+
+# Lister toutes les évaluations
+def evaluation_list(request):
+    evaluations = Evaluation.objects.all()  # Récupère toutes les évaluations
+    return render(request, 'evaluation_list.html', {'evaluations': evaluations})
+
+
+def edit_evaluation(request, evaluation_id):
+    evaluation = get_object_or_404(Evaluation, id=evaluation_id)  # Récupère l'évaluation par son ID
+    if request.method == "POST":
+        form = EvaluationForm(request.POST, instance=evaluation)
+        if form.is_valid():
+            form.save()  # Sauvegarde les modifications
+            return redirect('evaluation_list')  # Redirection vers la liste des évaluations
+    else:
+        form = EvaluationForm(instance=evaluation)  # Remplir le formulaire avec les données existantes
+    return render(request, 'edit_evaluation.html', {'form': form, 'evaluation': evaluation})
+
+
+# Supprimer une évaluation
+def delete_evaluation(request, evaluation_id):
+    evaluation = get_object_or_404(Evaluation, id=evaluation_id)  # Récupère l'évaluation
+    if request.method == "POST":
+        evaluation.delete()  # Supprime l'évaluation
+        return redirect('evaluation_list')  # Redirection vers la liste des évaluations
+    return render(request, 'confirm_delete.html', {'evaluation': evaluation})    

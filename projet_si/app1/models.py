@@ -146,6 +146,9 @@ class Evaluation(models.Model):
     score = models.IntegerField()
     commentaires = models.TextField()
 
+    class Meta:
+        ordering = ['-date_evaluation']  # Tri des évaluations par date décroissante
+
     def __str__(self):
         return f"Évaluation de {self.employe.nom}"
 
