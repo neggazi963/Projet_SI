@@ -554,40 +554,40 @@ def interview_schedule(request, candidate_id):
 
 
 # Ajouter une évaluation
-def add_evaluation(request):
+def ajouter_evaluation(request):
     if request.method == "POST":
         form = EvaluationForm(request.POST)
         if form.is_valid():
             form.save()  # Sauvegarde l'évaluation
-            return redirect('evaluation_list')  # Redirection vers la liste des évaluations
+            return redirect('liste_evaluations')  # Redirection vers la liste des évaluations
     else:
         form = EvaluationForm()
     employes = Employe.objects.all()  # Récupère tous les employés
-    return render(request, 'add_evaluation.html', {'form': form, 'employes': employes})
+    return render(request, 'ajouter_evaluation.html', {'form': form, 'employes': employes})
 
 
 # Lister toutes les évaluations
-def evaluation_list(request):
+def liste_evaluations(request):
     evaluations = Evaluation.objects.all()  # Récupère toutes les évaluations
-    return render(request, 'evaluation_list.html', {'evaluations': evaluations})
+    return render(request, 'liste_evaluations.html', {'evaluations': evaluations})
 
 
-def edit_evaluation(request, evaluation_id):
+def modifier_evaluation(request, evaluation_id):
     evaluation = get_object_or_404(Evaluation, id=evaluation_id)  # Récupère l'évaluation par son ID
     if request.method == "POST":
         form = EvaluationForm(request.POST, instance=evaluation)
         if form.is_valid():
             form.save()  # Sauvegarde les modifications
-            return redirect('evaluation_list')  # Redirection vers la liste des évaluations
+            return redirect('liste_evaluations')  # Redirection vers la liste des évaluations
     else:
         form = EvaluationForm(instance=evaluation)  # Remplir le formulaire avec les données existantes
-    return render(request, 'edit_evaluation.html', {'form': form, 'evaluation': evaluation})
+    return render(request, 'modifier_evaluation.html', {'form': form, 'evaluation': evaluation})
 
 
 # Supprimer une évaluation
-def delete_evaluation(request, evaluation_id):
+def supprimer_evaluation(request, evaluation_id):
     evaluation = get_object_or_404(Evaluation, id=evaluation_id)  # Récupère l'évaluation
     if request.method == "POST":
         evaluation.delete()  # Supprime l'évaluation
-        return redirect('evaluation_list')  # Redirection vers la liste des évaluations
-    return render(request, 'confirm_delete.html', {'evaluation': evaluation})    
+        return redirect('liste_evaluations')  # Redirection vers la liste des évaluations
+    return render(request, 'supprimer_evaluation.html', {'evaluation': evaluation})    

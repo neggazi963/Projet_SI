@@ -17,8 +17,8 @@
       <td>{{ evaluation.score }}</td>
       <td>{{ evaluation.commentaires }}</td>
       <td>
-        <a href="{% url 'edit_evaluation' evaluation.id %}">Modifier</a> |
-        <a href="{% url 'delete_evaluation' evaluation.id %}">Supprimer</a>
+        <a href="{% url 'modifier_evaluation' evaluation.id %}">Modifier</a> |
+        <a href="{% url 'supprimer_evaluation' evaluation.id %}">Supprimer</a>
       </td>
     </tr>
     {% empty %}

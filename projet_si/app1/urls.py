@@ -51,10 +51,10 @@ urlpatterns = [
     path('service/consult/<int:service_id>/', views.consult_service, name='consult_service'),
 
 
-    path('evaluation/add/', views.add_evaluation, name='add_evaluation'),  # Ajouter une évaluation
-    path('evaluations/', views.evaluation_list, name='evaluation_list'),  # Liste des évaluations
-    path('evaluation/edit/<int:evaluation_id>/', views.edit_evaluation, name='edit_evaluation'),  # Modifier une évaluation
-    path('evaluation/delete/<int:evaluation_id>/', views.delete_evaluation, name='delete_evaluation'),  # Supprimer une évaluation
+    path('evaluation/ajouter/', views.ajouter_evaluation, name='ajouter_evaluation'),  # Ajouter une évaluation
+    path('evaluations/', views.liste_evaluations, name='liste_evaluations'),  # Liste des évaluations
+    path('evaluation/modifier/<int:evaluation_id>/', views.modifier_evaluation, name='modifier_evaluation'),  # Modifier une évaluation
+    path('evaluation/supprimer/<int:evaluation_id>/', views.supprimer_evaluation, name='supprimer_evaluation'),  # Supprimer une évaluation
     
 
 ]
