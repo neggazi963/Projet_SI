@@ -1,0 +1,13 @@
+<h2>Ajouter une évaluation</h2>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <label for="employe">Sélectionner un employé :</label>
+  <select name="employe" required>
+    {% for employe in employes %}
+    <option value="{{ employe.id }}">
+      {{ employe.nom }} {{ employe.prenom }}
+    </option>
+    {% endfor %}
+  </select>
+  <button type="submit">Ajouter l'évaluation</button>
+</form>

@@ -16,7 +16,7 @@ urlpatterns = [
     
     path('conges/ajouter/', views.ajouter_conge, name='ajouter_conge'),  # Ajouter un congé
     path('conges/', views.recherche_conge, name='recherche_conge'),
-    path('conges/details', views.details_conge, name='details_conge'),  # Détails d'un congé
+    path('conges/details/<int:conge_id>/', views.details_conge, name='details_conge'),  # Détails d'un congé
     path('conges/edit/<int:conge_id>/', views.modifie_conge, name='edit_conge'),
     path('conges/delete/<int:conge_id>/', views.supprime_conge, name='delete_conge'),
     
@@ -29,9 +29,8 @@ urlpatterns = [
     path('fiche_de_paie/<int:employe_id>/<int:annee>/<int:mois>/', views.generer_fiche_de_paie, name='generer_fiche_de_paie'),
     path('afficher_salaire_tous_employes/tous/', views.afficher_salaire_tous_employes, name='afficher_salaire_tous_employes'),
     path('ajouter_salaire/', views.ajouter_salaire, name='ajouter_salaire'),
-
-    path('prime/ajouter/', views.ajouter_prime, name='ajouter_prime'),
-    path('absence/ajouter/', views.ajouter_absence, name='ajouter_absence'),
+    path('ajouter_prime/', views.ajouter_prime, name='ajouter_prime'),
+    path('ajouter_absence/', views.ajouter_absence, name='ajouter_absence'),
     path('afficher_primes/', views.afficher_primes, name='afficher_primes'),
     path('afficher_absences/', views.afficher_absences, name='afficher_absences'),
     path('contrats/', views.liste_contrats, name='liste_contrats'),
@@ -45,10 +44,17 @@ urlpatterns = [
     path('jobs/new/', views.job_offer_create, name='job_offer_create'),
     path('candidates/', views.candidate_list, name='candidate_list'),
     path('candidates/<int:candidate_id>/schedule/', views.interview_schedule, name='interview_schedule'),
+
     path('service/insert/', views.insert_service, name='insert_service'),
     path('service/edit/<int:service_id>/', views.modifie_service, name='edit_service'),
     path('service/delete/<int:service_id>/', views.supprime_service, name='delete_service'),
     path('service/consult/<int:service_id>/', views.consult_service, name='consult_service'),
+
+
+    path('evaluation/ajouter/', views.ajouter_evaluation, name='ajouter_evaluation'),  # Ajouter une évaluation
+    path('evaluations/', views.liste_evaluations, name='liste_evaluations'),  # Liste des évaluations
+    path('evaluation/modifier/<int:evaluation_id>/', views.modifier_evaluation, name='modifier_evaluation'),  # Modifier une évaluation
+    path('evaluation/supprimer/<int:evaluation_id>/', views.supprimer_evaluation, name='supprimer_evaluation'),  # Supprimer une évaluation
     
 
 ]

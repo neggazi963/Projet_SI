@@ -1,7 +1,7 @@
 from pyexpat.errors import messages
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import AbsenceForm, CongeForm, ContratForm, EmployeForm, InterviewForm, JobOfferForm, PrimeForm, SalaireForm, ServiceForm
-from .models import Absence, Candidate, Contrat, Employe, Conge, OffreEmploi, Prime, Salaire, Service
+from .forms import AbsenceForm, CongeForm, ContratForm, EmployeForm, EvaluationForm, InterviewForm, JobOfferForm, PrimeForm, SalaireForm, ServiceForm
+from .models import Absence, Candidate, Contrat, Employe, Conge, Evaluation, OffreEmploi, Prime, Salaire, Service
 
 from django.http import JsonResponse
 from django.db.models import Sum
@@ -91,13 +91,7 @@ def afficher_employes(request):
    return render(request, "list_employes.html", {"employes": employes})  # Remplacé 'Employes' par 'employes'
 
 
-def liste_conges(request):
-    """
-    Affiche la liste de tous les congés.
-    Seuls les utilisateurs connectés peuvent accéder à cette vue.
-    """
-    conges = Conge.objects.all().select_related('employe', 'employe__service')
-    return render(request, 'liste_conges.html', {'conges': conges})
+
 
 
 def ajouter_conge(request):
@@ -115,7 +109,7 @@ def ajouter_conge(request):
             else:
                 conge.save()
                 
-                return redirect('liste_conges')
+                return redirect('recherche_conge')
     else:
         form = CongeForm()
     return render(request, 'ajouter_conge.html', {'form': form})
@@ -163,11 +157,11 @@ def recherche_conge(request):
     }
     return render(request, 'recherche_conge.html', context)
 
-def details_conge(request):
+def details_conge(request,conge_id):
     """
     Affiche les détails d'un congé spécifique.
     """
-    conge = get_object_or_404(Conge)
+    conge = get_object_or_404(Conge,id=conge_id)
     return render(request, 'details_conge.html', {'conge': conge})
 
 
@@ -546,3 +540,43 @@ def interview_schedule(request, candidate_id):
     else:
         form = InterviewForm()
     return render(request, 'recruitment/interview_schedule.html', {'form': form, 'candidate': candidate})
+
+
+# Ajouter une évaluation
+def ajouter_evaluation(request):
+    if request.method == "POST":
+        form = EvaluationForm(request.POST)
+        if form.is_valid():
+            form.save()  # Sauvegarde l'évaluation
+            return redirect('liste_evaluations')  # Redirection vers la liste des évaluations
+    else:
+        form = EvaluationForm()
+    employes = Employe.objects.all()  # Récupère tous les employés
+    return render(request, 'ajouter_evaluation.html', {'form': form, 'employes': employes})
+
+
+# Lister toutes les évaluations
+def liste_evaluations(request):
+    evaluations = Evaluation.objects.all()  # Récupère toutes les évaluations
+    return render(request, 'liste_evaluations.html', {'evaluations': evaluations})
+
+
+def modifier_evaluation(request, evaluation_id):
+    evaluation = get_object_or_404(Evaluation, id=evaluation_id)  # Récupère l'évaluation par son ID
+    if request.method == "POST":
+        form = EvaluationForm(request.POST, instance=evaluation)
+        if form.is_valid():
+            form.save()  # Sauvegarde les modifications
+            return redirect('liste_evaluations')  # Redirection vers la liste des évaluations
+    else:
+        form = EvaluationForm(instance=evaluation)  # Remplir le formulaire avec les données existantes
+    return render(request, 'modifier_evaluation.html', {'form': form, 'evaluation': evaluation})
+
+
+# Supprimer une évaluation
+def supprimer_evaluation(request, evaluation_id):
+    evaluation = get_object_or_404(Evaluation, id=evaluation_id)  # Récupère l'évaluation
+    if request.method == "POST":
+        evaluation.delete()  # Supprime l'évaluation
+        return redirect('liste_evaluations')  # Redirection vers la liste des évaluations
+    return render(request, 'supprimer_evaluation.html', {'evaluation': evaluation})    
