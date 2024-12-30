@@ -1,7 +1,7 @@
 from pyexpat.errors import messages
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import AbsenceForm, CongeForm, ContratForm, InterviewForm, JobOfferForm, PrimeForm, SalaireForm
-from .models import Absence, Candidate, Contrat, Employe, Conge, OffreEmploi, Prime
+from .forms import AbsenceForm, CongeForm, ContratForm, EmployeForm, InterviewForm, JobOfferForm, PrimeForm, SalaireForm, ServiceForm
+from .models import Absence, Candidate, Contrat, Employe, Conge, OffreEmploi, Prime, Salaire, Service
 
 from django.http import JsonResponse
 from django.db.models import Sum
@@ -147,13 +147,8 @@ def supprime_conge(request, conge_id):
         'conge': conge,
     }
     return render(request, 'supprime_conge.html', context)
-def consult_conge(request, conge_id):
-    conge = get_object_or_404(Conge, id=conge_id)
 
-    context = {
-        'conge': conge,
-    }
-    return render(request, 'consult_conge.html', context)
+    
 def recherche_conge(request):
     query = request.GET.get('q', '')
     
