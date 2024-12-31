@@ -244,10 +244,11 @@ class Masrouf(models.Model):
     def clean(self):
         from .forms import MasroufForm
         from django.core.exceptions import ValidationError
-        demandes_annee = MasroufForm.objects.filter(
+        demandes_annee = Masrouf.objects.filter(
             employe=self.employe,
             date_demande__year=self.date_demande.year
         ).count()
+        
 
         if demandes_annee >= 3:
             raise ValidationError("L'employé ne peut pas demander Masrouf plus de 3 fois par an.")
