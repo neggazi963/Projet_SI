@@ -33,13 +33,15 @@ urlpatterns = [
     path('ajouter_absence/', views.ajouter_absence, name='ajouter_absence'),
     path('afficher_primes/', views.afficher_primes, name='afficher_primes'),
     path('afficher_absences/', views.afficher_absences, name='afficher_absences'),
-    path('contrats/', views.liste_contrats, name='liste_contrats'),
+
+    path('contrats/', views.recherche_contrats, name='recherche_contrats'),
     path('contrats/ajouter/', views.ajouter_contrat, name='ajouter_contrat'),
     path('contrats/<int:contrat_id>/', views.details_contrat, name='details_contrat'),
-    path('contrat/edit/<int:contrat_id>/', views.modifier_contrat, name='edit_contrat'),
-    path('contrat/delete/<int:contrat_id>/', views.supprimer_contrat, name='delete_contrat'),
-    path('contrats/<int:contrat_id>/modifier/', views.modifier_contrat, name='modifier_contrat'),
-    path('contrats/<int:contrat_id>/supprimer/', views.supprimer_contrat, name='supprimer_contrat'),
+    path('contrat/edit/<int:contrat_id>/', views.modifier_contrat, name='modifier_contrat'),
+    path('contrat/delete/<int:contrat_id>/', views.supprimer_contrat, name='supprimer_contrat'),
+    
+    
+
     path('jobs/', views.job_offer_list, name='job_offer_list'),
     path('jobs/new/', views.job_offer_create, name='job_offer_create'),
     path('candidates/', views.candidate_list, name='candidate_list'),

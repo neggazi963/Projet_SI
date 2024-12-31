@@ -362,9 +362,7 @@ def afficher_salaire_tous_employes(request):
     return render(request, 'afficher_salaire_tous_employes.html', {'salaires': salaires})
 
 
-def liste_contrats(request):
-    contrats = Contrat.objects.filter(archived=False)
-    return render(request, 'contrats/liste_contrats.html', {'contrats': contrats})
+
 
 
 def ajouter_contrat(request):
@@ -372,15 +370,15 @@ def ajouter_contrat(request):
         form = ContratForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('liste_contrats')
+            return redirect('recherche_contrats')
     else:
         form = ContratForm()
-    return render(request, 'contrats/ajouter_contrat.html', {'form': form})
+    return render(request, 'ajouter_contrat.html', {'form': form})
 
 
 def details_contrat(request, contrat_id):
     contrat = get_object_or_404(Contrat, id=contrat_id)
-    return render(request, 'contrats/details_contrat.html', {'contrat': contrat})
+    return render(request, 'details_contrat.html', {'contrat': contrat})
 
 
 def modifier_contrat(request, contrat_id):
@@ -389,26 +387,27 @@ def modifier_contrat(request, contrat_id):
         form = ContratForm(request.POST, instance=contrat)
         if form.is_valid():
             form.save()
-            return redirect('liste_contrats')
+            return redirect('recherche_contrats')
     else:
         form = ContratForm(instance=contrat)
-    return render(request, 'contrats/modifier_contrat.html', {'form': form})
+    return render(request, 'modifier_contrat.html', {'form': form})
 
+
+
+  
 
 def supprimer_contrat(request, contrat_id):
     contrat = get_object_or_404(Contrat, id=contrat_id)
-    contrat.archived = True
-    contrat.save()
-    return redirect('liste_contrats')
-def consult_contrat(request, contrat_id):
-    contrat = get_object_or_404(Contrat, id=contrat_id)
-
+    if request.method == 'POST':
+        contrat.delete()  # Supprimer le congé
+        return redirect('recherche_contrats')  # Rediriger vers la liste des congés
     context = {
         'contrat': contrat,
     }
-    return render(request, 'consult_contrat.html', context)
+    return render(request, 'supprimer_contrat.html', context)
 
-def gerer_contrats(request):
+
+def recherche_contrats(request):
     
     query = request.GET.get('q', '')
     
@@ -432,7 +431,7 @@ def gerer_contrats(request):
         'form': form,
         'query': query,
     }
-    return render(request, 'gerer_contrat.html', context)
+    return render(request, 'recherche_contrats.html', context)
 
 
 def insert_service(request):
