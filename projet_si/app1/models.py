@@ -110,12 +110,43 @@ class Contrat(models.Model):
     def get_absolute_url(self):
         return reverse('details_contrat', args=[self.id])  # URL dynamique pour accéder aux détails d'un contrat.
 class Salaire(models.Model):
-    employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
-    montant = models.DecimalField(max_digits=10, decimal_places=2)
-    date_paiement = models.DateField()
+    employe = models.ForeignKey(Employe, on_delete=models.CASCADE, verbose_name="Employé")
+    montant = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Montant", editable=False)
+    date_paiement = models.DateField(verbose_name="Date de paiement")
+
+    class Meta:
+        verbose_name = "Salaire"
+        verbose_name_plural = "Salaires"
+        ordering = ['-date_paiement']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['employe', 'date_paiement'],
+                name='unique_salaire_par_mois'
+            )
+        ]
 
     def __str__(self):
-        return f"Salaire de {self.montant} pour {self.employe.nom}"
+        return f"Salaire de {self.montant} pour {self.employe.nom} le {self.date_paiement}"
+
+    def calculer_salaire(self):
+        salaire_base = 30000
+        total_primes = self.employe.prime_set.filter(date_prime__year=self.date_paiement.year).aggregate(
+            total=models.Sum('montant')
+        )['total'] or 0
+        total_absences = self.employe.absence_set.filter(date_absence__year=self.date_paiement.year).aggregate(
+            total=models.Sum('impact_salaire')
+        )['total'] or 0
+        total_masrouf = self.employe.masrouf_set.filter(date_demande__year=self.date_paiement.year).aggregate(
+            total=models.Sum('montant')
+        )['total'] or 0
+
+        return salaire_base + total_primes - total_absences + total_masrouf
+
+    def save(self, *args, **kwargs):
+        self.montant = self.calculer_salaire()
+        super().save(*args, **kwargs)
+
+
 
 class OffreEmploi(models.Model):
     titre_offre = models.CharField(max_length=100)
@@ -209,3 +240,32 @@ class Interview(models.Model):
 
     def __str__(self):
         return f"Interview avec {self.candidate.name} le {self.date}"
+    
+
+class Masrouf(models.Model):
+    employe = models.ForeignKey(Employe, on_delete=models.CASCADE, verbose_name="Employé")
+    montant = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Montant")
+    date_demande = models.DateField(verbose_name="Date de demande")
+
+    class Meta:
+        verbose_name = "Masrouf"
+        verbose_name_plural = "Masroufs"
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(montant__lte=30000),
+                name="masrouf_montant_max"
+            ),
+        ]
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        demandes_annee = Masrouf.objects.filter(
+            employe=self.employe,
+            date_demande__year=self.date_demande.year
+        ).count()
+
+        if demandes_annee >= 3:
+            raise ValidationError("L'employé ne peut pas demander Masrouf plus de 3 fois par an.")
+
+    def __str__(self):
+        return f"Masrouf de {self.montant} demandé par {self.employe.nom}"

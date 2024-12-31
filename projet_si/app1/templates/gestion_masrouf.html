@@ -1,0 +1,26 @@
+{% block content %}
+<h2>Gestion des masroufs</h2>
+<a href="{% url 'ajouter_masrouf' %}">Ajouter un masrouf</a>
+
+<form method="GET">
+  <input
+    type="text"
+    name="search"
+    placeholder="Rechercher un employé"
+    value="{{ request.GET.search }}"
+  />
+  <button type="submit">Rechercher</button>
+</form>
+
+<ul>
+  {% for masrouf in masroufs %}
+  <li>
+    {{ masrouf.employe.nom }} : {{ masrouf.montant }} DZ
+    <a href="{% url 'modifier_masrouf' masrouf.pk %}">Modifier</a> |
+    <a href="{% url 'supprimer_masrouf' masrouf.pk %}">Supprimer</a>
+  </li>
+  {% empty %}
+  <li>Aucun masrouf trouvé.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base.html' %} {% block content %}
+<h2>Supprimer la prime</h2>
+<p>Êtes-vous sûr de vouloir supprimer la prime de {{ prime.employe.nom }}?</p>
+<form method="POST">
+  {% csrf_token %}
+  <button type="submit">Supprimer</button>
+</form>
+<a href="{% url 'gestion_prime' %}">Retour à la gestion des primes</a>
+{% endblock %}

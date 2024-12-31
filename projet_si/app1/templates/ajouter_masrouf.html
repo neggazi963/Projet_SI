@@ -1,8 +1,8 @@
 {% block content %}
-<h2>Ajouter une prime</h2>
+<h2>Ajouter un masrouf</h2>
 <form method="POST">
   {% csrf_token %} {{ form.as_p }}
   <button type="submit">Ajouter</button>
 </form>
-<a href="{% url 'gestion_prime' %}">Retour à la gestion des primes</a>
+<a href="{% url 'gestion_masrouf' %}">Retour à la gestion des masroufs</a>
 {% endblock %}

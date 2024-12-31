@@ -1,4 +1,15 @@
-<h1>Liste des évaluations</h1>
+<h1>Gestion des évaluations</h1>
+
+<form method="get">
+  <input
+    type="text"
+    name="search"
+    placeholder="Rechercher par employé..."
+    value="{{ request.GET.search }}"
+  />
+  <button type="submit">Rechercher</button>
+</form>
+
 <ul>
   {% for evaluation in evaluations %}
   <li>

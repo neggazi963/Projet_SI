@@ -1,8 +1,8 @@
-{% block content %}
-<h2>Ajouter une prime</h2>
+{% extends 'base.html' %} {% block content %}
+<h2>Modifier la prime</h2>
 <form method="POST">
   {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Ajouter</button>
+  <button type="submit">Enregistrer</button>
 </form>
 <a href="{% url 'gestion_prime' %}">Retour à la gestion des primes</a>
 {% endblock %}

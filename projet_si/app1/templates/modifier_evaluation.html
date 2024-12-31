@@ -1,8 +1,5 @@
-<h2>
-  Modifier l'évaluation de {{ evaluation.employe.nom }}
-  {{evaluation.employe.prenom }}
-</h2>
+<h1>Modifier l'évaluation</h1>
 <form method="post">
   {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Enregistrer les modifications</button>
+  <button type="submit">Modifier</button>
 </form>
