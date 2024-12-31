@@ -1,10 +1,6 @@
-<h2>Confirmer la suppression de l'évaluation</h2>
-<p>
-  Êtes-vous sûr de vouloir supprimer l'évaluation de {{ evaluation.employe.nom}}
-  {{ evaluation.employe.prenom }} ?
-</p>
+<h1>Supprimer l'évaluation</h1>
+<p>Êtes-vous sûr de vouloir supprimer cette évaluation ?</p>
 <form method="post">
   {% csrf_token %}
-  <button type="submit">Oui, supprimer</button>
-  <a href="{% url 'liste_evaluations' %}">Non, annuler</a>
+  <button type="submit">Supprimer</button>
 </form>

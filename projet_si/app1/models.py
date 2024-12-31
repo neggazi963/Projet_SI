@@ -2,6 +2,8 @@ from datetime import datetime, timedelta
 from django.db import models
 from django.urls import reverse
 
+
+
 class Service(models.Model):
     nom_service = models.CharField(max_length=50)
     description = models.TextField()
@@ -111,12 +113,43 @@ class Contrat(models.Model):
     def get_absolute_url(self):
         return reverse('details_contrat', args=[self.id])  # URL dynamique pour accéder aux détails d'un contrat.
 class Salaire(models.Model):
-    employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
-    montant = models.DecimalField(max_digits=10, decimal_places=2)
-    date_paiement = models.DateField()
+    employe = models.ForeignKey(Employe, on_delete=models.CASCADE, verbose_name="Employé")
+    montant = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Montant", editable=False)
+    date_paiement = models.DateField(verbose_name="Date de paiement")
+
+    class Meta:
+        verbose_name = "Salaire"
+        verbose_name_plural = "Salaires"
+        ordering = ['-date_paiement']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['employe', 'date_paiement'],
+                name='unique_salaire_par_mois'
+            )
+        ]
 
     def __str__(self):
-        return f"Salaire de {self.montant} pour {self.employe.nom}"
+        return f"Salaire de {self.montant} pour {self.employe.nom} le {self.date_paiement}"
+
+    def calculer_salaire(self):
+        salaire_base = 30000
+        total_primes = self.employe.prime_set.filter(date_prime__year=self.date_paiement.year).aggregate(
+            total=models.Sum('montant')
+        )['total'] or 0
+        total_absences = self.employe.absence_set.filter(date_absence__year=self.date_paiement.year).aggregate(
+            total=models.Sum('impact_salaire')
+        )['total'] or 0
+        total_masrouf = self.employe.masrouf_set.filter(date_demande__year=self.date_paiement.year).aggregate(
+            total=models.Sum('montant')
+        )['total'] or 0
+
+        return salaire_base + total_primes - total_absences + total_masrouf
+
+    def save(self, *args, **kwargs):
+        self.montant = self.calculer_salaire()
+        super().save(*args, **kwargs)
+
+
 
 class Evaluation(models.Model):
     employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
@@ -161,8 +194,7 @@ class OffreEmploi(models.Model):
     description = models.TextField()
     date_publication = models.DateTimeField(auto_now_add=True)
     lieu = models.CharField(max_length=255,default="Non précisé")
-    date_limite = models.DateTimeField(default=datetime.now() +timedelta(days=30))  # Default to 30 days from now
-
+    
     def __str__(self):
         return self.titre
 
@@ -179,6 +211,7 @@ class Candidat(models.Model):
         ('acceptee', 'Acceptée')
     ]
     statut_candidature = models.CharField(max_length=10, choices=statut_candidature_choices, default='reçue')
+    offre_emploi = models.ForeignKey(OffreEmploi, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"{self.nom} - {self.statut_candidature}"
@@ -191,4 +224,33 @@ class Entretien(models.Model):
     notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"Entretien de {self.candidat.nom} pour {self.offre_emploi.titre}"
+        return f"Entretien avec {self.candidat.nom} le {self.date_entretien}"
+    
+class Masrouf(models.Model):
+    employe = models.ForeignKey(Employe, on_delete=models.CASCADE, verbose_name="Employé")
+    montant = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Montant")
+    date_demande = models.DateField(verbose_name="Date de demande")
+
+    class Meta:
+        verbose_name = "Masrouf"
+        verbose_name_plural = "Masroufs"
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(montant__lte=30000),
+                name="masrouf_montant_max"
+            ),
+        ]
+
+    def clean(self):
+        from .forms import MasroufForm
+        from django.core.exceptions import ValidationError
+        demandes_annee = MasroufForm.objects.filter(
+            employe=self.employe,
+            date_demande__year=self.date_demande.year
+        ).count()
+
+        if demandes_annee >= 3:
+            raise ValidationError("L'employé ne peut pas demander Masrouf plus de 3 fois par an.")
+
+    def __str__(self):
+        return f"Masrouf de {self.montant} demandé par {self.employe.nom}"
