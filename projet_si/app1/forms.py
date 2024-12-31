@@ -1,5 +1,5 @@
 from django import forms
-from .models import Absence, Candidate, Conge, Contrat, Employe, Evaluation, Interview, OffreEmploi, Prime, Salaire, Service
+from .models import Absence, Candidat, Conge, Contrat, Employe, Evaluation, OffreEmploi, Prime, Salaire, Service
 
 
 class EmployeForm(forms.ModelForm):
@@ -57,19 +57,14 @@ class ContratForm(forms.ModelForm):
 
 
 
-class JobOfferForm(forms.ModelForm):
+class CandidatureForm(forms.ModelForm):
+    class Meta:
+        model = Candidat
+        fields = "__all__"
+
+class OffreEmploiForm(forms.ModelForm):
     class Meta:
         model = OffreEmploi
-        fields = "__all__"
-
-class CandidateForm(forms.ModelForm):
-    class Meta:
-        model = Candidate
-        fields = "__all__"
-
-class InterviewForm(forms.ModelForm):
-    class Meta:
-        model = Interview
         fields = "__all__"
 
 

@@ -41,11 +41,12 @@ urlpatterns = [
     path('contrat/delete/<int:contrat_id>/', views.supprimer_contrat, name='supprimer_contrat'),
     
     
-
-    path('jobs/', views.job_offer_list, name='job_offer_list'),
-    path('jobs/new/', views.job_offer_create, name='job_offer_create'),
-    path('candidates/', views.candidate_list, name='candidate_list'),
-    path('candidates/<int:candidate_id>/schedule/', views.interview_schedule, name='interview_schedule'),
+    path('publier-offre/', views.publier_offre, name='publier_offre'),
+    path('offres-emploi/', views.liste_offres, name='offres_emploi'),
+    path('postuler/<int:offre_id>/', views.postuler, name='postuler'),
+    path('suivi-candidature/<int:candidature_id>/', views.suivi_candidature, name='suivi_candidature'),
+    path('planifier-entretien/<int:candidature_id>/', views.planifier_entretien, name='planifier_entretien'),
+    
 
     path('service/insert/', views.insert_service, name='insert_service'),
     path('service/edit/<int:service_id>/', views.modifie_service, name='edit_service'),

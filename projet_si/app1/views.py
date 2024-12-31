@@ -1,7 +1,7 @@
 from pyexpat.errors import messages
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import AbsenceForm, CongeForm, ContratForm, EmployeForm, EvaluationForm, InterviewForm, JobOfferForm, PrimeForm, SalaireForm, ServiceForm
-from .models import Absence, Candidate, Contrat, Employe, Conge, Evaluation, OffreEmploi, Prime, Salaire, Service
+from .forms import AbsenceForm, CandidatureForm, CongeForm, ContratForm, EmployeForm, EvaluationForm, OffreEmploiForm, PrimeForm, SalaireForm, ServiceForm
+from .models import Absence, Candidat, Contrat, Employe, Conge, Entretien, Evaluation, OffreEmploi, Prime, Salaire, Service
 
 from django.http import JsonResponse
 from django.db.models import Sum
@@ -509,36 +509,46 @@ def consult_service(request, service_id):
     return render(request, 'consult_service.html', context)
 
 
-def job_offer_list(request):
-    offers = OffreEmploi.objects.all()
-    return render(request, 'recruitment/job_offer_list.html', {'offers': offers})
 
-def job_offer_create(request):
+
+def publier_offre(request):
     if request.method == 'POST':
-        form = OffreEmploi(request.POST)
+        form = OffreEmploiForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('job_offer_list')
+            return redirect('offres_emploi')
     else:
-        form = JobOfferForm()
-    return render(request, 'recruitment/job_offer_create.html', {'form': form})
+        form = OffreEmploiForm()
+    return render(request, 'publier_offre.html', {'form': form})
 
-def candidate_list(request):
-    candidates = Candidate.objects.all()
-    return render(request, 'recruitment/candidate_list.html', {'candidates': candidates})
+def liste_offres(request):
+    offres = OffreEmploi.objects.all()
+    return render(request, 'liste_offres.html', {'offres': offres})
 
-def interview_schedule(request, candidate_id):
-    candidate = get_object_or_404(Candidate, pk=candidate_id)
+def postuler(request, offre_id):
+    offre = OffreEmploi.objects.get(id=offre_id)
     if request.method == 'POST':
-        form = InterviewForm(request.POST)
+        form = CandidatureForm(request.POST, request.FILES)
         if form.is_valid():
-            interview = form.save(commit=False)
-            interview.candidate = candidate
-            interview.save()
-            return redirect('candidate_list')
+            candidature = form.save()
+            return redirect('suivi_candidature', candidature_id=candidature.id)
     else:
-        form = InterviewForm()
-    return render(request, 'recruitment/interview_schedule.html', {'form': form, 'candidate': candidate})
+        form = CandidatureForm()
+    return render(request, 'postuler.html', {'form': form, 'offre': offre})
+
+def suivi_candidature(request, candidature_id):
+    candidature = Candidat.objects.get(id=candidature_id)
+    return render(request, 'suivi_candidature.html', {'candidature': candidature})
+
+def planifier_entretien(request, candidature_id):
+    candidature = Candidat.objects.get(id=candidature_id)
+    if request.method == 'POST':
+        date_entretien = request.POST['date_entretien']
+        lieu = request.POST['lieu']
+        Entretien.objects.create(candidat=candidature, offre_emploi=candidature.offre_emploi,
+                                 date_entretien=date_entretien, lieu=lieu)
+        return redirect('suivi_candidature', candidature_id=candidature.id)
+    return render(request, 'planifier_entretien.html', {'candidature': candidature})
 
 
 # Ajouter une évaluation

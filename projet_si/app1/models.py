@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.db import models
 from django.urls import reverse
 
@@ -117,29 +118,6 @@ class Salaire(models.Model):
     def __str__(self):
         return f"Salaire de {self.montant} pour {self.employe.nom}"
 
-class OffreEmploi(models.Model):
-    titre_offre = models.CharField(max_length=100)
-    description = models.TextField()
-    date_publication = models.DateField()
-    statut = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.titre_offre
-
-class Recrutement(models.Model):
-    offre = models.ForeignKey(OffreEmploi, on_delete=models.CASCADE)
-    employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
-    date_recrutement = models.DateField()
-    statut = models.CharField(max_length=50)
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['offre', 'employe'], name='unique_recrutement')
-        ]
-
-    def __str__(self):
-        return f"Recrutement pour {self.offre.titre_offre} et {self.employe.nom}"
-
 class Evaluation(models.Model):
     employe = models.ForeignKey(Employe, on_delete=models.CASCADE)
     date_evaluation = models.DateField()
@@ -152,13 +130,6 @@ class Evaluation(models.Model):
     def __str__(self):
         return f"Évaluation de {self.employe.nom}"
 
-class Candidature(models.Model):
-    offre = models.ForeignKey(OffreEmploi, on_delete=models.CASCADE)
-    candidat = models.ForeignKey(Employe, on_delete=models.CASCADE)  
-
-    def __str__(self):
-        return f"Candidature {self.id} ({self.statut_candidature})"
-    
 
 
 class Absence(models.Model):
@@ -185,27 +156,39 @@ class Prime(models.Model):
         return f"Prime de {self.montant} pour {self.employe.nom}"   
          
 
-class Candidate(models.Model):
-    STATUS_CHOICES = [
-        ('received', 'Reçue'),
-        ('processing', 'En cours de traitement'),
-        ('rejected', 'Rejetée'),
-        ('accepted', 'Acceptée'),
-    ]
+class OffreEmploi(models.Model):
+    titre = models.CharField(max_length=255,default="Titre non spécifié")
+    description = models.TextField()
+    date_publication = models.DateTimeField(auto_now_add=True)
+    lieu = models.CharField(max_length=255,default="Non précisé")
+    date_limite = models.DateTimeField(default=datetime.now() +timedelta(days=30))  # Default to 30 days from now
 
-    name = models.CharField(max_length=255)
+    def __str__(self):
+        return self.titre
+
+
+class Candidat(models.Model):
+    nom = models.CharField(max_length=255)
     email = models.EmailField()
-    offre  = models.ForeignKey(OffreEmploi, on_delete=models.CASCADE)
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='received')
-    resume = models.FileField(upload_to='resumes/', null=True, blank=True)
+    cv = models.FileField(upload_to='cv/')
+    lettre_motivation = models.FileField(upload_to='lettres/')
+    statut_candidature_choices = [
+        ('reçue', 'Reçue'),
+        ('en_cours', 'En cours de traitement'),
+        ('rejete', 'Rejetée'),
+        ('acceptee', 'Acceptée')
+    ]
+    statut_candidature = models.CharField(max_length=10, choices=statut_candidature_choices, default='reçue')
 
     def __str__(self):
-        return self.name
+        return f"{self.nom} - {self.statut_candidature}"
 
-class Interview(models.Model):
-    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
-    date = models.DateTimeField()
-    notes = models.TextField(null=True, blank=True)
+class Entretien(models.Model):
+    candidat = models.ForeignKey(Candidat, on_delete=models.CASCADE)
+    offre_emploi = models.ForeignKey(OffreEmploi, on_delete=models.CASCADE)
+    date_entretien = models.DateTimeField()
+    lieu = models.CharField(max_length=255)
+    notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"Interview avec {self.candidate.name} le {self.date}"
+        return f"Entretien de {self.candidat.nom} pour {self.offre_emploi.titre}"

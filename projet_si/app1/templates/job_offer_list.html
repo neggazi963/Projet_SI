@@ -1,7 +1,0 @@
-<h1>Offres d'emploi</h1>
-<a href="{% url 'job_offer_create' %}">Créer une nouvelle offre</a>
-<ul>
-    {% for offer in offers %}
-        <li>{{ offer.title }} - {{ offer.description }}</li>
-    {% endfor %}
-</ul>
