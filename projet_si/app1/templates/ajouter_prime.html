@@ -1,19 +1,8 @@
-<!-- templates/ajouter_prime.html -->
-<!DOCTYPE html>
-<html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Ajouter une Prime</title>
-  </head>
-  <body>
-    <h1>Ajouter une Prime</h1>
-
-    <form method="POST">
-      {% csrf_token %} {{ form.as_p }}
-      <!-- Affiche le formulaire avec chaque champ en paragraphe -->
-      <button type="submit">Ajouter la Prime</button>
-    </form>
-
-    <a href="{% url 'afficher_primes' %}">Retourner à la liste des primes</a>
-  </body>
-</html>
+{% block content %}
+<h2>Ajouter une prime</h2>
+<form method="POST">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">Ajouter</button>
+</form>
+<a href="{% url 'gestion_prime' %}">Retour à la gestion des primes</a>
+{% endblock %}

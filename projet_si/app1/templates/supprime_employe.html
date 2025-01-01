@@ -1,12 +1,13 @@
-{% extends 'base.html' %}
-
 {% block content %}
 <h2>Confirmer la Suppression de l'Employé</h2>
-<p>Êtes-vous sûr de vouloir supprimer l'employé : {{ employe.nom }} {{ employe.prenom }} ?</p>
+<p>
+  Êtes-vous sûr de vouloir supprimer l'employé : {{ employe.nom }} {{
+  employe.prenom }} ?
+</p>
 
 <form method="POST">
-    {% csrf_token %}
-    <button type="submit">Confirmer la Suppression</button>
+  {% csrf_token %}
+  <button type="submit">Confirmer la Suppression</button>
 </form>
 
 <a href="{% url 'rechercher_employe' %}">Annuler</a>

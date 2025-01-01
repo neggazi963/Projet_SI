@@ -1,7 +1,87 @@
-<h1>Détails du Contrat</h1>
-<p>Employé : {{ contrat.employe.nom }}</p>
-<p>Type de contrat : {{ contrat.type_contrat }}</p>
-<p>Date début : {{ contrat.date_debut }}</p>
-<p>Date fin : {{ contrat.date_fin }}</p>
-<p>Période d'essai : {{ contrat.periode_essai }}</p>
-<p>Renouvellement : {{ contrat.renouvellement }}</p>
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails du Contrat</title>
+    <!-- Import Bootstrap CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f4f8;
+            font-family: 'Roboto', sans-serif;
+        }
+        .container {
+            margin-top: 60px;
+            max-width: 750px;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        .card {
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #4a4e69;
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .card-body {
+            padding: 20px;
+            font-size: 18px;
+            color: #4a4e69;
+        }
+        .card-body p {
+            margin-bottom: 15px;
+        }
+        .btn-back {
+            margin-top: 30px;
+            background-color: #6c757d;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+        .btn-back:hover {
+            background-color: #5a636a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="text-center mb-4">Détails du Contrat</h1>
+
+    <!-- Card to display contract details -->
+    <div class="card">
+        <div class="card-header">
+            Informations sur le Contrat
+        </div>
+        <div class="card-body">
+            <p><strong>Employé : </strong>{{ contrat.employe.nom }}</p>
+            <p><strong>Type de contrat : </strong>{{ contrat.type_contrat }}</p>
+            <p><strong>Date début : </strong>{{ contrat.date_debut }}</p>
+            <p><strong>Date fin : </strong>{{ contrat.date_fin }}</p>
+            <p><strong>Période d'essai : </strong>{{ contrat.periode_essai }}</p>
+            <p><strong>Renouvellement : </strong>{{ contrat.renouvellement }}</p>
+        </div>
+    </div>
+
+    <!-- Button to go back to contract list -->
+    <div class="text-center mt-4">
+        <a href="{% url 'recherche_contrats' %}" class="btn-back">Retour à la liste des contrats</a>
+    </div>
+</div>
+
+<!-- Import Bootstrap JS -->
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+</html>

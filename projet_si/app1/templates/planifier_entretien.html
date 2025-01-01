@@ -1,0 +1,98 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planifier l'entretien</title>
+    <!-- Lien vers le fichier CSS de Bootstrap -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f4f9;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 750px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            font-size: 32px;
+            color: #4a4e69;
+            margin-bottom: 30px;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #4a4e69;
+        }
+        .form-control {
+            border-radius: 10px;
+            padding: 10px 15px;
+            border: 1px solid #ced4da;
+            font-size: 16px;
+        }
+        .form-control:focus {
+            border-color: #5c7cfa;
+            box-shadow: 0 0 8px rgba(92, 124, 250, 0.5);
+        }
+        button[type="submit"] {
+            background: linear-gradient(90deg, #5c7cfa, #4a4e69);
+            border: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            border-radius: 10px;
+            color: #ffffff;
+            width: 100%;
+            transition: background 0.3s, transform 0.2s;
+        }
+        button[type="submit"]:hover {
+            background: linear-gradient(90deg, #4a4e69, #5c7cfa);
+            transform: translateY(-2px);
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Planifier l'entretien pour <strong>{{ candidat.nom }}</strong></h2>
+
+        <!-- Formulaire de planification -->
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="mb-4">
+                <label for="date_entretien" class="form-label">Date de l'entretien :</label>
+                <input type="datetime-local" name="date_entretien" class="form-control" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="lieu" class="form-label">Lieu de l'entretien :</label>
+                <input type="text" name="lieu" class="form-control" required>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Planifier</button>
+            </div>
+        </form>
+    </div>
+
+    <footer>
+        © {{ year|default:"2024" }} Votre Application - Tous droits réservés.
+    </footer>
+
+    <!-- Lien vers les fichiers JS de Bootstrap -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
