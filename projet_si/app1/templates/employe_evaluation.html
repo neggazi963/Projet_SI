@@ -1,0 +1,15 @@
+<h1>Évaluations pour {{ employee.first_name }} {{ employee.last_name }}</h1>
+<a href="{% url 'evaluation_create' employee.id %}">Ajouter une nouvelle évaluation</a>
+<ul>
+    {% for evaluation in evaluations %}
+    <li>
+        <strong>Date :</strong> {{ evaluation.date }} <br>
+        <strong>Score :</strong> {{ evaluation.performance_score }} étoile{{ evaluation.performance_score|pluralize:"s" }} <br>
+        <strong>Objectifs atteints :</strong> {{ evaluation.objectives_achieved }} <br>
+        <strong>Compétences développées :</strong> {{ evaluation.skills_developed }} <br>
+        <strong>Commentaires :</strong> {{ evaluation.manager_comments }}
+    </li>
+    {% empty %}
+    <p>Aucune évaluation disponible.</p>
+    {% endfor %}
+</ul>

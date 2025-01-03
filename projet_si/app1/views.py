@@ -701,3 +701,25 @@ def consulter_masroufs(request):
         'query': query
     }
     return render(request, 'consult_masroufs.html', context)
+
+
+from .models import Employe, Evaluation
+from .forms import EvaluationForm
+
+def employe_evaluation(request, employee_id):
+    employee = get_object_or_404(Employe, id=employee_id)
+    evaluations = employee.evaluations.all()
+    return render(request, 'employe_evaluation.html', {'employee': employee, 'evaluations': evaluations})
+
+def evaluation_create(request, employee_id):
+    employee = get_object_or_404(Employe, id=employee_id)
+    if request.method == 'POST':
+        form = EvaluationForm(request.POST)
+        if form.is_valid():
+            evaluation = form.save(commit=False)
+            evaluation.employe = employee
+            evaluation.save()
+            return redirect('employe_evaluation', employee_id=employee.id)
+    else:
+        form = EvaluationForm()
+    return render(request, 'evaluation_form.html', {'form': form, 'employe': employee})

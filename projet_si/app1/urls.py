@@ -71,4 +71,7 @@ urlpatterns = [
     path('evaluations/supprimer/<int:pk>/', views.supprimer_evaluation, name='supprimer_evaluation'),
     path('evaluations/consulter/<int:pk>/', views.consulter_evaluation, name='consulter_evaluation'),
 
+
+    path('employe/<int:employe_id>/evaluation/', views.employe_evaluation, name='employee_evaluations'),
+    path('employe/<int:employe_id>/evaluation/new/', views.evaluation_create, name='evaluation_create'),
 ]
