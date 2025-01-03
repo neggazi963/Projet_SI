@@ -2,7 +2,7 @@ from django import forms
 
 
 
-from .models import Absence, Candidat, Conge, Contrat, Employe, Evaluation, Masrouf, OffreEmploi, Prime, Salaire, Service
+from .models import Absence, Application, Conge, Contrat, Employe, Evaluation, JobOffer, Masrouf, Prime, Salaire, Service
 
 
 
@@ -61,15 +61,15 @@ class ContratForm(forms.ModelForm):
 
 
 
-class CandidatureForm(forms.ModelForm):
+class JobOfferForm(forms.ModelForm):
     class Meta:
-        model = Candidat
-        fields = ['nom', 'email', 'cv', 'lettre_motivation', 'statut_candidature']
+        model = JobOffer
+        fields = ['title', 'description', 'location', 'application_deadline']
 
-class OffreEmploiForm(forms.ModelForm):
+class ApplicationForm(forms.ModelForm):
     class Meta:
-        model = OffreEmploi
-        fields = "__all__"
+        model = Application
+        fields = ['candidate_name', 'email', 'resume']
 
 
 class EvaluationForm(forms.ModelForm):
@@ -79,6 +79,8 @@ class EvaluationForm(forms.ModelForm):
         widgets = {
             'date_evaluation': forms.DateInput(attrs={'type': 'date'}),
         }      
+
+
 
 
 

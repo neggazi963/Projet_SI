@@ -1,8 +1,8 @@
 from pyexpat.errors import messages
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import AbsenceForm, CandidatureForm, CongeForm, ContratForm, EmployeForm, EvaluationForm, MasroufForm, OffreEmploiForm, PrimeForm, SalaireForm, ServiceForm
-from .models import Absence, Candidat, Contrat, Employe, Conge, Entretien, Evaluation, Masrouf, OffreEmploi, Prime, Salaire, Service
+from .forms import AbsenceForm, ApplicationForm, CongeForm, ContratForm, EmployeForm, EvaluationForm, JobOfferForm, MasroufForm, PrimeForm, SalaireForm, ServiceForm
+from .models import Absence, Application, Contrat, Employe, Conge, Evaluation, Interview, JobOffer, Masrouf, Prime, Salaire, Service
 
 
 from django.http import JsonResponse
@@ -533,59 +533,66 @@ def consult_service(request, service_id):
     return render(request, 'consult_service.html', context)
 
 
-
-
-
-def publier_offre(request):
+def create_job_offer(request):
     if request.method == 'POST':
-        form = OffreEmploiForm(request.POST)
+        form = JobOfferForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('offres_emploi')
+            return redirect('job_offers_list')
     else:
+        form = JobOfferForm()
+    return render(request, 'create_job_offer.html', {'form': form})
 
-        form = OffreEmploiForm()
-    return render(request, 'publier_offre.html', {'form': form})
+def job_offers_list(request):
+    job_offers = JobOffer.objects.all()
+    return render(request, 'job_offers_list.html', {'job_offers': job_offers})
 
-def liste_offres(request):
-    offres = OffreEmploi.objects.all()
-    return render(request, 'liste_offres.html', {'offres': offres})
-
-    
-    
-
-def postuler(request, offre_id):
-    offre = OffreEmploi.objects.get(id=offre_id)
+def apply_for_job(request, job_offer_id):
+    job_offer = JobOffer.objects.get(id=job_offer_id)
     if request.method == 'POST':
-        form = CandidatureForm(request.POST, request.FILES)
+        form = ApplicationForm(request.POST, request.FILES)
         if form.is_valid():
-            candidature = form.save()
-            return redirect('suivi_candidature', candidature_id=candidature.id)
+            application = form.save(commit=False)
+            application.job_offer = job_offer
+            application.save()
+            return redirect('application_status', application_id=application.id)
     else:
+        form = ApplicationForm()
+    return render(request, 'apply_for_job.html', {'form': form, 'job_offer': job_offer})
 
-        form = CandidatureForm()
-    return render(request, 'postuler.html', {'form': form, 'offre': offre})
+def application_status(request, application_id):
+    application = Application.objects.get(id=application_id)
+    return render(request, 'application_status.html', {'application': application})
 
-def suivi_candidature(request, candidature_id):
-    candidature = Candidat.objects.get(id=candidature_id)
-    return render(request, 'suivi_candidature.html', {'candidature': candidature})
-
-def planifier_entretien(request, candidature_id):
-    candidature = Candidat.objects.get(id=candidature_id)  # Récupère le candidat par son ID
-    if request.method == 'POST':  # Si la requête est de type POST
-        date_entretien = request.POST['date_entretien']  # Récupère la date de l'entretien
-        lieu = request.POST['lieu']  # Récupère le lieu de l'entretien
-        # Crée un nouvel entretien lié au candidat et à l'offre d'emploi correspondante
-        Entretien.objects.create(
-            candidat=candidature,
-            offre_emploi=candidature.offre_emploi,
-            date_entretien=date_entretien,
-            lieu=lieu
+def schedule_interview(request, application_id):
+    application = Application.objects.get(id=application_id)
+    if request.method == 'POST':
+        interview_date = request.POST['interview_date']
+        location = request.POST['location']
+        interviewer = request.POST['interviewer']
+        interview = Interview.objects.create(
+            application=application, 
+            interview_date=interview_date, 
+            location=location, 
+            interviewer=interviewer
         )
-        # Redirige vers la page de suivi de la candidature
-        return redirect('suivi_candidature', candidature_id=candidature.id)
-    return render(request, 'planifier_entretien.html', {'candidature': candidature})  # Affiche le formulaire
+        return redirect('interview_details', interview_id=interview.id)
+    return render(request, 'schedule_interview.html', {'application': application})
 
+def interview_details(request, interview_id):
+    interview = Interview.objects.get(id=interview_id)
+
+    if request.method == 'POST':
+        status = request.POST.get('status')
+        if status == 'Accepted':
+            interview.application.status = 'accepted'  # Modifier le statut de l'application
+        elif status == 'Rejected':
+            interview.application.status = 'rejected'  # Modifier le statut de l'application
+        interview.application.save()  # Sauvegarder les modifications du statut de l'application
+
+        return redirect('interview_details', interview_id=interview.id)  # Rediriger pour rafraîchir la page
+
+    return render(request, 'interview_details.html', {'interview': interview})
 
 # Vue pour gérer les évaluations
 def gestion_evaluations(request):

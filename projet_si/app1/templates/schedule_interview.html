@@ -1,0 +1,11 @@
+<h2>Planifier un entretien</h2>
+<form method="post">
+  {% csrf_token %}
+  <label for="interview_date">Date de l'entretien:</label>
+  <input type="datetime-local" name="interview_date" required><br>
+  <label for="location">Lieu:</label>
+  <input type="text" name="location" required><br>
+  <label for="interviewer">Nom de l'intervieweur:</label>
+  <input type="text" name="interviewer" required><br>
+  <button type="submit">Planifier</button>
+</form>
