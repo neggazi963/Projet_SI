@@ -8,6 +8,7 @@ from .models import Absence, Application, Contrat, Employe, Conge, Evaluation, I
 
 from django.http import JsonResponse
 from django.db.models import Sum
+
 def rechercher_employe(request):
     query = request.GET.get('q', '')
     if query:
