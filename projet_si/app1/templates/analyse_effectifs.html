@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyse des Effectifs</title>
+</head>
+<body>
+    <h1>Analyse des Effectifs</h1>
+
+    <!-- Formulaire de filtre -->
+    <form method="get">
+        <label for="type_contrat">Filtrer par type de contrat :</label>
+        <select name="type_contrat" id="type_contrat">
+            <option value="">Tous</option>
+            {% for value, label in types_contrat %}
+                <option value="{{ value }}" {% if value == contrat_filtre %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Filtrer</button>
+    </form>
+
+    <!-- Affichage du nombre total d'employés -->
+    <h2>Total d'employés : {{ total_employes }}</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nom Employé</th>
+                <th>Type de Contrat</th>
+                <th>Poste</th>
+                <th>Date de Début</th>
+                <th>Date de Fin</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contrat in contrats %}
+                <tr>
+                    <td>{{ contrat.employe.nom }}</td>
+                    <td>{{ contrat.get_type_contrat_display }}</td>
+                    <td>{{ contrat.poste }}</td>
+                    <td>{{ contrat.date_debut }}</td>
+                    <td>{{ contrat.date_fin|default:"N/A" }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

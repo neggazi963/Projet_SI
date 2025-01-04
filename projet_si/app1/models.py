@@ -12,6 +12,13 @@ class Service(models.Model):
         return f"Service {self.id}: {self.nom_service}"
 
 class Employe(models.Model):
+    HOMME = 'H'
+    FEMME = 'F'
+    SEXE_CHOICES = [
+        (HOMME, 'Homme'),
+        (FEMME, 'Femme'),
+    ]
+    
     nom = models.CharField(max_length=100, verbose_name="Nom")
     prenom = models.CharField(max_length=100, verbose_name="Prénom")
     date_naissance = models.DateField(verbose_name="Date de naissance")
@@ -26,6 +33,12 @@ class Employe(models.Model):
     )
     competences = models.TextField(verbose_name="Compétences", blank=True)
     historique_professionnel = models.TextField(verbose_name="Historique professionnel", blank=True)
+    sexe = models.CharField(
+        max_length=1,
+        choices=SEXE_CHOICES,
+        verbose_name="Sexe",
+        default=HOMME,  # Par défaut, l'employé est masculin
+    )
 
     class Meta:
         verbose_name = "Employé"
@@ -175,6 +188,9 @@ class Absence(models.Model):
         salaire_journalier = 30000 / 30  # Salaire journalier par défaut
         self.impact_salaire = salaire_journalier  # Impact calculé automatiquement
         super().save(*args, **kwargs)
+        
+        def __str__(self):
+            return f"Absence de {self.employe.nom}"
 
 
 # Modèle Prime

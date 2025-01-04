@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analyse d'Activité - Absences</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <h1>Analyse de l'Absentéisme par Mois</h1>
+
+    <!-- Formulaire pour choisir le mois -->
+    <form method="get" action="">
+      <label for="mois">Choisir un mois :</label>
+      <input type="month" id="mois" name="mois" value="{{ mois_choisi }}" />
+      <button type="submit">Filtrer</button>
+    </form>
+
+    <!-- Graphique de l'absentéisme par mois -->
+    <h2>Absentéisme par Mois</h2>
+    <canvas id="absenceChart" width="400" height="200"></canvas>
+    <script>
+      var ctx = document.getElementById('absenceChart').getContext('2d');
+      var absenceChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: {{ mois|safe }},
+              datasets: [{
+                  label: 'Nombre d\'absences',
+                  data: {{ nombre_absences|safe }},
+                  backgroundColor: '#ff6384',
+                  borderColor: '#ff6384',
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              responsive: true,
+              scales: {
+                  y: {
+                      beginAtZero: true,
+                      title: {
+                          display: true,
+                          text: 'Nombre d\'absences'
+                      }
+                  },
+                  x: {
+                      title: {
+                          display: true,
+                          text: 'Mois'
+                      }
+                  }
+              },
+              plugins: {
+                  tooltip: {
+                      callbacks: {
+                          label: function(tooltipItem) {
+                              // Affichage du nombre d'absences pour chaque mois
+                              return 'Absences : ' + tooltipItem.raw;
+                          }
+                      }
+                  }
+              }
+          }
+      });
+    </script>
+
+    <!-- Affichage du seuil pour identifier les pics d'absentéisme -->
+    <h3>Seuil de Pics d'Absentéisme</h3>
+    <p>Le seuil est fixé à 75% du nombre maximum d'absences : {{ seuil }}</p>
+
+    <h3>Historique des Absences</h3>
+    <p>
+      Le graphique ci-dessus montre les absences par mois pour le mois de
+      {{mois_choisi }}. Les périodes avec un nombre d'absences supérieur au
+      seuil sont considérées comme des pics d'absentéisme.
+    </p>
+  </body>
+</html>

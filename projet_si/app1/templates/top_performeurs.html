@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Top Performeurs</title>
+  </head>
+  <body>
+    <h1>Top Performeurs</h1>
+
+    <!-- Formulaire de filtrage -->
+    <form method="GET">
+      <label for="start_date">Date de début :</label>
+      <input
+        type="date"
+        name="start_date"
+        id="start_date"
+        value="{{ request.GET.start_date }}"
+      />
+      <label for="end_date">Date de fin :</label>
+      <input
+        type="date"
+        name="end_date"
+        id="end_date"
+        value="{{ request.GET.end_date }}"
+      />
+      <button type="submit">Filtrer</button>
+    </form>
+
+    <h2>Top 10 des Employés</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Date de l'Évaluation</th>
+          <th>Score</th>
+          <th>Commentaire</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for evaluation in top_evaluations %}
+        <tr>
+          <td>{{ evaluation.employe.nom }} {{ evaluation.employe.prenom }}</td>
+          <td>{{ evaluation.date_evaluation }}</td>
+          <td>{{ evaluation.score }}</td>
+          <td>{{ evaluation.commentaires }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4">Aucune évaluation trouvée.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

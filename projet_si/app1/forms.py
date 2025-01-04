@@ -87,4 +87,11 @@ class EvaluationForm(forms.ModelForm):
 class MasroufForm(forms.ModelForm):
     class Meta:
         model = Masrouf
-        fields = "__all__"        
+        fields = "__all__"    
+
+
+
+
+class DateRangeForm(forms.Form):
+    start_date = forms.DateField(widget=forms.TextInput(attrs={'type': 'date'}), required=False)
+    end_date = forms.DateField(widget=forms.TextInput(attrs={'type': 'date'}), required=False)

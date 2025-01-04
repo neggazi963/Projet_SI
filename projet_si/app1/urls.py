@@ -74,4 +74,10 @@ urlpatterns = [
 
     path('employe/<int:employe_id>/evaluation/', views.employe_evaluation, name='employee_evaluations'),
     path('employe/<int:employe_id>/evaluation/new/', views.evaluation_create, name='evaluation_create'),
+
+
+    path('analyse_effectifs/', views.analyse_effectifs, name='analyse_effectifs'),
+    path('repartition_employes/', views.repartition_employes, name='repartition_employes'),
+    path('top-performeurs/', views.top_performeurs, name='top_performeurs'),
+    path('analyse-activite/', views.analyse_activite, name='analyse_activite'),
 ]

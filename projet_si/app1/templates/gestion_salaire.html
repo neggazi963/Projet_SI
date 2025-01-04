@@ -29,6 +29,7 @@
       <td>
         <a href="{% url 'modifier_salaire' salaire.id %}">Modifier</a>
         <a href="{% url 'supprimer_salaire' salaire.id %}">Supprimer</a>
+        <a href="{% url 'consulter_salaire' salaire.pk %}">Consulter</a>
       </td>
     </tr>
     {% endfor %}

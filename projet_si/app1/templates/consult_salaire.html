@@ -1,9 +1,10 @@
-{% extends 'base.html' %}
-
 {% block content %}
 <h2>Détails du Salaire</h2>
 
-<p><strong>Employé :</strong> {{ salaire.employe.nom }} {{ salaire.employe.prenom }}</p>
+<p>
+  <strong>Employé :</strong> {{ salaire.employe.nom }} {{ salaire.employe.prenom
+  }}
+</p>
 <p><strong>Montant :</strong> {{ salaire.montant }}</p>
 <p><strong>Date de Paiement :</strong> {{ salaire.date_paiement }}</p>
 
