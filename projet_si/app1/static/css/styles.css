@@ -1,46 +1,56 @@
+/* styles.css */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
+  background-color: #f8f9fa;
+  color: #212529;
 }
 
-.navbar {
+header {
   background-color: #007bff;
+  color: white;
   padding: 10px 20px;
-}
-
-.navbar a {
-  color: #fff;
-  text-decoration: none;
-  margin-right: 15px;
-}
-
-.container {
-  width: 90%;
-  margin: 0 auto;
-}
-
-.dashboard-cards {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  align-items: center;
 }
 
-.card {
-  background: #fff;
-  border: 1px solid #ddd;
+header .logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+header .nav-list {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+header .nav-list li {
+  margin: 0 10px;
+}
+
+header .nav-list li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+header .nav-list li a:hover {
+  text-decoration: underline;
+}
+
+main .section {
   padding: 20px;
-  width: 30%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #ddd;
+}
+
+footer {
+  background-color: #343a40;
+  color: white;
   text-align: center;
-}
-
-.card h2 {
-  margin: 0 0 10px;
-}
-
-.card p {
-  font-size: 18px;
-  color: #333;
+  padding: 10px 0;
+  margin-top: 20px;
 }

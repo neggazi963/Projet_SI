@@ -1,13 +1,19 @@
 from datetime import date, datetime, timedelta
 from pyexpat.errors import messages
 from django.shortcuts import get_object_or_404, redirect, render
-from django.db.models import Count, F
+from django.db.models import Count
 from .forms import AbsenceForm, ApplicationForm, CongeForm, ContratForm, DateRangeForm, EmployeForm, EvaluationForm, JobOfferForm, MasroufForm, PrimeForm, SalaireForm, ServiceForm
 from .models import Absence, Application, Contrat, Employe, Conge, Evaluation, Interview, JobOffer, Masrouf, Prime, Salaire, Service
 
 
 from django.http import JsonResponse
 from django.db.models import Sum
+from django.http import HttpResponse
+
+def home(request):
+    return HttpResponse("Bienvenue sur la page d'accueil")
+
+
 def rechercher_employe(request):
     query = request.GET.get('q', '')
     if query:
