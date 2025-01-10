@@ -6,11 +6,12 @@ from django.urls import path
 
 from app1 import views
 
+
 from .views import employe_views, absence_views, analyse_views, conge_views, contrat_views, evaluation_views, masrouf_views, prime_views, recrutement_views, salaire_views, service_views
 
 
 urlpatterns = [
-     path('', views.home, name='home'),
+    
     
     # Route pour afficher la liste des employés
     path('employe/recherche/', employe_views.rechercher_employe, name='manage_employe'),
@@ -80,8 +81,8 @@ urlpatterns = [
 
 
 
-    path('employe/<int:employe_id>/evaluation/', views.employe_evaluation, name='employee_evaluations'),
-    path('employe/<int:employe_id>/evaluation/new/', views.evaluation_create, name='evaluation_create'),
+    #path('employe/<int:employe_id>/evaluation/', views.employe_evaluation, name='employee_evaluations'),
+    #path('employe/<int:employe_id>/evaluation/new/', views.evaluation_create, name='evaluation_create'),
     
 
    

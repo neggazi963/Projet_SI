@@ -10,8 +10,7 @@ from django.http import JsonResponse
 from django.db.models import Sum
 from django.http import HttpResponse
 
-def home(request):
-    return HttpResponse("Bienvenue sur la page d'accueil")
+
 
 
 def rechercher_employe(request):
