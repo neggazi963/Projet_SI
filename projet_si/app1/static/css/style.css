@@ -1,0 +1,134 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #212529;
+  }
+  
+  header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  header .logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  header .nav-list {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+  
+  header .nav-list li {
+    margin: 0 10px;
+  }
+  
+  header .nav-list li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  header .nav-list li a:hover {
+    text-decoration: underline;
+  }
+  
+  main .section {
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 20px;
+  }
+  
+  /* Styles généraux */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    line-height: 1.6;
+  }
+  
+  /* Titres */
+  h2 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Liens */
+  a {
+    color: #007BFF;
+    text-decoration: none;
+    margin: 0 5px;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Formulaire */
+  form {
+    margin-bottom: 20px;
+  }
+  
+  form input[type="text"] {
+    padding: 8px;
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  form button {
+    padding: 8px 12px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  form button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Liste */
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  ul li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  ul li:last-child {
+    border-bottom: none;
+  }
+  
+  ul li a {
+    font-size: 14px;
+  }
+  
+  ul li a:hover {
+    color: #FF5733;
+  }
+  
+  /* Message vide */
+  ul li.empty {
+    color: #999;
+    font-style: italic;
+  }

@@ -1,26 +1,49 @@
-{% block content %}
-<h2>Gestion des absences</h2>
-<a href="{% url 'ajouter_absence' %}">Ajouter une absence</a>
+{% block content %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestion des absences</title>
+    <!-- Inclure le fichier CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <h2>Gestion des absences</h2>
+    <a href="{% url 'ajouter_absence' %}" class="btn">Ajouter une absence</a>
 
-<form method="GET">
-  <input
-    type="text"
-    name="search"
-    placeholder="Rechercher un employé"
-    value="{{ request.GET.search }}"
-  />
-  <button type="submit">Rechercher</button>
-</form>
+    <form method="GET">
+      <input
+        type="text"
+        name="search"
+        placeholder="Rechercher un employé"
+        value="{{ request.GET.search }}"
+        class="form-control"
+      />
+      <button type="submit" class="btn">Rechercher</button>
+    </form>
 
-<ul>
-  {% for absence in absences %}
-  <li>
-    {{ absence.employe.nom }} : {{absence.date_debut }} - {{absence.date_fin}}
-    <a href="{% url 'modifier_absence' absence.pk %}">Modifier</a> |
-    <a href="{% url 'supprimer_absence' absence.pk %}">Supprimer</a>
-  </li>
-  {% empty %}
-  <li>Aucune absence trouvée.</li>
-  {% endfor %}
-</ul>
+    <ul>
+      {% for absence in absences %}
+      <li>
+        {{ absence.employe.nom }} : {{absence.date_debut }} -
+        {{absence.date_fin}}
+        <a
+          href="{% url 'modifier_absence' absence.pk %}"
+          class="btn btn-warning"
+          >Modifier</a
+        >
+        |
+        <a
+          href="{% url 'supprimer_absence' absence.pk %}"
+          class="btn btn-danger"
+          >Supprimer</a
+        >
+      </li>
+      {% empty %}
+      <li class="text-muted">Aucune absence trouvée.</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
 {% endblock %}

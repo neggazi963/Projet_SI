@@ -2,6 +2,7 @@
 from django.urls import path
 
 
+from .views import export_pdf
 
 
 from app1 import views
@@ -30,7 +31,7 @@ urlpatterns = [
     
 
     path('salaires/', salaire_views.gestion_salaire, name='gestion_salaire'),
-    path('salaires/<int:employe_id>/consulter/', salaire_views.consulter_salaire, name='consulter_salaire'),
+    path('salaires/<int:salaire_id>/consulter/', salaire_views.consulter_salaire, name='consulter_salaire'),
     path('salaires/ajouter/', salaire_views.ajouter_salaire, name='ajouter_salaire'),
     path('salaires/<int:salaire_id>/modifier/', salaire_views.modifier_salaire, name='modifier_salaire'),
     path('salaires/<int:salaire_id>/supprimer/', salaire_views.supprimer_salaire, name='supprimer_salaire'),
@@ -92,4 +93,8 @@ urlpatterns = [
     path('repartition_employes/', analyse_views.repartition_employes, name='repartition_employes'),
     path('top-performeurs/', analyse_views.top_performeurs, name='top_performeurs'),
     path('analyse-activite/', analyse_views.analyse_activite, name='analyse_activite'),
+
+
+
+    path('salaires/<int:employe_id>/export_pdf/', export_pdf, name='export_pdf'),
 ]

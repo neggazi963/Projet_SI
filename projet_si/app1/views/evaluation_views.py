@@ -4,7 +4,10 @@ from app1.forms import EvaluationForm
 from app1.models import Evaluation
 
 
+
+
 def gestion_evaluations(request):
+
     evaluations = Evaluation.objects.select_related('employe').all()  # Chargement des évaluations avec les employés
 
     if 'search' in request.GET:
@@ -16,8 +19,13 @@ def gestion_evaluations(request):
     }
     return render(request, 'evaluation_templates/gestion_evaluations.html', context)
 
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.decorators import permission_required
+
 # Vue pour ajouter une évaluation
 def ajouter_evaluation(request):
+
+
     if request.method == 'POST':
         form = EvaluationForm(request.POST)
         if form.is_valid():
@@ -29,6 +37,8 @@ def ajouter_evaluation(request):
 
 # Vue pour modifier une évaluation
 def modifier_evaluation(request, pk):
+
+
     evaluation = get_object_or_404(Evaluation, pk=pk)
     if request.method == 'POST':
         form = EvaluationForm(request.POST, instance=evaluation)
@@ -41,6 +51,11 @@ def modifier_evaluation(request, pk):
 
 # Vue pour supprimer une évaluation
 def supprimer_evaluation(request, pk):
+
+
+
+
+
     evaluation = get_object_or_404(Evaluation, pk=pk)
     if request.method == 'POST':
         evaluation.delete()
@@ -49,5 +64,8 @@ def supprimer_evaluation(request, pk):
 
 # Vue pour consulter une évaluation
 def consulter_evaluation(request, pk):
+
+
+
     evaluation = get_object_or_404(Evaluation, pk=pk)
     return render(request, 'evaluation_templates/consulter_evaluation.html', {'evaluation': evaluation})

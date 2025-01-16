@@ -25,4 +25,10 @@
 </table>
 
 <a href="{% url 'gestion_salaire' %}">Retour</a>
+<div class="export-buttons">
+  <a href="{% url 'export_pdf' employe.id %}" class="btn btn-pdf"
+    >Exporter en PDF</a
+  >
+</div>
+
 {% endblock %}

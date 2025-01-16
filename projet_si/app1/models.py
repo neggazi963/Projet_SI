@@ -175,6 +175,11 @@ class Evaluation(models.Model):
 
     def __str__(self):
         return f"Évaluation de {self.employe.nom}"
+    
+    class Meta:
+        permissions = [
+            ("can_add_evaluation", "Can add evaluation"),
+        ]
 
 
 
@@ -273,3 +278,18 @@ class Masrouf(models.Model):
 
     def __str__(self):
         return f"Masrouf de {self.montant} demandé par {self.employe.nom}"
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+

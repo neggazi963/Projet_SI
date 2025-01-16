@@ -63,12 +63,18 @@ def supprimer_salaire(request, salaire_id):
     return render(request, 'salaire_templates/supprimer_salaire.html', {'salaire': salaire})
 
 
+
+from django.shortcuts import get_object_or_404, render
 from django.db.models import Sum
 
-def consulter_salaire(request, employe_id):
-    employe = get_object_or_404(Employe, id=employe_id)
+def consulter_salaire(request, salaire_id):
+    # Récupérer le salaire via salaire_id
+    salaire = get_object_or_404(Salaire, id=salaire_id)
 
-    # Récupérer les objets Salaire associés
+    # Récupérer l'employé associé au salaire
+    employe = salaire.employe
+
+    # Récupérer les autres objets Salaire associés
     salaires = employe.salaire_set.all()
 
     # Calculer le total des primes
@@ -87,8 +93,10 @@ def consulter_salaire(request, employe_id):
         'total_absences': total_absences,
         'total_masrouf': total_masrouf,
         'salaire_base': 30000,  # Salaire de base (exemple)
+        'salaire_consulte': salaire,
     }
     return render(request, 'salaire_templates/consulter_salaire.html', context)
+
 
 
 
@@ -106,3 +114,52 @@ def recherche_salarie(request):
         'query': query,
     }
     return render(request, 'salaire_templates/recherche_salarie.html', context)
+
+
+
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+
+def export_pdf(request, employe_id):
+    employe = get_object_or_404(Employe, id=employe_id)
+    salaires = employe.salaire_set.all()
+
+    # Créer une réponse HTTP avec un contenu PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="salaires_{employe.nom}_{employe.prenom}.pdf"'
+
+    # Générer le contenu PDF
+    p = canvas.Canvas(response, pagesize=letter)
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(100, 750, f"Salaires de {employe.nom} {employe.prenom}")
+
+    # Ajouter les détails des salaires
+    p.setFont("Helvetica", 12)
+    y = 720
+    p.drawString(100, y, f"Salaire de base: 30,000 DA")
+    p.drawString(100, y - 20, f"Total des primes: {employe.prime_set.aggregate(total=Sum('montant'))['total'] or 0} DA")
+    p.drawString(100, y - 40, f"Total des absences: {employe.absence_set.aggregate(total=Sum('impact_salaire'))['total'] or 0} DA")
+    p.drawString(100, y - 60, f"Total Masrouf: {employe.masrouf_set.aggregate(total=Sum('montant'))['total'] or 0} DA")
+
+    y -= 100
+    p.drawString(100, y, "Détails des Salaires:")
+    y -= 20
+
+    if salaires.exists():
+        for salaire in salaires:
+            if y < 50:  # Vérifie si la page a assez d'espace
+                p.showPage()
+                p.setFont("Helvetica", 12)
+                y = 750
+            p.drawString(100, y, f"- Date: {salaire.date_paiement}, Montant: {salaire.montant} DA")
+            y -= 20
+    else:
+        p.drawString(100, y, "Aucun salaire enregistré.")
+
+    # Finaliser le PDF
+    p.showPage()
+    p.save()
+
+    return response

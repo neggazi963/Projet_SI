@@ -19,3 +19,6 @@ admin.site.register(Absence)
 admin.site.register(Prime)
 admin.site.register(Masrouf)
 
+
+
+

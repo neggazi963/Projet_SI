@@ -1,11 +1,23 @@
-{% extends 'base.html' %} {% block content %}
-<h2>Supprimer l'absence</h2>
-<p>
-  Êtes-vous sûr de vouloir supprimer l'absence de {{ absence.employe.nom }}?
-</p>
-<form method="POST">
-  {% csrf_token %}
-  <button type="submit">Supprimer</button>
-</form>
-<a href="{% url 'gestion_absence' %}">Retour à la gestion des absences</a>
-{% endblock %}
+{% block content %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestion des absences</title>
+    <!-- Inclure le fichier CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <h2>Supprimer l'absence</h2>
+    <p>
+      Êtes-vous sûr de vouloir supprimer l'absence de {{ absence.employe.nom }}?
+    </p>
+    <form method="POST">
+      {% csrf_token %}
+      <button type="submit">Supprimer</button>
+    </form>
+    <a href="{% url 'gestion_absence' %}">Retour à la gestion des absences</a>
+    {% endblock %}
+  </body>
+</html>

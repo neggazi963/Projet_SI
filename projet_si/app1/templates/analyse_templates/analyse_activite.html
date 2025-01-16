@@ -5,74 +5,153 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Analyse d'Activité - Absences</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+      }
+      h1,
+      h2,
+      h3 {
+        color: #333;
+      }
+      .form-container {
+        margin-bottom: 20px;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        width: 200px;
+      }
+      button {
+        padding: 10px;
+        margin-top: 10px;
+        cursor: pointer;
+      }
+      .chart-container {
+        margin-top: 30px;
+      }
+      canvas {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+    </style>
   </head>
   <body>
-    <h1>Analyse de l'Absentéisme par Mois</h1>
+    <div class="container">
+      <h1>Analyse de l'Absentéisme par Mois</h1>
 
-    <!-- Formulaire pour choisir le mois -->
-    <form method="get" action="">
-      <label for="mois">Choisir un mois :</label>
-      <input type="month" id="mois" name="mois" value="{{ mois_choisi }}" />
-      <button type="submit">Filtrer</button>
-    </form>
+      <!-- Formulaire pour choisir le mois -->
+      <div class="form-container">
+        <form method="get" action="">
+          <label for="mois">Choisir un mois :</label>
+          <input type="month" id="mois" name="mois" value="{{ mois_choisi }}" />
+          <button type="submit">Filtrer</button>
+        </form>
+      </div>
 
-    <!-- Graphique de l'absentéisme par mois -->
-    <h2>Absentéisme par Mois</h2>
-    <canvas id="absenceChart" width="400" height="200"></canvas>
-    <script>
-      var ctx = document.getElementById('absenceChart').getContext('2d');
-      var absenceChart = new Chart(ctx, {
-          type: 'bar',
+      {% if nombre_absences %}
+      <!-- Graphique de l'absentéisme par mois -->
+      <h2>Absentéisme par Mois</h2>
+      <div class="chart-container">
+        <canvas id="absenceChart" width="800" height="400"></canvas>
+      </div>
+      <script>
+        var ctx = document.getElementById('absenceChart').getContext('2d');
+        var absenceChart = new Chart(ctx, {
+          type: 'line',  // Change to 'line' for a smoother curve
           data: {
-              labels: {{ mois|safe }},
-              datasets: [{
-                  label: 'Nombre d\'absences',
-                  data: {{ nombre_absences|safe }},
-                  backgroundColor: '#ff6384',
-                  borderColor: '#ff6384',
-                  borderWidth: 1
-              }]
+            labels: {{ mois|safe }},
+            datasets: [{
+              label: 'Nombre d\'absences',
+              data: {{ nombre_absences|safe }},
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Soft greenish-blue
+              borderColor: 'rgba(75, 192, 192, 1)',  // Strong greenish-blue
+              borderWidth: 2,
+              pointBackgroundColor: 'rgba(75, 192, 192, 1)',  // Points color
+              pointBorderColor: '#fff',
+              pointRadius: 5,  // Bigger points
+              fill: true,  // Fill area under the curve
+              tension: 0.4  // Smooth curve
+            }]
           },
           options: {
-              responsive: true,
-              scales: {
-                  y: {
-                      beginAtZero: true,
-                      title: {
-                          display: true,
-                          text: 'Nombre d\'absences'
-                      }
-                  },
-                  x: {
-                      title: {
-                          display: true,
-                          text: 'Mois'
-                      }
+            responsive: true,
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function(tooltipItem) {
+                    // Affichage du nombre d'absences pour chaque mois
+                    return 'Absences : ' + tooltipItem.raw;
                   }
+                }
               },
-              plugins: {
-                  tooltip: {
-                      callbacks: {
-                          label: function(tooltipItem) {
-                              // Affichage du nombre d'absences pour chaque mois
-                              return 'Absences : ' + tooltipItem.raw;
-                          }
-                      }
-                  }
+              legend: {
+                position: 'top',  // Legend on top
+                labels: {
+                  boxWidth: 20,
+                  padding: 10
+                }
               }
+            },
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Mois',
+                  color: '#333',
+                  font: {
+                    weight: 'bold'
+                  }
+                },
+                ticks: {
+                  font: {
+                    size: 14
+                  }
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Nombre d\'absences',
+                  color: '#333',
+                  font: {
+                    weight: 'bold'
+                  }
+                },
+                beginAtZero: true,
+                ticks: {
+                  font: {
+                    size: 14
+                  }
+                }
+              }
+            }
           }
-      });
-    </script>
+        });
+      </script>
+      {% else %}
+      <!-- Message si aucune donnée n'est disponible pour le mois -->
+      <p>Aucune absence trouvée pour le mois de {{ mois_choisi }}.</p>
+      {% endif %}
 
-    <!-- Affichage du seuil pour identifier les pics d'absentéisme -->
-    <h3>Seuil de Pics d'Absentéisme</h3>
-    <p>Le seuil est fixé à 75% du nombre maximum d'absences : {{ seuil }}</p>
+      <!-- Affichage du seuil pour identifier les pics d'absentéisme -->
+      {% if seuil %}
+      <h3>Seuil de Pics d'Absentéisme</h3>
+      <p>Le seuil est fixé à 75% du nombre maximum d'absences : {{ seuil }}</p>
+      {% endif %}
 
-    <h3>Historique des Absences</h3>
-    <p>
-      Le graphique ci-dessus montre les absences par mois pour le mois de
-      {{mois_choisi }}. Les périodes avec un nombre d'absences supérieur au
-      seuil sont considérées comme des pics d'absentéisme.
-    </p>
+      <h3>Historique des Absences</h3>
+      <p>
+        Le graphique ci-dessus montre les absences par mois pour le mois de
+        {{mois_choisi }}. Les périodes avec un nombre d'absences supérieur au
+        seuil sont considérées comme des pics d'absentéisme.
+      </p>
+    </div>
   </body>
 </html>
