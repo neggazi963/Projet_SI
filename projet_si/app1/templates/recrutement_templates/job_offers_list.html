@@ -1,6 +1,10 @@
+{% load static %}
+{% block content %}
 <h2>Offres d'emploi</h2>
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 <ul>
   {% for job_offer in job_offers %}
     <li><a href="{% url 'apply_for_job' job_offer.id %}">{{ job_offer.title }}</a></li>
   {% endfor %}
 </ul>
+{% endblock %}

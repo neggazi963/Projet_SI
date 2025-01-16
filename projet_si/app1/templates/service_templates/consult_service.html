@@ -1,10 +1,10 @@
-{% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 <h2>Détails du Service</h2>
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 
 <p><strong>Nom du Service :</strong> {{ service.nom_service }}</p>
 <p><strong>Description :</strong> {{ service.description }}</p>
 
-<a href="{% url 'gerer_service' %}">Retour à la liste des services</a>
+<a href="{% url 'recherche_service' %}">Retour à la liste des services</a>
 {% endblock %}

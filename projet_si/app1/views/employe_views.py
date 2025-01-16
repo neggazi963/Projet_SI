@@ -83,7 +83,8 @@ def consult_employe(request, employe_id):
     context = {
         'employe': employe,
     }
-    return render(request, 'consult_employe.html', context)
+    return render(request, 'employe_templates/consult_employe.html', context)
+
 def afficher_employes(request):
    employes = Employe.objects.all()
    return render(request, "employe_templates/list_employes.html", {"employes": employes})  # Remplacé 'Employes' par 'employes'

@@ -1,6 +1,7 @@
-{% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 <h2>Modifier l'Employé: {{ employe.nom }} {{ employe.prenom }}</h2>
 
 <form method="POST">

@@ -1,4 +1,5 @@
-{% block content %}
+{% block content %}  {% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 <h2>Confirmer la Suppression de l'Employé</h2>
 <p>
   Êtes-vous sûr de vouloir supprimer l'employé : {{ employe.nom }} {{

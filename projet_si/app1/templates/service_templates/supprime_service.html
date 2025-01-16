@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 <h2>Confirmer la Suppression du Service</h2>
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 <p>Êtes-vous sûr de vouloir supprimer le service "{{ service.nom_service }}" ?</p>
 
 <form method="POST">
@@ -9,5 +9,5 @@
     <button type="submit">Confirmer la Suppression</button>
 </form>
 
-<a href="{% url 'manage_service' %}">Annuler</a>
+<a href="{% url 'recherche_service' %}">Annuler</a>
 {% endblock %}

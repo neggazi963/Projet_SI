@@ -1,4 +1,7 @@
+{% load static %}
+{% block content %}
 <h2>Planifier un entretien</h2>
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 <form method="post">
   {% csrf_token %}
   <label for="interview_date">Date de l'entretien:</label>
@@ -9,3 +12,4 @@
   <input type="text" name="interviewer" required><br>
   <button type="submit">Planifier</button>
 </form>
+{% endblock %}

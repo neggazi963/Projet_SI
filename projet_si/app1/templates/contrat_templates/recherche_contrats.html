@@ -1,48 +1,23 @@
 {% load static %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des Contrats</title>
-    <!-- Fichier CSS Bootstrap -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .main-container {
-            margin-top: 50px;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .search-form input {
-            border-radius: 20px;
-        }
-        .btn-custom {
-            border-radius: 20px;
-        }
-        .list-group-item {
-            border: none;
-            margin-bottom: 10px;
-            border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .list-group-item .btn {
-            font-size: 0.9rem;
-        }
-        .no-contrat {
-            font-size: 1.2rem;
-            color: gray;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  
 </head>
 <body>
 <div class="container main-container">
     <!-- Titre principal -->
     <h2 class="text-center text-primary mb-4">Gestion des Contrats</h2>
+    <!-- Lien pour ajouter un contrat -->
+    <div class="text-end mb-3">
+        <a href="{% url 'ajouter_contrat' %}" class="btn btn-success btn-custom">Ajouter un Contrat</a>
+    </div>
 
     <!-- Formulaire de recherche -->
     <form method="GET" class="search-form d-flex mb-4">
@@ -50,10 +25,7 @@
         <button type="submit" class="btn btn-primary btn-custom">Rechercher</button>
     </form>
 
-    <!-- Lien pour ajouter un contrat -->
-    <div class="text-end mb-3">
-        <a href="{% url 'ajouter_contrat' %}" class="btn btn-success btn-custom">Ajouter un Contrat</a>
-    </div>
+    
 
     <!-- Liste des contrats -->
     <h3 class="text-secondary mb-3">Liste des Contrats</h3>
@@ -75,7 +47,6 @@
     </div>
 </div>
 
-<!-- Fichiers JS Bootstrap -->
-<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>
+{% endblock %}

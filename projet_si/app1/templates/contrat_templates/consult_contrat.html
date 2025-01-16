@@ -1,7 +1,10 @@
-{% extends 'base.html' %}
+
+
+{% load static %}
 
 {% block content %}
 <h2>Détails du Contrat</h2>
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 
 <p><strong>Employé :</strong> {{ contrat.employe.nom }} {{ contrat.employe.prenom }}</p>
 <p><strong>Type de Contrat :</strong> {{ contrat.type_contrat }}</p>
@@ -10,5 +13,5 @@
 <p><strong>Salaire Mensuel :</strong> {{ contrat.salaire_mensuel }}</p>
 <p><strong>Salaire Quotidien :</strong> {{ contrat.salaire_quotidien }}</p>
 
-<a href="{% url 'manage_contrats' %}">Retour à la liste des contrats</a>
+<a href="{% url 'recherche_contrats' %}">Retour à la liste des contrats</a>
 {% endblock %}

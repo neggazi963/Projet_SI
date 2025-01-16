@@ -54,7 +54,7 @@ def supprime_service(request, service_id):
     return render(request, 'service_templates/supprime_service.html', context)
 
 
-def rechercher_service(request):
+def recherche_service(request):
     query = request.GET.get('q', '')
     
     if query:

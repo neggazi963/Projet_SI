@@ -1,6 +1,7 @@
-{% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 <h2>Ajouter un Nouvel Employé</h2>
 
 <form method="POST">
@@ -9,5 +10,5 @@
     <button type="submit">Ajouter l'Employé</button>
 </form>
 
-<a href="{% url 'manage_employees' %}">Retour à la liste des employés</a>
+<a href="{% url 'rechercher_employe' %}">Retour à la liste des employés</a>
 {% endblock %}

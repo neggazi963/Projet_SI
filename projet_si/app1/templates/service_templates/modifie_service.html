@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 <h2>Modifier le Service: {{ service.nom_service }}</h2>
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
 
 <form method="POST">
     {% csrf_token %}
@@ -9,7 +9,7 @@
     <button type="submit">Enregistrer les Modifications</button>
 </form>
 
-<a href="{% url 'manage_service' %}">Retour à la liste des services</a>
+<a href="{% url 'recherche_service' %}">Retour à la liste des services</a>
 {% endblock %}
 
 

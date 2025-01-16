@@ -15,11 +15,12 @@ urlpatterns = [
     
     
     # Route pour afficher la liste des employés
-    path('employe/recherche/', employe_views.rechercher_employe, name='manage_employe'),
-    path('employe/insert/',employe_views.insert_employe, name='insert_employe'),
-    path('employees/edit/<int:employe_id>/', employe_views.modifier_employe, name='edit_employe'),
-    path('employees/delete/<int:employe_id>/', employe_views.supprimer_employe, name='delete_employe'),
-    path('employees/consult/<int:employe_id>/', employe_views.consult_employe, name='consult_employe'),
+     path('employe/recherche/', employe_views.rechercher_employe, name='rechercher_employe'),
+    path('employe/insert/', employe_views.insert_employe, name='insert_employe'),
+    path('employe/edit/<int:employe_id>/', employe_views.modifier_employe, name='modifie_employe'),
+    path('employe/delete/<int:employe_id>/', employe_views.supprimer_employe, name='supprime_employe'),
+    path('employe/consult/<int:employe_id>/', employe_views.consult_employe, name='consult_employe'),
+
     
     # Routes pour gérer les congés
     
@@ -67,10 +68,11 @@ urlpatterns = [
     path('application-status/<int:application_id>/', recrutement_views.application_status, name='application_status'),
     path('schedule-interview/<int:application_id>/', recrutement_views.schedule_interview, name='schedule_interview'),
     path('interview-details/<int:interview_id>/', recrutement_views.interview_details, name='interview_details'),
-
+    
+    path('service/', service_views.recherche_service, name='recherche_service'),
     path('service/insert/', service_views.insert_service, name='insert_service'),
-    path('service/edit/<int:service_id>/', service_views.modifie_service, name='edit_service'),
-    path('service/delete/<int:service_id>/', service_views.supprime_service, name='delete_service'),
+    path('service/edit/<int:service_id>/', service_views.modifie_service, name='modifie_service'),
+    path('service/delete/<int:service_id>/', service_views.supprime_service, name='supprime_service'),
     path('service/consult/<int:service_id>/', service_views.consult_service, name='consult_service'),
 
 

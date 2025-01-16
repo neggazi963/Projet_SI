@@ -1,8 +1,11 @@
+{% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Interview Details</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 </head>
 <body>
     <h2>Interview Details</h2>
@@ -21,6 +24,7 @@
     <h3>Actions</h3>
     <form method="POST">
         {% csrf_token %}
+        {{ form.as_p }}
         <button type="submit" name="status" value="accepted">Accept</button>
         <button type="submit" name="status" value="rejected">Reject</button>
     </form>
@@ -29,3 +33,4 @@
     <a href="{% url 'job_offers_list' %}">Back to Job Offers</a>
 </body>
 </html>
+{% endblock %}

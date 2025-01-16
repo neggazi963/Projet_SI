@@ -1,8 +1,11 @@
+{% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Create Job Offer</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 </head>
 <body>
     <h2>Create a New Job Offer</h2>
@@ -13,3 +16,4 @@
     </form>
 </body>
 </html>
+{% endblock %}
