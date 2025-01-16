@@ -28,10 +28,7 @@ def ajouter_absence(request):
         form = AbsenceForm()
     return render(request, 'absence_templates/ajouter_absence.html', {'form': form})
 
-# Vue pour afficher les absences d'un employé
-def afficher_absences(request):
-    absences = Conge.objects.all()  # Récupère toutes les absences
-    return render(request, 'absence_templates/afficher_absences.html', {'absences': absences})
+
 
 
 def supprimer_absence(request, pk):
@@ -52,14 +49,11 @@ def modifier_absence(request, pk):
     return render(request, 'absence_templates/modifier_absence.html', {'form': form})
 
 
-def consulter_absences(request):
-    query = request.GET.get('q', '')
-    absences = Absence.objects.all()
-    if query:
-        absences = absences.filter(employe__nom__icontains=query)
+def consulter_absence(request, id):
+    absence = get_object_or_404(Absence, pk=id)
 
     context = {
-        'absences': absences,
-        'query': query
+        'absence': absence,
     }
-    return render(request, 'absence_templates/consulter_absences.html', context)
+    return render(request, 'absence_templates/consulter_absence.html', context)
+

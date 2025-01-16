@@ -1,9 +1,12 @@
 <!-- templates/fiche_de_paie.html -->
+{% load static %}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Fiche de Paie - {{ employe.nom }} - {{ annee }}/{{ mois }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Détails de l'absence</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
   <body>
     <h1>Fiche de Paie de {{ employe.nom }} - {{ annee }}/{{ mois }}</h1>

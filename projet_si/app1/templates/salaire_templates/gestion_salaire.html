@@ -1,40 +1,50 @@
-{% block content %}
-<h1>Gestion des Salaires</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Détails de l'absence</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <h1>Gestion des Salaires</h1>
 
-<form method="get" action="">
-  <input
-    type="text"
-    name="q"
-    placeholder="Rechercher un employé"
-    value="{{ query }}"
-  />
-  <button type="submit">Rechercher</button>
-</form>
+    <form method="get" action="">
+      <input
+        type="text"
+        name="q"
+        placeholder="Rechercher un employé"
+        value="{{ query }}"
+      />
+      <button type="submit">Rechercher</button>
+    </form>
 
-<table>
-  <thead>
-    <tr>
-      <th>Employé</th>
-      <th>Montant</th>
-      <th>Date de Paiement</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for salaire in salaires %}
-    <tr>
-      <td>{{ salaire.employe.nom }} {{ salaire.employe.prenom }}</td>
-      <td>{{ salaire.montant }}</td>
-      <td>{{ salaire.date_paiement }}</td>
-      <td>
-        <a href="{% url 'modifier_salaire' salaire.id %}">Modifier</a>
-        <a href="{% url 'supprimer_salaire' salaire.id %}">Supprimer</a>
-        <a href="{% url 'consulter_salaire' salaire.pk %}">Consulter</a>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    <table>
+      <thead>
+        <tr>
+          <th>Employé</th>
+          <th>Montant</th>
+          <th>Date de Paiement</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for salaire in salaires %}
+        <tr>
+          <td>{{ salaire.employe.nom }} {{ salaire.employe.prenom }}</td>
+          <td>{{ salaire.montant }}</td>
+          <td>{{ salaire.date_paiement }}</td>
+          <td>
+            <a href="{% url 'modifier_salaire' salaire.id %}">Modifier</a>
+            <a href="{% url 'supprimer_salaire' salaire.id %}">Supprimer</a>
+            <a href="{% url 'consulter_salaire' salaire.pk %}">Consulter</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
-<a href="{% url 'ajouter_salaire' %}">Ajouter un Salaire</a>
-{% endblock %}
+    <a href="{% url 'ajouter_salaire' %}">Ajouter un Salaire</a>
+  </body>
+</html>

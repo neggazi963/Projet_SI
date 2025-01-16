@@ -1,8 +1,19 @@
-{% block content %}
-<h2>Ajouter une prime</h2>
-<form method="POST">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Ajouter</button>
-</form>
-<a href="{% url 'gestion_prime' %}">Retour à la gestion des primes</a>
-{% endblock %}
+{% block content %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Détails de l'absence</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <h2>Ajouter une prime</h2>
+    <form method="POST">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">Ajouter</button>
+    </form>
+    <a href="{% url 'gestion_prime' %}">Retour à la gestion des primes</a>
+    {% endblock %}
+  </body>
+</html>

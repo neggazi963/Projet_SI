@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Détails de l'absence</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <h2>Détails de l'absence</h2>
+
+    <p><strong>Employé :</strong> {{ absence.employe.nom }}</p>
+    <p><strong>Date d'absence :</strong> {{ absence.date_absence }}</p>
+    <p><strong>Raison :</strong> {{ absence.raison }}</p>
+    <p>
+      <strong>Impact sur le salaire :</strong> {{ absence.impact_salaire }} DA
+    </p>
+
+    <a href="{% url 'gestion_absence' %}">Retour à la liste des absences</a>
+  </body>
+</html>

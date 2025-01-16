@@ -1,12 +1,24 @@
-<h1>Liste des évaluations</h1>
-<ul>
-  {% for evaluation in evaluations %}
-  <li>
-    <a href="{% url 'consulter_evaluation' evaluation.pk %}"
-      >{{ evaluation.employe.nom }} - {{ evaluation.date_evaluation }}</a
-    >
-    <a href="{% url 'modifier_evaluation' evaluation.pk %}">Modifier</a>
-    <a href="{% url 'supprimer_evaluation' evaluation.pk %}">Supprimer</a>
-  </li>
-  {% endfor %}
-</ul>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Détails de l'absence</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <h1>Liste des évaluations</h1>
+    <ul>
+      {% for evaluation in evaluations %}
+      <li>
+        <a href="{% url 'consulter_evaluation' evaluation.pk %}"
+          >{{ evaluation.employe.nom }} - {{ evaluation.date_evaluation }}</a
+        >
+        <a href="{% url 'modifier_evaluation' evaluation.pk %}">Modifier</a>
+        <a href="{% url 'supprimer_evaluation' evaluation.pk %}">Supprimer</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

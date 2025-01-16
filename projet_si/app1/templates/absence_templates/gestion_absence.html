@@ -39,6 +39,7 @@
           class="btn btn-danger"
           >Supprimer</a
         >
+        <a href="{% url 'consulter_absence' absence.id %}">Voir détails</a>
       </li>
       {% empty %}
       <li class="text-muted">Aucune absence trouvée.</li>

@@ -1,28 +1,43 @@
-{% load static %}
-{% block content %}
-<h2>Gestion des Services</h2>
-<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+{% block content %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Détails de l'absence</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <h2>Gestion des Services</h2>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 
-<!-- Formulaire de recherche -->
-<form method="GET">
-    <input type="text" name="q" placeholder="Rechercher un service" value="{{ query }}">
-    <button type="submit">Rechercher</button>
-</form>
+    <!-- Formulaire de recherche -->
+    <form method="GET">
+      <input
+        type="text"
+        name="q"
+        placeholder="Rechercher un service"
+        value="{{ query }}"
+      />
+      <button type="submit">Rechercher</button>
+    </form>
 
-<h3>Ajouter un Nouveau Service</h3>
-<a href="{% url 'insert_service' %}">Ajouter un Service</a>
+    <h3>Ajouter un Nouveau Service</h3>
+    <a href="{% url 'insert_service' %}">Ajouter un Service</a>
 
-<h3>Liste des Services</h3>
-<ul>
-    {% for service in services %}
-        <li>
-            {{ service.nom_service }} 
-            <a href="{% url 'consult_service' service.id %}">Consulter</a>
-            <a href="{% url 'modifie_service' service.id %}">Modifier</a>
-            <a href="{% url 'supprime_service' service.id %}">Supprimer</a>
-        </li>
-    {% empty %}
-        <li>Aucun service trouvé.</li>
-    {% endfor %}
-</ul>
-{% endblock %}
+    <h3>Liste des Services</h3>
+    <ul>
+      {% for service in services %}
+      <li>
+        {{ service.nom_service }}
+        <a href="{% url 'consult_service' service.id %}">Consulter</a>
+        <a href="{% url 'modifie_service' service.id %}">Modifier</a>
+        <a href="{% url 'supprime_service' service.id %}">Supprimer</a>
+      </li>
+      {% empty %}
+      <li>Aucun service trouvé.</li>
+      {% endfor %}
+    </ul>
+    {% endblock %}
+  </body>
+</html>

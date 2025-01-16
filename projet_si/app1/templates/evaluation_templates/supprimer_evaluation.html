@@ -1,6 +1,18 @@
-<h1>Supprimer l'évaluation</h1>
-<p>Êtes-vous sûr de vouloir supprimer cette évaluation ?</p>
-<form method="post">
-  {% csrf_token %}
-  <button type="submit">Supprimer</button>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Détails de l'absence</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <h1>Supprimer l'évaluation</h1>
+    <p>Êtes-vous sûr de vouloir supprimer cette évaluation ?</p>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit">Supprimer</button>
+    </form>
+  </body>
+</html>

@@ -1,6 +1,17 @@
-<h1>Ajouter une évaluation pour {{ employe.nom }} {{ employee.prenom }}</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Enregistrer</button>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Détails de l'absence</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <h1>Ajouter une évaluation pour {{ employe.nom }} {{ employee.prenom }}</h1>
+    <form method="post">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">Enregistrer</button>
+    </form>
+  </body>
+</html>

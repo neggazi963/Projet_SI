@@ -1,18 +1,22 @@
 
 from django.urls import path
 
+from . import views
 
 from .views import export_pdf
 
 
-from app1 import views
 
 
-from .views import employe_views, absence_views, analyse_views, conge_views, contrat_views, evaluation_views, masrouf_views, prime_views, recrutement_views, salaire_views, service_views
+
+
+from .views import accueil_view , employe_views, absence_views, analyse_views, conge_views, contrat_views, evaluation_views, masrouf_views, prime_views, recrutement_views, salaire_views, service_views
 
 
 urlpatterns = [
     
+
+    path('',accueil_view.accueil, name='accueil'),
     
     # Route pour afficher la liste des employés
      path('employe/recherche/', employe_views.rechercher_employe, name='rechercher_employe'),
@@ -40,7 +44,7 @@ urlpatterns = [
     path('ajouter/absence/', absence_views.ajouter_absence, name='ajouter_absence'),
     path('supprimer/absence/<int:pk>/', absence_views.supprimer_absence, name='supprimer_absence'),
     path('modifier/absence/<int:pk>/', absence_views.modifier_absence, name='modifier_absence'),
-    path('consulter/absences/', absence_views.consulter_absences, name='consulter_absences'),
+    path('consulter/absence/<int:id>/', absence_views.consulter_absence, name='consulter_absence'),
     path('gestion/absences/', absence_views.gestion_absence, name='gestion_absence'),
 
     path('ajouter/prime/', prime_views.ajouter_prime, name='ajouter_prime'),

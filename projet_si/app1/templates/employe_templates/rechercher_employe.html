@@ -1,25 +1,39 @@
- {% load static %}
+{% block content %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Détails de l'absence</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <h2>Gestion des Employés</h2>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <a href="{% url 'insert_employe' %}" class="btn">Ajouter une absence</a>
+    <form method="GET" action="{% url 'rechercher_employe' %}">
+      <input
+        type="text"
+        name="q"
+        placeholder="Rechercher un employé"
+        value="{{ query }}"
+      />
+      <button type="submit">Rechercher</button>
+    </form>
 
-{% block content %}
-<h2>Gestion des Employés</h2>
-<link rel="stylesheet" href="{% static 'css/style.css' %}" />
-<a href="{% url 'insert_employe' %}" class="btn">Ajouter une absence</a>
-<form method="GET" action="{% url 'rechercher_employe' %}">
-    <input type="text" name="q" placeholder="Rechercher un employé" value="{{ query }}">
-    <button type="submit">Rechercher</button>
-</form>
-
-<h3>Liste des Employés</h3>
-<ul>
-    {% for employe in employees %}
-        <li>
-            {{ employe.nom }} {{ employe.prenom }}
-            <a href="{% url 'consult_employe' employe.id %}">Consulter</a>
-            <a href="{% url 'modifie_employe' employe.id %}">Modifier</a>
-            <a href="{% url 'supprime_employe' employe.id %}">Supprimer</a>
-        </li>
-    {% empty %}
-        <li>Aucun employé trouvé.</li>
-    {% endfor %}
-</ul>
-{% endblock %}
+    <h3>Liste des Employés</h3>
+    <ul>
+      {% for employe in employees %}
+      <li>
+        {{ employe.nom }} {{ employe.prenom }}
+        <a href="{% url 'consult_employe' employe.id %}">Consulter</a>
+        <a href="{% url 'modifie_employe' employe.id %}">Modifier</a>
+        <a href="{% url 'supprime_employe' employe.id %}">Supprimer</a>
+      </li>
+      {% empty %}
+      <li>Aucun employé trouvé.</li>
+      {% endfor %}
+    </ul>
+    {% endblock %}
+  </body>
+</html>

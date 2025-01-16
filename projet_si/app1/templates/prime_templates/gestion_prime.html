@@ -1,26 +1,37 @@
-{% block content %}
-<h2>Gestion des primes</h2>
-<a href="{% url 'ajouter_prime' %}">Ajouter une prime</a>
+{% block content %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Détails de l'absence</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <h2>Gestion des primes</h2>
+    <a href="{% url 'ajouter_prime' %}">Ajouter une prime</a>
 
-<form method="GET">
-  <input
-    type="text"
-    name="search"
-    placeholder="Rechercher un employé"
-    value="{{ request.GET.search }}"
-  />
-  <button type="submit">Rechercher</button>
-</form>
+    <form method="GET">
+      <input
+        type="text"
+        name="search"
+        placeholder="Rechercher un employé"
+        value="{{ request.GET.search }}"
+      />
+      <button type="submit">Rechercher</button>
+    </form>
 
-<ul>
-  {% for prime in primes %}
-  <li>
-    {{ prime.employe.nom }} : {{ prime.montant }}
-    <a href="{% url 'modifier_prime' prime.pk %}">Modifier</a> |
-    <a href="{% url 'supprimer_prime' prime.pk %}">Supprimer</a>
-  </li>
-  {% empty %}
-  <li>Aucune prime trouvée.</li>
-  {% endfor %}
-</ul>
-{% endblock %}
+    <ul>
+      {% for prime in primes %}
+      <li>
+        {{ prime.employe.nom }} : {{ prime.montant }}
+        <a href="{% url 'modifier_prime' prime.pk %}">Modifier</a> |
+        <a href="{% url 'supprimer_prime' prime.pk %}">Supprimer</a>
+      </li>
+      {% empty %}
+      <li>Aucune prime trouvée.</li>
+      {% endfor %}
+    </ul>
+    {% endblock %}
+  </body>
+</html>

@@ -1,14 +1,26 @@
-{% block content %} {% load static %}
-<h1>
-  {% if form.instance.pk %}Modifier Salaire{% else %}Ajouter Salaire{% endif %}
-</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Détails de l'absence</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <h1>
+      {% if form.instance.pk %}Modifier Salaire{% else %}Ajouter Salaire{% endif
+      %}
+    </h1>
 
-<form method="post">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">
-    {% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %}
-  </button>
-</form>
+    <form method="post">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">
+        {% if form.instance.pk %}Modifier{% else %}Ajouter{% endif %}
+      </button>
+    </form>
 
-<a href="{% url 'gestion_salaire' %}">Retour</a>
-{% endblock %}
+    <a href="{% url 'gestion_salaire' %}">Retour</a>
+    {% endblock %}
+  </body>
+</html>

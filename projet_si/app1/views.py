@@ -13,6 +13,10 @@ from django.http import HttpResponse
 
 
 
+
+
+
+
 def rechercher_employe(request):
     query = request.GET.get('q', '')
     if query:
@@ -861,6 +865,8 @@ def analyse_activite(request):
         'seuil': seuil,
         'mois_choisi': mois_choisi,  # Passer le mois choisi au template
     })
+
+
 
 
 

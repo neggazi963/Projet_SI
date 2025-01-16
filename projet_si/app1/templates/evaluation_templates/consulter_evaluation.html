@@ -1,5 +1,18 @@
-<h1>
-  {{ evaluation.employe.nom }} - Évaluation du {{ evaluation.date_evaluation }}
-</h1>
-<p>Score : {{ evaluation.score }}</p>
-<p>Commentaires : {{ evaluation.commentaires }}</p>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Détails de l'absence</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <h1>
+      {{ evaluation.employe.nom }} - Évaluation du
+      {{evaluation.date_evaluation}}
+    </h1>
+    <p>Score : {{ evaluation.score }}</p>
+    <p>Commentaires : {{ evaluation.commentaires }}</p>
+  </body>
+</html>
