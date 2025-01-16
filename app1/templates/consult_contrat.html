@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Détails du Contrat</h2>
+
+<p><strong>Employé :</strong> {{ contrat.employe.nom }} {{ contrat.employe.prenom }}</p>
+<p><strong>Type de Contrat :</strong> {{ contrat.type_contrat }}</p>
+<p><strong>Date de Début :</strong> {{ contrat.date_debut }}</p>
+<p><strong>Date de Fin :</strong> {{ contrat.date_fin }}</p>
+<p><strong>Salaire Mensuel :</strong> {{ contrat.salaire_mensuel }}</p>
+<p><strong>Salaire Quotidien :</strong> {{ contrat.salaire_quotidien }}</p>
+
+<a href="{% url 'manage_contrats' %}">Retour à la liste des contrats</a>
+{% endblock %}

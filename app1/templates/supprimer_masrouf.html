@@ -1,0 +1,11 @@
+{% block content %}
+<h2>Supprimer le masrouf</h2>
+<p>
+  Êtes-vous sûr de vouloir supprimer le masrouf de {{ masrouf.employe.nom }}?
+</p>
+<form method="POST">
+  {% csrf_token %}
+  <button type="submit">Supprimer</button>
+</form>
+<a href="{% url 'gestion_masrouf' %}">Retour à la gestion des masroufs</a>
+{% endblock %}

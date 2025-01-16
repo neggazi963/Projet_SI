@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block content %}
+<h1>Salaires de {{ employe.nom }} {{ employe.prenom }}</h1>
+
+<p><strong>Salaire de base :</strong> 30,000 DA</p>
+<p><strong>Total des primes :</strong> {{ total_primes }} DA</p>
+<p><strong>Total des absences :</strong> {{ total_absences }} DA</p>
+<p><strong>Total Masrouf :</strong> {{ total_masrouf }} DA</p>
+
+<h2>Salaires</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Date de Paiement</th>
+      <th>Montant</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for salaire in salaires %}
+    <tr>
+      <td>{{ salaire.date_paiement }}</td>
+      <td>{{ salaire.montant }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<a href="{% url 'gestion_salaire' %}">Retour</a>
+{% endblock %}

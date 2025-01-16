@@ -1,0 +1,8 @@
+{% block content %}
+<h2>Ajouter une absence</h2>
+<form method="POST">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">Ajouter</button>
+</form>
+<a href="{% url 'gestion_absence' %}">Retour à la gestion des absences</a>
+{% endblock %}

@@ -1,0 +1,12 @@
+<h1>Liste des évaluations</h1>
+<ul>
+  {% for evaluation in evaluations %}
+  <li>
+    <a href="{% url 'consulter_evaluation' evaluation.pk %}"
+      >{{ evaluation.employe.nom }} - {{ evaluation.date_evaluation }}</a
+    >
+    <a href="{% url 'modifier_evaluation' evaluation.pk %}">Modifier</a>
+    <a href="{% url 'supprimer_evaluation' evaluation.pk %}">Supprimer</a>
+  </li>
+  {% endfor %}
+</ul>

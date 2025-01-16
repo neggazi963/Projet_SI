@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liste des Primes</title>
+  </head>
+  <body>
+    <h1>Liste des Primes</h1>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Employé</th>
+          <th>Type de Prime</th>
+          <th>Montant</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for prime in primes %}
+        <tr>
+          <td>{{ prime.employe.nom }} {{ prime.employe.prenom }}</td>
+          <td>{{ prime.type_prime }}</td>
+          <td>{{ prime.montant }}</td>
+          <td>{{ prime.date_prime }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

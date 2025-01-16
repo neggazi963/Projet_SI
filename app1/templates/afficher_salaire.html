@@ -1,0 +1,40 @@
+<!-- templates/afficher_salaire.html -->
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Fiche de Paie - {{ employe.nom }}</title>
+  </head>
+  <body>
+    <h1>Fiche de Paie de {{ employe.nom }} - {{ annee }}/{{ mois }}</h1>
+    <p><strong>Salaire de base :</strong> 30 000 DA</p>
+    <p><strong>Salaire net :</strong> {{ salaire_net }} DA</p>
+
+    <h2>Primes</h2>
+    <ul>
+      {% if primes %} {% for prime in primes %}
+      <li>
+        {{ prime.date_prime }} - {{ prime.montant }} DA ({{ prime.type_prime }})
+      </li>
+      {% endfor %} {% else %}
+      <li>Aucune prime pour ce mois.</li>
+      {% endif %}
+    </ul>
+
+    <h2>Absences</h2>
+    <ul>
+      {% if absences %} {% for absence in absences %}
+      <li>
+        {{ absence.date_absence }} - {{ absence.raison }} (Impact :
+        {{absence.impact_salaire }} DA)
+      </li>
+      {% endfor %} {% else %}
+      <li>Aucune absence enregistrée pour ce mois.</li>
+      {% endif %}
+    </ul>
+
+    <a href="{% url 'generer_fiche_de_paie' employe.id annee mois %}"
+      >Générer la fiche de paie numérique</a
+    >
+  </body>
+</html>

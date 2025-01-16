@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Gestion des Services</h2>
+
+<!-- Formulaire de recherche -->
+<form method="GET">
+    <input type="text" name="q" placeholder="Rechercher un service" value="{{ query }}">
+    <button type="submit">Rechercher</button>
+</form>
+
+<h3>Ajouter un Nouveau Service</h3>
+<a href="{% url 'insert_service' %}">Ajouter un Service</a>
+
+<h3>Liste des Services</h3>
+<ul>
+    {% for service in services %}
+        <li>
+            {{ service.nom_service }} 
+            <a href="{% url 'consult_service' service.id %}">Consulter</a>
+            <a href="{% url 'modifie_service' service.id %}">Modifier</a>
+            <a href="{% url 'supprime_service' service.id %}">Supprimer</a>
+        </li>
+    {% empty %}
+        <li>Aucun service trouvé.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

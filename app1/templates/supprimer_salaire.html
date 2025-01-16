@@ -1,0 +1,15 @@
+{% extends "base.html" %} {% block content %}
+<h1>Supprimer Salaire</h1>
+
+<p>
+  Êtes-vous sûr de vouloir supprimer le salaire de {{ salaire.employe.nom }} {{
+  salaire.employe.prenom }} ?
+</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Confirmer</button>
+</form>
+
+<a href="{% url 'gestion_salaire' %}">Annuler</a>
+{% endblock %}

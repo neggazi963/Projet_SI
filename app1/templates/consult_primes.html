@@ -1,0 +1,21 @@
+{% extends 'base.html' %} 
+{% block content %}
+<h2>Consulter les primes</h2>
+<form method="GET">
+  <input
+    type="text"
+    name="q"
+    placeholder="Recherche par nom"
+    value="{{ query }}"
+  />
+  <button type="submit">Rechercher</button>
+</form>
+
+<ul>
+  {% for prime in primes %}
+  <li>{{ prime.employe.nom }} : {{ prime.montant }} EUR</li>
+  {% empty %}
+  <li>Aucune prime trouvée.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
