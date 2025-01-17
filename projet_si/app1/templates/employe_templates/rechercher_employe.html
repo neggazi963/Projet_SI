@@ -10,7 +10,7 @@
   <body>
     <h2>Gestion des Employés</h2>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <a href="{% url 'insert_employe' %}" class="btn">Ajouter une absence</a>
+    <a href="{% url 'insert_employe' %}" class="btn">Ajouter un employe</a>
     <form method="GET" action="{% url 'rechercher_employe' %}">
       <input
         type="text"
@@ -35,5 +35,8 @@
       {% endfor %}
     </ul>
     {% endblock %}
+    <div>
+      <a href="{% url 'accueil' %}">Retour à l'accueil</a>
+    </div>
   </body>
 </html>

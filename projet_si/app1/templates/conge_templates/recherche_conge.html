@@ -1,55 +1,76 @@
-{% load static %}
-
-{% block content %}
+{% load static %} {% block content %}
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestion des Congés</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  
-   
-</head>
-<body>
-<div class="container main-container">
-    <!-- Titre principal -->
-    <h2 class="text-center text-primary mb-4">Gestion des Congés</h2>
-    <!-- Lien pour ajouter un congé -->
-    <div class="text-end mb-3">
-        <a href="{% url 'ajouter_conge' %}" class="btn btn-success btn-custom">Ajouter un Congé</a>
-    </div>
+  </head>
+  <body>
+    <div class="container main-container">
+      <!-- Titre principal -->
+      <h2 class="text-center text-primary mb-4">Gestion des Congés</h2>
+      <!-- Lien pour ajouter un congé -->
+      <div class="text-end mb-3">
+        <a href="{% url 'ajouter_conge' %}" class="btn btn-success btn-custom"
+          >Ajouter un Congé</a
+        >
+      </div>
 
-    <!-- Formulaire de recherche -->
-    <form method="GET" class="search-form d-flex mb-4">
-        <input type="text" name="q" class="form-control me-2" placeholder="Rechercher un congé par employé" value="{{ query }}">
-        <button type="submit" class="btn btn-primary btn-custom">Rechercher</button>
-    </form>
+      <!-- Formulaire de recherche -->
+      <form method="GET" class="search-form d-flex mb-4">
+        <input
+          type="text"
+          name="q"
+          class="form-control me-2"
+          placeholder="Rechercher un congé par employé"
+          value="{{ query }}"
+        />
+        <button type="submit" class="btn btn-primary btn-custom">
+          Rechercher
+        </button>
+      </form>
 
-    
-
-    <!-- Liste des congés -->
-    <h3 class="text-secondary mb-3">Liste des Congés</h3>
-    <div class="list-group">
+      <!-- Liste des congés -->
+      <h3 class="text-secondary mb-3">Liste des Congés</h3>
+      <div class="list-group">
         {% for conge in conges %}
-            <div class="list-group-item d-flex justify-content-between align-items-center bg-light">
-                <div>
-                    <strong>{{ conge.employe.nom }}</strong> - {{ conge.type_conge }}
-                    <span class="badge bg-primary ms-2">{{ conge.solde_restant }} jours</span>
-                </div>
-                <div class="btn-group" role="group">
-                    <a href="{% url 'details_conge' conge.id %}" class="btn btn-info btn-sm text-white">Consulter</a>
-                    <a href="{% url 'edit_conge' conge.id %}" class="btn btn-warning btn-sm">Modifier</a>
-                    <a href="{% url 'delete_conge' conge.id %}" class="btn btn-danger btn-sm">Supprimer</a>
-                </div>
-            </div>
+        <div
+          class="list-group-item d-flex justify-content-between align-items-center bg-light"
+        >
+          <div>
+            <strong>{{ conge.employe.nom }}</strong> - {{ conge.type_conge }}
+            <span class="badge bg-primary ms-2"
+              >{{ conge.solde_restant }} jours</span
+            >
+          </div>
+          <div class="btn-group" role="group">
+            <a
+              href="{% url 'details_conge' conge.id %}"
+              class="btn btn-info btn-sm text-white"
+              >Consulter</a
+            >
+            <a
+              href="{% url 'edit_conge' conge.id %}"
+              class="btn btn-warning btn-sm"
+              >Modifier</a
+            >
+            <a
+              href="{% url 'delete_conge' conge.id %}"
+              class="btn btn-danger btn-sm"
+              >Supprimer</a
+            >
+          </div>
+        </div>
         {% empty %}
-            <p class="text-center no-conge">Aucun congé trouvé.</p>
+        <p class="text-center no-conge">Aucun congé trouvé.</p>
         {% endfor %}
+      </div>
     </div>
-</div>
-
-
-</body>
+    <div>
+      <a href="{% url 'accueil' %}">Retour à l'accueil</a>
+    </div>
+  </body>
 </html>
 {% endblock %}

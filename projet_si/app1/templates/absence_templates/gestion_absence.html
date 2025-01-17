@@ -43,8 +43,12 @@
       </li>
       {% empty %}
       <li class="text-muted">Aucune absence trouvée.</li>
+
       {% endfor %}
     </ul>
+    <div>
+      <a href="{% url 'accueil' %}">Retour à l'accueil</a>
+    </div>
   </body>
 </html>
 {% endblock %}

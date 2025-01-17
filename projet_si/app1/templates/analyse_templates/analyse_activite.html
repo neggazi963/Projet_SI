@@ -9,12 +9,21 @@
       body {
         font-family: Arial, sans-serif;
         margin: 20px;
-        background-color: #f4f4f4;
+        background-color: #f9f9f9;
+        color: #333;
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
       }
       h1,
-      h2,
-      h3 {
-        color: #333;
+      h2 {
+        color: #007bff;
       }
       .form-container {
         margin-bottom: 20px;
@@ -22,23 +31,56 @@
       form {
         display: flex;
         flex-direction: column;
-        width: 200px;
+        width: 300px;
+        margin: 0 auto;
+      }
+      label {
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      input[type="month"] {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
       }
       button {
+        background-color: #007bff;
+        color: #fff;
         padding: 10px;
-        margin-top: 10px;
+        border: none;
+        border-radius: 4px;
         cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      button:hover {
+        background-color: #0056b3;
       }
       .chart-container {
         margin-top: 30px;
+        text-align: center;
       }
       canvas {
         border: 1px solid #ddd;
         border-radius: 8px;
-      }
-      .container {
-        max-width: 1200px;
         margin: 0 auto;
+      }
+      .no-data {
+        text-align: center;
+        margin-top: 30px;
+        color: #888;
+      }
+      .back-home {
+        margin-top: 20px;
+        text-align: center;
+      }
+      .back-home a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+      .back-home a:hover {
+        color: #0056b3;
       }
     </style>
   </head>
@@ -59,85 +101,58 @@
       <!-- Graphique de l'absentéisme par mois -->
       <h2>Absentéisme par Mois</h2>
       <div class="chart-container">
-        <canvas id="absenceChart" width="800" height="400"></canvas>
+        <canvas id="absenceChart"></canvas>
       </div>
       <script>
-        var ctx = document.getElementById('absenceChart').getContext('2d');
-        var absenceChart = new Chart(ctx, {
-          type: 'line',  // Change to 'line' for a smoother curve
+        const ctx = document.getElementById("absenceChart").getContext("2d");
+        new Chart(ctx, {
+          type: "line",
           data: {
             labels: {{ mois|safe }},
-            datasets: [{
-              label: 'Nombre d\'absences',
-              data: {{ nombre_absences|safe }},
-              backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Soft greenish-blue
-              borderColor: 'rgba(75, 192, 192, 1)',  // Strong greenish-blue
-              borderWidth: 2,
-              pointBackgroundColor: 'rgba(75, 192, 192, 1)',  // Points color
-              pointBorderColor: '#fff',
-              pointRadius: 5,  // Bigger points
-              fill: true,  // Fill area under the curve
-              tension: 0.4  // Smooth curve
-            }]
+            datasets: [
+              {
+                label: "Nombre d'absences",
+                data: {{ nombre_absences|safe }},
+                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                borderColor: "rgba(75, 192, 192, 1)",
+                borderWidth: 2,
+                pointBackgroundColor: "rgba(75, 192, 192, 1)",
+                tension: 0.4,
+                fill: true,
+              },
+            ],
           },
           options: {
             responsive: true,
             plugins: {
-              tooltip: {
-                callbacks: {
-                  label: function(tooltipItem) {
-                    // Affichage du nombre d'absences pour chaque mois
-                    return 'Absences : ' + tooltipItem.raw;
-                  }
-                }
-              },
               legend: {
-                position: 'top',  // Legend on top
-                labels: {
-                  boxWidth: 20,
-                  padding: 10
-                }
-              }
+                display: true,
+                position: "top",
+              },
             },
             scales: {
               x: {
                 title: {
                   display: true,
-                  text: 'Mois',
-                  color: '#333',
-                  font: {
-                    weight: 'bold'
-                  }
+                  text: "Mois",
                 },
-                ticks: {
-                  font: {
-                    size: 14
-                  }
-                }
               },
               y: {
                 title: {
                   display: true,
-                  text: 'Nombre d\'absences',
-                  color: '#333',
-                  font: {
-                    weight: 'bold'
-                  }
+                  text: "Nombre d'absences",
                 },
                 beginAtZero: true,
-                ticks: {
-                  font: {
-                    size: 14
-                  }
-                }
-              }
-            }
-          }
+              },
+            },
+          },
         });
       </script>
       {% else %}
       <!-- Message si aucune donnée n'est disponible pour le mois -->
-      <p>Aucune absence trouvée pour le mois de {{ mois_choisi }}.</p>
+      <div class="no-data">
+        <p>Aucune absence trouvée pour le mois de {{ mois_choisi }}.</p>
+      </div>
       {% endif %}
 
       <!-- Affichage du seuil pour identifier les pics d'absentéisme -->
@@ -148,10 +163,15 @@
 
       <h3>Historique des Absences</h3>
       <p>
-        Le graphique ci-dessus montre les absences par mois pour le mois de
-        {{mois_choisi }}. Les périodes avec un nombre d'absences supérieur au
+        Le graphique ci-dessus montre les absences par mois pour le mois de {{
+        mois_choisi }}. Les périodes avec un nombre d'absences supérieur au
         seuil sont considérées comme des pics d'absentéisme.
       </p>
+
+      <!-- Bouton pour revenir à l'accueil -->
+      <div class="back-home">
+        <a href="{% url 'home' %}">Retour à l'accueil</a>
+      </div>
     </div>
   </body>
 </html>

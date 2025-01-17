@@ -1,52 +1,76 @@
-{% load static %}
-
-{% block content %}
+{% load static %} {% block content %}
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestion des Contrats</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-  
-</head>
-<body>
-<div class="container main-container">
-    <!-- Titre principal -->
-    <h2 class="text-center text-primary mb-4">Gestion des Contrats</h2>
-    <!-- Lien pour ajouter un contrat -->
-    <div class="text-end mb-3">
-        <a href="{% url 'ajouter_contrat' %}" class="btn btn-success btn-custom">Ajouter un Contrat</a>
-    </div>
+  </head>
+  <body>
+    <div class="container main-container">
+      <!-- Titre principal -->
+      <h2 class="text-center text-primary mb-4">Gestion des Contrats</h2>
+      <!-- Lien pour ajouter un contrat -->
+      <div class="text-end mb-3">
+        <a href="{% url 'ajouter_contrat' %}" class="btn btn-success btn-custom"
+          >Ajouter un Contrat</a
+        >
+      </div>
 
-    <!-- Formulaire de recherche -->
-    <form method="GET" class="search-form d-flex mb-4">
-        <input type="text" name="q" class="form-control me-2" placeholder="Rechercher un contrat par employé" value="{{ query }}">
-        <button type="submit" class="btn btn-primary btn-custom">Rechercher</button>
-    </form>
+      <!-- Formulaire de recherche -->
+      <form method="GET" class="search-form d-flex mb-4">
+        <input
+          type="text"
+          name="q"
+          class="form-control me-2"
+          placeholder="Rechercher un contrat par employé"
+          value="{{ query }}"
+        />
+        <button type="submit" class="btn btn-primary btn-custom">
+          Rechercher
+        </button>
+      </form>
 
-    
-
-    <!-- Liste des contrats -->
-    <h3 class="text-secondary mb-3">Liste des Contrats</h3>
-    <div class="list-group">
+      <!-- Liste des contrats -->
+      <h3 class="text-secondary mb-3">Liste des Contrats</h3>
+      <div class="list-group">
         {% for contrat in contrats %}
-            <div class="list-group-item d-flex justify-content-between align-items-center bg-light">
-                <div>
-                    <strong>{{ contrat.employe.nom }} {{ contrat.employe.prenom }}</strong> - {{ contrat.type_contrat }}
-                </div>
-                <div class="btn-group" role="group">
-                    <a href="{% url 'details_contrat' contrat.id %}" class="btn btn-info btn-sm text-white">Consulter</a>
-                    <a href="{% url 'modifier_contrat' contrat.id %}" class="btn btn-warning btn-sm">Modifier</a>
-                    <a href="{% url 'supprimer_contrat' contrat.id %}" class="btn btn-danger btn-sm">Supprimer</a>
-                </div>
-            </div>
+        <div
+          class="list-group-item d-flex justify-content-between align-items-center bg-light"
+        >
+          <div>
+            <strong
+              >{{ contrat.employe.nom }} {{ contrat.employe.prenom }}</strong
+            >
+            - {{ contrat.type_contrat }}
+          </div>
+          <div class="btn-group" role="group">
+            <a
+              href="{% url 'details_contrat' contrat.id %}"
+              class="btn btn-info btn-sm text-white"
+              >Consulter</a
+            >
+            <a
+              href="{% url 'modifier_contrat' contrat.id %}"
+              class="btn btn-warning btn-sm"
+              >Modifier</a
+            >
+            <a
+              href="{% url 'supprimer_contrat' contrat.id %}"
+              class="btn btn-danger btn-sm"
+              >Supprimer</a
+            >
+          </div>
+        </div>
         {% empty %}
-            <p class="text-center no-contrat">Aucun contrat trouvé.</p>
+        <p class="text-center no-contrat">Aucun contrat trouvé.</p>
         {% endfor %}
+      </div>
     </div>
-</div>
-
-</body>
+    <div>
+      <a href="{% url 'accueil' %}">Retour à l'accueil</a>
+    </div>
+  </body>
 </html>
 {% endblock %}

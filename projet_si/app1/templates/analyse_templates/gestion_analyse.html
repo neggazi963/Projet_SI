@@ -115,35 +115,31 @@
   </head>
   <body>
     <header>
-      <h1>Page d'accueil</h1>
-    </header>
+<header>
+    <h1>Page d'accueil</h1>
+  </header>
 
-    <nav>
-      <ul>
-        <li><a href="{% url 'gestion_absence' %}">Absences</a></li>
-        <li><a href="{% url 'gestion_prime' %}">Primes</a></li>
-        <li><a href="{% url 'gestion_masrouf' %}">Masroufs</a></li>
-        <li><a href="{% url 'recherche_conge' %}">Congés</a></li>
-        <li><a href="{% url 'recherche_contrats' %}">Contrats</a></li>
-        <li><a href="{% url 'gestion_evaluations' %}">Évaluations</a></li>
-        <li><a href="{% url 'gestion_salaire' %}">Salaires</a></li>
-        <li><a href="{% url 'recherche_service' %}">Services</a></li>
-        <li><a href="{% url 'rechercher_employe' %}">Employés</a></li>
-        <li><a href="{% url 'gestion_analyse' %}">Analyse</a></li>
-      </ul>
-    </nav>
+  <nav>
+    <ul>
+      <li><a href="{% url 'analyse_activite' %}">Absences</a></li>
+      <li><a href="{% url 'analyse_effectifs' %}">Primes</a></li>
+      <li><a href="{% url 'repartition_employes' %}">Masroufs</a></li>
+      <li><a href="{% url 'top_performeurs' %}">Congés</a></li>
+      
+    </ul>
+  </nav>
 
-    <main>
-      <h2>Bienvenue sur la page d'accueil</h2>
-      <p>
-        Utilisez le menu ci-dessus pour accéder aux différentes fonctionnalités
-        de l'application. Gérez vos absences, primes, congés et bien plus encore
-        avec facilité.
-      </p>
-    </main>
+  <main>
+    <h2>Bienvenue sur la page d'accueil</h2>
+    <p>
+      Utilisez le menu ci-dessus pour accéder aux différentes fonctionnalités
+      de l'application. Gérez vos absences, primes, congés et bien plus encore
+      avec facilité.
+    </p>
+  </main>
 
-    <footer>
-      <p>&copy; 2025 Projet SI. Tous droits réservés.</p>
-    </footer>
-  </body>
+  <footer>
+    <p>&copy; 2025 Projet SI. Tous droits réservés.</p>
+  </footer>
+</body>
 </html>
