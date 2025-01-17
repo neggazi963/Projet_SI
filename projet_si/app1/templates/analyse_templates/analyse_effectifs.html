@@ -4,46 +4,142 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analyse des Effectifs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        select, button {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        table th {
+            background-color: #f4f4f4;
+            color: #333;
+            font-weight: bold;
+        }
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+        .no-data {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin: 20px 0;
+        }
+        .back-home {
+            margin-top: 20px;
+            text-align: center;
+          }
+          .back-home a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            transition: color 0.3s ease;
+          }
+          .back-home a:hover {
+            color: #0056b3;
+          }
+    </style>
 </head>
 <body>
-    <h1>Analyse des Effectifs</h1>
+    <div class="container">
+        <!-- Titre principal -->
+        <h1>Analyse des Effectifs</h1>
 
-    <!-- Formulaire de filtre -->
-    <form method="get">
-        <label for="type_contrat">Filtrer par type de contrat :</label>
-        <select name="type_contrat" id="type_contrat">
-            <option value="">Tous</option>
-            {% for value, label in types_contrat %}
-                <option value="{{ value }}" {% if value == contrat_filtre %}selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Filtrer</button>
-    </form>
+        <!-- Formulaire de filtre -->
+        <form method="get">
+            <label for="type_contrat">Filtrer par type de contrat :</label>
+            <select name="type_contrat" id="type_contrat">
+                <option value="">Tous</option>
+                {% for value, label in types_contrat %}
+                    <option value="{{ value }}" {% if value == contrat_filtre %}selected{% endif %}>
+                        {{ label }}
+                    </option>
+                {% endfor %}
+            </select>
+            <button type="submit">Filtrer</button>
+        </form>
 
-    <!-- Affichage du nombre total d'employés -->
-    <h2>Total d'employés : {{ total_employes }}</h2>
+        <!-- Total des employés -->
+        <h2>Total d'employés : {{ total_employes }}</h2>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Nom Employé</th>
-                <th>Type de Contrat</th>
-                <th>Poste</th>
-                <th>Date de Début</th>
-                <th>Date de Fin</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for contrat in contrats %}
+        <!-- Tableau des contrats -->
+        {% if contrats %}
+        <table>
+            <thead>
                 <tr>
-                    <td>{{ contrat.employe.nom }}</td>
-                    <td>{{ contrat.get_type_contrat_display }}</td>
-                    <td>{{ contrat.poste }}</td>
-                    <td>{{ contrat.date_debut }}</td>
-                    <td>{{ contrat.date_fin|default:"N/A" }}</td>
+                    <th>Nom Employé</th>
+                    <th>Type de Contrat</th>
+                    <th>Poste</th>
+                    <th>Date de Début</th>
+                    <th>Date de Fin</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for contrat in contrats %}
+                    <tr>
+                        <td>{{ contrat.employe.nom }}</td>
+                        <td>{{ contrat.get_type_contrat_display }}</td>
+                        <td>{{ contrat.poste }}</td>
+                        <td>{{ contrat.date_debut }}</td>
+                        <td>{{ contrat.date_fin|default:"N/A" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <!-- Message si aucun contrat trouvé -->
+        <p class="no-data">Aucun contrat trouvé pour ce type de contrat.</p>
+        {% endif %}
+        <div class="back-home">
+            <a href="{% url 'gestion_analyse' %}">Retour à l'accueil</a>
+          </div>
+    </div>
 </body>
 </html>

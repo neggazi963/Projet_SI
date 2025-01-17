@@ -121,3 +121,8 @@ def analyse_activite(request):
         'seuil': seuil,
         'mois_choisi': mois_choisi,  # Passer le mois choisi au template
     })
+
+
+def gestion_analyse(request):
+    # Votre logique ici
+    return render(request, 'analyse_templates/gestion_analyse.html')

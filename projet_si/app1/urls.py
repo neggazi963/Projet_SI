@@ -99,6 +99,7 @@ urlpatterns = [
     path('repartition_employes/', analyse_views.repartition_employes, name='repartition_employes'),
     path('top-performeurs/', analyse_views.top_performeurs, name='top_performeurs'),
     path('analyse-activite/', analyse_views.analyse_activite, name='analyse_activite'),
+    path('gestion-analyse/', analyse_views.gestion_analyse, name='gestion_analyse'),
 
 
 

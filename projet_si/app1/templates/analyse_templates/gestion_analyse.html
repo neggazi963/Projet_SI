@@ -111,35 +111,50 @@
           padding: 10px;
         }
       }
+      .back-home {
+        margin-top: 20px;
+        text-align: center;
+      }
+      .back-home a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+      .back-home a:hover {
+        color: #0056b3;
+      }
     </style>
   </head>
   <body>
     <header>
-<header>
-    <h1>Page d'accueil</h1>
-  </header>
+      <h1>Gestion d'analyse</h1>
+    </header>
 
-  <nav>
-    <ul>
-      <li><a href="{% url 'analyse_activite' %}">Absences</a></li>
-      <li><a href="{% url 'analyse_effectifs' %}">Primes</a></li>
-      <li><a href="{% url 'repartition_employes' %}">Masroufs</a></li>
-      <li><a href="{% url 'top_performeurs' %}">Congés</a></li>
-      
-    </ul>
-  </nav>
+    <nav>
+      <ul>
+        <li><a href="{% url 'analyse_activite' %}">Analyse d'activités</a></li>
+        <li>
+          <a href="{% url 'analyse_effectifs' %}">Analyse d'effectives</a>
+        </li>
+        <li>
+          <a href="{% url 'repartition_employes' %}"
+            >repartition des employés</a
+          >
+        </li>
+        <li><a href="{% url 'top_performeurs' %}">Top performeurs</a></li>
+      </ul>
+    </nav>
 
-  <main>
-    <h2>Bienvenue sur la page d'accueil</h2>
-    <p>
-      Utilisez le menu ci-dessus pour accéder aux différentes fonctionnalités
-      de l'application. Gérez vos absences, primes, congés et bien plus encore
-      avec facilité.
-    </p>
-  </main>
+    <main>
+      <h2>Bienvenue sur la page de gestion d'analyse</h2>
+    </main>
+    <div class="back-home">
+      <a href="{% url 'accueil' %}">Retour à l'accueil</a>
+    </div>
 
-  <footer>
-    <p>&copy; 2025 Projet SI. Tous droits réservés.</p>
-  </footer>
-</body>
+    <footer>
+      <p>&copy; 2025 Projet SI. Tous droits réservés.</p>
+    </footer>
+  </body>
 </html>

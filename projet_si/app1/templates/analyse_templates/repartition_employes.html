@@ -5,74 +5,228 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Répartition des Employés</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 20px;
+      }
+      h1,
+      h2 {
+        text-align: center;
+        color: #333;
+      }
+      .chart-container {
+        max-width: 800px;
+        margin: 20px auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      canvas {
+        margin: 20px auto;
+      }
+      footer {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 14px;
+        color: #666;
+      }
+      .back-home {
+        margin-top: 20px;
+        text-align: center;
+      }
+      .back-home a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+      .back-home a:hover {
+        color: #0056b3;
+      }
+    </style>
   </head>
   <body>
     <h1>Répartition des Employés</h1>
 
-    <h2>Répartition par Sexe</h2>
-    <canvas id="sexeChart" width="400" height="200"></canvas>
+    <!-- Graphique : Répartition par Sexe -->
+    <div class="chart-container">
+      <h2>Répartition par Sexe</h2>
+      <canvas id="sexeChart" width="400" height="200"></canvas>
+    </div>
+
+    <!-- Graphique : Répartition par Âge -->
+    <div class="chart-container">
+      <h2>Répartition par Âge</h2>
+      <canvas id="ageChart" width="400" height="200"></canvas>
+    </div>
+
+    <!-- Graphique : Répartition par Ancienneté -->
+    <div class="chart-container">
+      <h2>Répartition par Ancienneté</h2>
+      <canvas id="ancienneteChart" width="400" height="200"></canvas>
+    </div>
+
+    <!-- Script pour les graphiques -->
     <script>
-      var ctx = document.getElementById('sexeChart').getContext('2d');
-      var sexeChart = new Chart(ctx, {
-          type: 'pie',
-          data: {
-              labels: {{ sexe_labels|safe }},
-              datasets: [{
-                  label: 'Répartition par Sexe',
-                  data: {{ sexe_data|safe }},
-                  backgroundColor: ['#36a2eb', '#ff6384'],
-                  borderColor: ['#fff', '#fff'],
-                  borderWidth: 1
-              }]
-          },
-          options: {
-              responsive: true,
+      // Répartition par Sexe
+      var sexeCtx = document.getElementById('sexeChart').getContext('2d');
+      new Chart(sexeCtx, {
+        type: 'pie',
+        data: {
+          labels: {{ sexe_labels|safe }},
+          datasets: [{
+            data: {{ sexe_data|safe }},
+            backgroundColor: ['#36a2eb', '#ff6384'],
+            borderColor: ['#fff', '#fff'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                font: {
+                  size: 14
+                }
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.label + ': ' + context.raw + ' employés';
+                }
+              }
+            }
           }
+        }
+      });
+
+      // Répartition par Âge
+      var ageCtx = document.getElementById('ageChart').getContext('2d');
+      new Chart(ageCtx, {
+        type: 'bar',
+        data: {
+          labels: Array.from({ length: 100 }, (_, i) => i + ' ans'), // Âge 0-100
+          datasets: [{
+            label: 'Répartition par Âge',
+            data: {{ age_data|safe }},
+            backgroundColor: '#ffcd56',
+            borderColor: '#ffcd56',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return 'Âge ' + context.label + ': ' + context.raw + ' employés';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Âge',
+                font: {
+                  weight: 'bold'
+                },
+                color: '#333'
+              },
+              ticks: {
+                autoSkip: true,
+                maxTicksLimit: 10
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Nombre d\'Employés',
+                font: {
+                  weight: 'bold'
+                },
+                color: '#333'
+              },
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      // Répartition par Ancienneté
+      var ancienneteCtx = document.getElementById('ancienneteChart').getContext('2d');
+      new Chart(ancienneteCtx, {
+        type: 'bar',
+        data: {
+          labels: Array.from({ length: 40 }, (_, i) => i + ' ans'), // Ancienneté 0-40 ans
+          datasets: [{
+            label: 'Répartition par Ancienneté',
+            data: {{ anciennete_data|safe }},
+            backgroundColor: '#36a2eb',
+            borderColor: '#36a2eb',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return 'Ancienneté ' + context.label + ': ' + context.raw + ' employés';
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Ancienneté (en années)',
+                font: {
+                  weight: 'bold'
+                },
+                color: '#333'
+              },
+              ticks: {
+                autoSkip: true,
+                maxTicksLimit: 10
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Nombre d\'Employés',
+                font: {
+                  weight: 'bold'
+                },
+                color: '#333'
+              },
+              beginAtZero: true
+            }
+          }
+        }
       });
     </script>
 
-    <h2>Répartition par Âge</h2>
-    <canvas id="ageChart" width="400" height="200"></canvas>
-    <script>
-      var ctx = document.getElementById('ageChart').getContext('2d');
-      var ageChart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-              labels: Array.from({ length: 100 }, (_, i) => i), // Labels for age 0-100
-              datasets: [{
-                  label: 'Répartition par Âge',
-                  data: {{ age_data|safe }},
-                  backgroundColor: '#ffcd56',
-                  borderColor: '#ffcd56',
-                  borderWidth: 1
-              }]
-          },
-          options: {
-              responsive: true,
-          }
-      });
-    </script>
-
-    <h2>Répartition par Ancienneté</h2>
-    <canvas id="ancienneteChart" width="400" height="200"></canvas>
-    <script>
-      var ctx = document.getElementById('ancienneteChart').getContext('2d');
-      var ancienneteChart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-              labels: Array.from({ length: 40 }, (_, i) => i), // Labels for ancienneté 0-40 years
-              datasets: [{
-                  label: 'Répartition par Ancienneté',
-                  data: {{ anciennete_data|safe }},
-                  backgroundColor: '#36a2eb',
-                  borderColor: '#36a2eb',
-                  borderWidth: 1
-              }]
-          },
-          options: {
-              responsive: true,
-          }
-      });
-    </script>
+    <div class="back-home">
+      <a href="{% url 'gestion_analyse' %}">Retour à l'accueil</a>
+    </div>
+    <footer>&copy; 2025 - Analyse des Effectifs. Tous droits réservés.</footer>
   </body>
 </html>
