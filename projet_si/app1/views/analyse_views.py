@@ -2,7 +2,12 @@ from datetime import date, datetime, timedelta
 from django.db.models import Count
 from app1.forms import DateRangeForm
 from app1.models import Absence, Contrat, Employe, Evaluation
+from django.db.models.functions import TruncMonth
+from django.shortcuts import render
 
+
+
+#Gerer l'analyse d'effectifs
 def analyse_effectifs(request):
     # Récupérer le filtre du type de contrat depuis la requête GET
     contrat_filtre = request.GET.get('type_contrat', '')
@@ -30,7 +35,7 @@ def analyse_effectifs(request):
 
 
 
-
+#gerer la repartition des employes 
 def repartition_employes(request):
     # Calculer la répartition par sexe
     sexe_counts = Employe.objects.values('sexe').annotate(count=Count('sexe'))
@@ -65,7 +70,7 @@ def repartition_employes(request):
 
 
 
-
+#Gerer les employes top performurs
 def top_performeurs(request):
     form = DateRangeForm(request.GET)
     start_date = None
@@ -87,10 +92,9 @@ def top_performeurs(request):
 
 
 
-from django.db.models.functions import TruncMonth
-from django.shortcuts import render
 
 
+#Gerer l'analyse d'activité
 def analyse_activite(request):
     # Récupérer le mois choisi ou la date actuelle
     mois_choisi = request.GET.get('mois', datetime.now().strftime('%Y-%m'))  # Par défaut, mois courant

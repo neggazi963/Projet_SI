@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from app1.forms import ServiceForm
 from app1.models import Service
 
-
+#Gerer l'ajout d'un service
 def insert_service(request):
     if request.method == 'POST':
         form = ServiceForm(request.POST)
@@ -21,7 +21,7 @@ def insert_service(request):
 
 
 
-
+#Gerer la modification d'un service
 def modifie_service(request, service_id):
     service = get_object_or_404(Service, id=service_id)
 
@@ -40,7 +40,7 @@ def modifie_service(request, service_id):
     return render(request, 'service_templates/modifie_service.html', context)
 
 
-
+#Gerer la suppression d'un service
 def supprime_service(request, service_id):
     service = get_object_or_404(Service, id=service_id)
 
@@ -69,7 +69,7 @@ def recherche_service(request):
     return render(request, 'service_templates/recherche_service.html', context)
 
 
-
+#Gerer la consultation d'un service
 def consult_service(request, service_id):
     service = get_object_or_404(Service, id=service_id)
 

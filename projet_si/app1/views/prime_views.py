@@ -3,6 +3,7 @@ from app1.forms import PrimeForm
 from app1.models import Employe, Prime
 
 
+#Gerer l'ajout d'une prime
 def ajouter_prime(request):
     if request.method == 'POST':
         form = PrimeForm(request.POST)
@@ -13,7 +14,7 @@ def ajouter_prime(request):
         form = PrimeForm()
     return render(request, 'prime_templates/ajouter_prime.html', {'form': form})
 
-# Vue pour afficher les primes d'un employé
+
 def afficher_primes(request):
     primes = Prime.objects.all()  # Récupère toutes les primes
     return render(request, 'prime_templates/afficher_primes.html', {'primes': primes})
@@ -34,12 +35,14 @@ def gestion_prime(request):
     return render(request, 'prime_templates/gestion_prime.html', context)
 
 
+#Gerer la suppression d'une prime
 def supprimer_prime(request, pk):
     prime = get_object_or_404(Prime, pk=pk)
     prime.delete()
     return redirect('gestion_prime')
 
 
+#Gerer la modification d'une prime
 def modifier_prime(request, pk):
     prime = get_object_or_404(Prime, pk=pk)
     if request.method == 'POST':

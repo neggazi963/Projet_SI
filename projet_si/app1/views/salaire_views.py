@@ -1,8 +1,13 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from app1.forms import SalaireForm
 from app1.models import Absence, Employe, Masrouf, Prime, Salaire
+from django.shortcuts import get_object_or_404, render
+from django.db.models import Sum
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
 
-
+#Calcule du salaire
 def calculer_salaire(employe):
     salaire_base = 30000
     total_primes = Prime.objects.filter(employe=employe).aggregate(Sum('montant'))['montant__sum'] or 0
@@ -10,7 +15,7 @@ def calculer_salaire(employe):
     total_masrouf = Masrouf.objects.filter(employe=employe).aggregate(Sum('montant'))['montant__sum'] or 0
     return salaire_base + total_primes - total_absences - total_masrouf
 
-
+#Gerer la liste des salaires
 def gestion_salaire(request):
     employes = Employe.objects.all()
     salaires = Salaire.objects.select_related('employe').all()
@@ -25,7 +30,7 @@ def gestion_salaire(request):
     }
     return render(request, 'salaire_templates/gestion_salaire.html', context)
 
-
+#Gerer l'ajout d'un salaire
 def ajouter_salaire(request):
     if request.method == "POST":
         form = SalaireForm(request.POST)
@@ -39,7 +44,7 @@ def ajouter_salaire(request):
 
 
 
-
+#Gerer la modification d'un salaire
 def modifier_salaire(request, salaire_id):
     salaire = get_object_or_404(Salaire, id=salaire_id)
     if request.method == "POST":
@@ -54,7 +59,7 @@ def modifier_salaire(request, salaire_id):
 
 
 
-
+#Gerer la suppression d'un salaire
 def supprimer_salaire(request, salaire_id):
     salaire = get_object_or_404(Salaire, id=salaire_id)
     if request.method == "POST":
@@ -64,9 +69,7 @@ def supprimer_salaire(request, salaire_id):
 
 
 
-from django.shortcuts import get_object_or_404, render
-from django.db.models import Sum
-
+#Gerer la consultation d'un salaire
 def consulter_salaire(request, salaire_id):
     # Récupérer le salaire via salaire_id
     salaire = get_object_or_404(Salaire, id=salaire_id)
@@ -117,11 +120,8 @@ def recherche_salarie(request):
 
 
 
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
 
+#Gerer l'impression de la fiche du paie en format PDF
 def export_pdf(request, employe_id):
     employe = get_object_or_404(Employe, id=employe_id)
     salaires = employe.salaire_set.all()

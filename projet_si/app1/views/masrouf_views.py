@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from app1.forms import MasroufForm
 from app1.models import Employe, Masrouf
 
-
+#Gestion du masrouf
 def gestion_masrouf(request):
     employes = Employe.objects.all()
     masroufs = Masrouf.objects.select_related('employe').all()
@@ -19,7 +19,7 @@ def gestion_masrouf(request):
     return render(request, 'masrouf_templates/gestion_masrouf.html', context)
 
 
-# Ajouter, modifier et supprimer des entités
+# Gerer l'ajout du masrouf
 def ajouter_masrouf(request):
     if request.method == 'POST':
         form = MasroufForm(request.POST)
@@ -31,6 +31,7 @@ def ajouter_masrouf(request):
     return render(request, 'masrouf_templates/ajouter_masrouf.html', {'form': form})
 
 
+#Gerer la suppression du masrouf
 def supprimer_masrouf(request, pk):
     masrouf = get_object_or_404(Masrouf, pk=pk)
     masrouf.delete()
@@ -38,6 +39,7 @@ def supprimer_masrouf(request, pk):
 
 
 
+#Gerer la modification du masrouf
 def modifier_masrouf(request, pk):
     masrouf = get_object_or_404(Masrouf, pk=pk)
     if request.method == 'POST':

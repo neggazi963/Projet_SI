@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from app1.models import Conge
 from app1.forms import CongeForm
 
-
+#Gerer l'ajout d'un conge
 def ajouter_conge(request):
     """
     Permet d'ajouter un nouveau congé.
@@ -14,7 +14,7 @@ def ajouter_conge(request):
         form = CongeForm(request.POST)
         if form.is_valid():
             conge = form.save(commit=False)
-            # Ajout d'une validation personnalisée ou autres traitements si nécessaires
+            
             if conge.date_debut > conge.date_fin:
                 messages.error(request, "La date de début ne peut pas être après la date de fin.")
             else:
@@ -25,6 +25,7 @@ def ajouter_conge(request):
         form = CongeForm()
     return render(request, 'conge_templates/ajouter_conge.html', {'form': form})
 
+#Gerer la modification d'un conge
 def modifie_conge(request, conge_id):
     conge = get_object_or_404(Conge, id=conge_id)
 
@@ -41,6 +42,9 @@ def modifie_conge(request, conge_id):
         'conge': conge,
     }
     return render(request, 'conge_templates/modifie_conge.html', context)
+
+
+#Gerer la suppression d'un conge
 def supprime_conge(request, conge_id):
     conge = get_object_or_404(Conge, id=conge_id)
 

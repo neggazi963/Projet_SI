@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from app1.forms import EmployeForm
 from app1.models import Employe
 
+# Gerer la recherche d'un employé
 
 def rechercher_employe(request):
     query = request.GET.get('q', '')
@@ -26,6 +27,7 @@ def rechercher_employe(request):
     return render(request, 'employe_templates/rechercher_employe.html', context)
 
 
+# Gerer l'ajout d'un nouveau employe
 def insert_employe(request):
     if request.method == 'POST':
         form = EmployeForm(request.POST) 
@@ -43,7 +45,7 @@ def insert_employe(request):
 
 
 
-
+# Gerer la modification d'un employe
 def modifier_employe(request, employe_id):
     employe = get_object_or_404(Employe, id=employe_id)
 
@@ -51,7 +53,7 @@ def modifier_employe(request, employe_id):
         form = EmployeForm(request.POST, instance=employe)
         if form.is_valid():
             form.save()  # Enregistrer les modifications
-            return redirect('rechercher_employe')  
+            return redirect('rechercher_employe')  # Rediriger vers la liste des employés
     else:
         form = EmployeForm(instance=employe)
 
@@ -62,12 +64,12 @@ def modifier_employe(request, employe_id):
     return render(request, 'employe_templates/modifie_employe.html', context)
 
 
-
+# Gerer la suppression d'un employe
 def supprimer_employe(request, employe_id):
     employe = get_object_or_404(Employe, id=employe_id)
 
     if request.method == 'POST':
-        employe.delete()  
+        employe.delete()  #supprimer l'employe
         return redirect('rechercher_employe')  # Rediriger vers la liste des employés
 
     context = {
@@ -76,7 +78,7 @@ def supprimer_employe(request, employe_id):
     return render(request, 'employe_templates/supprime_employe.html', context)
 
 
-
+#gerer la consultation d'un employe
 def consult_employe(request, employe_id):
     employe = get_object_or_404(Employe, id=employe_id)  
 
@@ -87,4 +89,4 @@ def consult_employe(request, employe_id):
 
 def afficher_employes(request):
    employes = Employe.objects.all()
-   return render(request, "employe_templates/list_employes.html", {"employes": employes})  # Remplacé 'Employes' par 'employes'
+   return render(request, "employe_templates/list_employes.html", {"employes": employes})  

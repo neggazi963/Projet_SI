@@ -5,7 +5,7 @@ from app1.models import Evaluation
 
 
 
-
+#Gerer les evaluations 
 def gestion_evaluations(request):
 
     evaluations = Evaluation.objects.select_related('employe').all()  # Chargement des évaluations avec les employés
@@ -22,7 +22,7 @@ def gestion_evaluations(request):
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import permission_required
 
-# Vue pour ajouter une évaluation
+# Gerer l'ajout d'une évaluation
 def ajouter_evaluation(request):
 
 
@@ -35,7 +35,7 @@ def ajouter_evaluation(request):
         form = EvaluationForm()
     return render(request, 'evaluation_templates/ajouter_evaluation.html', {'form': form})
 
-# Vue pour modifier une évaluation
+#Gerer la modification d'une évaluation
 def modifier_evaluation(request, pk):
 
 
@@ -49,11 +49,8 @@ def modifier_evaluation(request, pk):
         form = EvaluationForm(instance=evaluation)
     return render(request, 'evaluation_templates/modifier_evaluation.html', {'form': form})
 
-# Vue pour supprimer une évaluation
+# Gerer la suppression d'une évaluation
 def supprimer_evaluation(request, pk):
-
-
-
 
 
     evaluation = get_object_or_404(Evaluation, pk=pk)
@@ -62,10 +59,8 @@ def supprimer_evaluation(request, pk):
         return redirect('gestion_evaluations')
     return render(request, 'evaluation_templates/supprimer_evaluation.html', {'evaluation': evaluation})
 
-# Vue pour consulter une évaluation
+# Gerer la consultation d'une évaluation
 def consulter_evaluation(request, pk):
-
-
 
     evaluation = get_object_or_404(Evaluation, pk=pk)
     return render(request, 'evaluation_templates/consulter_evaluation.html', {'evaluation': evaluation})

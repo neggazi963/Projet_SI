@@ -40,7 +40,8 @@ urlpatterns = [
     path('salaires/ajouter/', salaire_views.ajouter_salaire, name='ajouter_salaire'),
     path('salaires/<int:salaire_id>/modifier/', salaire_views.modifier_salaire, name='modifier_salaire'),
     path('salaires/<int:salaire_id>/supprimer/', salaire_views.supprimer_salaire, name='supprimer_salaire'),
-    
+    path('salaires/<int:employe_id>/export_pdf/', export_pdf, name='export_pdf'),
+
     path('ajouter/absence/', absence_views.ajouter_absence, name='ajouter_absence'),
     path('supprimer/absence/<int:pk>/', absence_views.supprimer_absence, name='supprimer_absence'),
     path('modifier/absence/<int:pk>/', absence_views.modifier_absence, name='modifier_absence'),
@@ -87,14 +88,6 @@ urlpatterns = [
     path('evaluations/consulter/<int:pk>/', evaluation_views.consulter_evaluation, name='consulter_evaluation'),
 
 
-
-    #path('employe/<int:employe_id>/evaluation/', views.employe_evaluation, name='employee_evaluations'),
-    #path('employe/<int:employe_id>/evaluation/new/', views.evaluation_create, name='evaluation_create'),
-    
-
-   
-
-
     path('analyse_effectifs/', analyse_views.analyse_effectifs, name='analyse_effectifs'),
     path('repartition_employes/', analyse_views.repartition_employes, name='repartition_employes'),
     path('top-performeurs/', analyse_views.top_performeurs, name='top_performeurs'),
@@ -103,5 +96,5 @@ urlpatterns = [
 
 
 
-    path('salaires/<int:employe_id>/export_pdf/', export_pdf, name='export_pdf'),
+    
 ]
